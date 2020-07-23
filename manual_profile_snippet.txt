@@ -1,0 +1,24 @@
+Statistics = {
+    'mean':'mean',
+    'std':np.std,
+    'median':'median',
+    'p10':lambda y: np.percentile(y, 10),
+    'p25':lambda y: np.percentile(y, 25),
+    'p75':lambda y: np.percentile(y, 75),
+    'p90':lambda y: np.percentile(y, 90),        
+}
+Bins = 
+
+prof1d = {}
+for field in ProfFields:
+    prof1d[field] = {}
+    
+    for statistic in Statistics.keys():
+    
+        tmp = binned_statistic(
+            sphere['radius'].in_units('pc'),
+            sphere[field],
+            statistic=Statistics[statistic],
+            bins=Bins,
+            )
+        prof1d[field][statistic] = tmp[0]
