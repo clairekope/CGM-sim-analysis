@@ -55,5 +55,10 @@ for ds in datasets.piter():
     ax[1,0].set_xlabel('y (kpc)')
     ax[1,0].set_ylabel('z (kpc)')
 
+    time = '{:.0f} Myr'.format(np.round(ds.current_time.to('Myr'),0))
+    ax[0,0].text(0.03, 0.03, time, transform=ax[0,0].transAxes,
+                 color='white', size='x-large', weight='bold')
+
     fig.tight_layout()
-    fig.savefig('{}_thermo_slab_proj.png'.format(ds.basename))
+    plt.show()
+    #fig.savefig('{}_thermo_slab_proj.png'.format(ds.basename))
