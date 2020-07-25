@@ -61,4 +61,4 @@ for ds in datasets.piter():
     ax[1,0].set_ylabel('z (kpc)')
 
     fig.tight_layout()
-    plt.show()    
+    fig.savefig('{}_thermo_slab_proj.png'.format(ds.basename))

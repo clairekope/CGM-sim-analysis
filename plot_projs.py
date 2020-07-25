@@ -21,22 +21,22 @@ for ds in datasets.piter():
      ph.set_zlim('cell_mass',1e-2, 1e7);
      ph.save()
 
-     p = yt.ProjectionPlot(ds,'x','density',width=width,
-                           data_source=rect, weight_field='ones')
-     #if ("all","particle_mass") in ds.derived_field_list: 
-     #    p.annotate_particles(width=width) 
-     p.set_zlim('density',1e-31,1e-24)
-     p.set_colorbar_label('density','Average Density (g cm$^{-3}$)')
-     p.annotate_timestamp()
-     p.save() 
+     # p = yt.ProjectionPlot(ds,'x','density',width=width,
+     #                       data_source=rect, weight_field='ones')
+     # #if ("all","particle_mass") in ds.derived_field_list: 
+     # #    p.annotate_particles(width=width) 
+     # p.set_zlim('density',1e-31,1e-24)
+     # p.set_colorbar_label('density','Average Density (g cm$^{-3}$)')
+     # p.annotate_timestamp()
+     # p.save() 
 
-     p = yt.ProjectionPlot(ds,'x','temperature', width=width,
-                           data_source=rect, weight_field='ones')
-     p.set_zlim('temperature',1e3,1e8)
-     p.set_cmap('temperature','plasma')
-     p.set_colorbar_label('temperature','Average Temperature (K)')
-     p.annotate_timestamp()
-     p.save()
+     # p = yt.ProjectionPlot(ds,'x','temperature', width=width,
+     #                       data_source=rect, weight_field='ones')
+     # p.set_zlim('temperature',1e3,1e8)
+     # p.set_cmap('temperature','plasma')
+     # p.set_colorbar_label('temperature','Average Temperature (K)')
+     # p.annotate_timestamp()
+     # p.save()
 
 
      # p = yt.ProjectionPlot(ds,'x','temperature', width=width, data_source=sph, method='mip')
