@@ -12,7 +12,7 @@ for ds in datasets.piter():
 
     center = ds.quan(0.5,'code_length')
     rs = ds.quan(3.5,'kpc')
-    width = ds.quan(400,'kpc')
+    width = ds.quan(600,'kpc')
     rect = ds.region([center, center, center],
                      [center-rs/2, center-width/2, center-width/2],
                      [center+rs/2, center+width/2, center+width/2])
@@ -20,11 +20,6 @@ for ds in datasets.piter():
     fields = ['density','temperature','pressure','entropy']
     p = yt.ProjectionPlot(ds, 'x', fields,
                           width=width, data_source=rect, weight_field ='ones')
-
-    p.set_zlim('density',1e-31,1e-24)
-
-    p.set_zlim('temperature',1e3,1e8)
-    p.set_cmap('temperature','plasma')
 
     p_frb = p.data_source.to_frb(width, 512)
 
@@ -39,13 +34,13 @@ for ds in datasets.piter():
                           extent=extent)
 
     t_im = ax[1,0].imshow(t_arr, origin='lower', norm=LogNorm(1e3,1e8),
-                          extent=extent, cmap='plasma')
+                          extent=extent, cmap='magma')
 
-    p_im = ax[0,1].imshow(p_arr, origin='lower', norm=LogNorm(),
-                          extent=extent)
+    p_im = ax[0,1].imshow(p_arr, origin='lower', norm=LogNorm(1e-21,1e-14),
+                          extent=extent, cmap='inferno')
 
-    k_im = ax[1,1].imshow(k_arr, origin='lower', norm=LogNorm(),
-                          extent=extent)
+    k_im = ax[1,1].imshow(k_arr, origin='lower', norm=LogNorm(1e-2,1e6),
+                          extent=extent, cmap='cividis')
 
     d_cb = fig.colorbar(d_im, ax=ax[0,0], pad=0.01)
     t_cb = fig.colorbar(t_im, ax=ax[1,0], pad=0.01)
