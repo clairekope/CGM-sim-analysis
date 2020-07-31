@@ -26,6 +26,7 @@ sfr = np.array([masses[inds == j].sum()/(bins[j+1]-bins[j])
 sfr[sfr == 0] = np.nan
 
 plt.plot(time/1e6, sfr)
+plt.ylim(0, 40)
 plt.xlabel('Time  [Myr]')
 plt.ylabel('SFR  [M$_\odot$ yr$^{-1}$]')
 plt.savefig("sfr.png")
