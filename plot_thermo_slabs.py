@@ -12,7 +12,7 @@ for ds in datasets.piter():
 
     center = ds.quan(0.5,'code_length')
     rs = ds.quan(3.5,'kpc')
-    width = ds.quan(600,'kpc')
+    width = ds.quan(400,'kpc')
     rect = ds.region([center, center, center],
                      [center-rs/2, center-width/2, center-width/2],
                      [center+rs/2, center+width/2, center+width/2])
@@ -36,7 +36,7 @@ for ds in datasets.piter():
     t_im = ax[1,0].imshow(t_arr, origin='lower', norm=LogNorm(1e3,1e8),
                           extent=extent, cmap='magma')
 
-    p_im = ax[0,1].imshow(p_arr, origin='lower', norm=LogNorm(1e-21,1e-14),
+    p_im = ax[0,1].imshow(p_arr, origin='lower', norm=LogNorm(1e-21,1e-13),
                           extent=extent, cmap='inferno')
 
     k_im = ax[1,1].imshow(k_arr, origin='lower', norm=LogNorm(1e-2,1e6),
@@ -60,5 +60,4 @@ for ds in datasets.piter():
                  color='white', size='x-large', weight='bold')
 
     fig.tight_layout()
-    plt.show()
-    #fig.savefig('{}_thermo_slab_proj.png'.format(ds.basename))
+    fig.savefig('{}_thermo_slab_proj.png'.format(ds.basename))
