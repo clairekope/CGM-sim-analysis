@@ -33,7 +33,7 @@ def plot_profiles_over_time(xind, yind,
         f = fpath + fbase + '_' + str(n).zfill(fpad) + '.' + fext
         x, y = np.genfromtxt(f, usecols=(xind, yind), unpack=True)
     
-        ax.loglog(x, y, c=cm.to_rgba((n-1)*10))
+        ax.loglog(x, y, c=cm.to_rgba(n*dtDD))
 
     fig.colorbar(cm, label=cmap_label)
                  #ticks=mpl.ticker.LinearLocator(times[0]-dt/2, times[-1]+dt/2))
