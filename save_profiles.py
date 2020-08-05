@@ -50,7 +50,7 @@ def MN_accel(radius):
 
     return np.average(g, axis=1).to('cm/s**2')
 
-def gas_and_particle_mass_enclosed(data_obj, rad_bins, rad_unit='kpc'):
+def cell_and_particle_mass_enclosed(data_obj, rad_bins, rad_unit='kpc'):
     """
     Returns cummulative cell (and particle) mass from 
     yt data container data_obj within radial bins rad_bins
@@ -92,9 +92,18 @@ if __name__=="__main__":
 
     for ds in datasets.piter():
 
-        sph = ds.sphere([0.5,0.5,0.5],(500,'kpc'))
+        center = ds.quan(0.5, 'code_length')
+        offset = ds.quan(5, 'kpc')
 
-        prof = yt.create_profile(sph, 'radius', quants, weight_field='cell_mass',
+        sph = ds.sphere('c',(500,'kpc'))        
+        dsk_slb = ds.region([0.5,0.5,0.5],
+                            [0.0,0.0,center-offset],
+                            [1.0,1.0,center+offset])
+
+        cgm = sph-dsk_slb
+        cgm.set_field_parameter('center', ds.arr([0.5,0.5,0.5],'code_length'))
+
+        prof = yt.create_profile(cgm, 'radius', quants, weight_field='cell_mass',
                                  units = {'radius':'kpc', 'cooling_time':'Gyr',
                                           'entropy':'keV*cm**2'})
 
@@ -105,7 +114,7 @@ if __name__=="__main__":
 
         # total NFW, gas, and particle mass. Average Miyamoto & Nagai acceleration
         Mtot_r = NFW_mass_enclosed(prof.x) + \
-                 cell_and_particle_mass_enclosed(sph, prof.x_bins.v)
+                 cell_and_particle_mass_enclosed(cgm, prof.x_bins.v)
         
         g_r = u.G * Mtot_r / np.power(prof.x,2)
         g_r = g_r.to('cm/s**2') + MN_accel(prof.x)
