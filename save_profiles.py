@@ -50,6 +50,43 @@ def MN_accel(radius):
 
     return np.average(g, axis=1).to('cm/s**2')
 
+def gas_and_particle_mass_enclosed(data_obj, rad_bins, rad_unit='kpc'):
+    """
+    Returns cummulative cell (and particle) mass from 
+    yt data container data_obj within radial bins rad_bins
+
+    Example usage:
+
+    sph = ds.sphere([0.5,0.5,0.5], (500,'kpc'))
+    prof = yt.create_profile(sph, 'radius', 'density', units={'radius':'kpc'})
+    M_enc = gas_and_particle_mass_enclosed(sph, prof.x_bins.v)
+    """
+
+    mass_enc = yt.create_profile(data_obj, 'radius', ['cell_mass'],
+                                 weight_field=None, accumulation=True,
+                                 units={'radius':'kpc',
+                                        'cell_mass':'Msun'},
+                                 override_bins={'radius':rad_bins})
+
+    assert np.allclose(rad_bins, mass_enc.x_bins.v)
+        
+    if ('all','particle_mass') in data_obj.ds.field_list:
+        mass_enc_part = yt.create_profile(data_obj,
+                                          'particle_radius', [('all','particle_mass')],
+                                          weight_field=None, accumulation=True,
+                                          units={'particle_radius':'kpc',
+                                                 ('all','particle_mass'):'Msun'},
+                                          override_bins={'particle_radius':rad_bins})
+
+        assert np.allclose(rad_bins, mass_enc_part.x_bins.v)
+
+    M_enc = mass_enc['cell_mass']
+    if ('all','particle_mass') in data_obj.ds.field_list:
+        M_enc += mass_enc_part[('all','particle_mass')]
+
+    return M_enc
+
+
 if __name__=="__main__":
     datasets = yt.load("DD????/DD????")
 
@@ -60,22 +97,6 @@ if __name__=="__main__":
         prof = yt.create_profile(sph, 'radius', quants, weight_field='cell_mass',
                                  units = {'radius':'kpc', 'cooling_time':'Gyr',
                                           'entropy':'keV*cm**2'})
-        
-        mass_enc = yt.create_profile(sph, 'radius', ['cell_mass'],
-                                     weight_field=None, accumulation=True,
-                                     units={'radius':'kpc',
-                                            'cell_mass':'Msun'})
-
-        assert np.allclose(prof.x.v, mass_enc.x.v)
-        
-        if ('all','particle_mass') in ds.field_list:
-            mass_enc_part = yt.create_profile(sph, 'particle_radius', [('all','particle_mass')],
-                                              weight_field=None, accumulation=True,
-                                              units={'particle_radius':'kpc',
-                                                     ('all','particle_mass'):'Msun'},
-                                              override_bins={'particle_radius':prof.x_bins})
-
-            assert np.allclose(prof.x.v, mass_enc_part.x.v)
 
         arr = np.empty((prof.x.size, len(quants)+2)) # add radius and tcool/tff
         arr[:,0] = prof.x
@@ -84,15 +105,12 @@ if __name__=="__main__":
 
         # total NFW, gas, and particle mass. Average Miyamoto & Nagai acceleration
         Mtot_r = NFW_mass_enclosed(prof.x) + \
-                 mass_enc['cell_mass']
-        if ('all','particle_mass') in ds.field_list:
-            Mtot_r += mass_enc_part[('all','particle_mass')]
+                 cell_and_particle_mass_enclosed(sph, prof.x_bins.v)
         
         g_r = u.G * Mtot_r / np.power(prof.x,2)
         g_r = g_r.to('cm/s**2') + MN_accel(prof.x)
         
         arr[:,-1] = prof['cooling_time'] / np.sqrt(2*prof.x/g_r)
-
         
         header = 'radius'
         for field in quants:
