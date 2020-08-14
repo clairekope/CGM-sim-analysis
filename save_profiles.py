@@ -93,12 +93,14 @@ if __name__=="__main__":
     for ds in datasets.piter():
 
         center = ds.quan(0.5, 'code_length')
+        le = center-ds.quan(0.6, 'Mpc')
+        re = center+ds.quan(0.6, 'Mpc')
         offset = ds.quan(5, 'kpc')
 
         sph = ds.sphere('c',(500,'kpc'))        
-        dsk_slb = ds.region([0.5,0.5,0.5],
-                            [0.0,0.0,center-offset],
-                            [1.0,1.0,center+offset])
+        dsk_slb = ds.region([center, center, center],
+                            [le, le, center-offset],
+                            [re, re, center+offset])
 
         cgm = sph-dsk_slb
         cgm.set_field_parameter('center', ds.arr([0.5,0.5,0.5],'code_length'))
