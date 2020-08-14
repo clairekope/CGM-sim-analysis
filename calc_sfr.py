@@ -1,5 +1,6 @@
 import yt
 import glob
+import os
 import numpy as np
 import matplotlib; matplotlib.use('agg')
 import matplotlib.pyplot as plt
@@ -25,9 +26,12 @@ sfr = np.array([masses[inds == j].sum()/(bins[j+1]-bins[j])
                 for j in range(len(time))])
 sfr[sfr == 0] = np.nan
 
+cwd = os.getcwd()
+
 plt.plot(time/1e6, sfr)
-plt.ylim(0, 40)
+#plt.ylim(0, 40)
 plt.xlabel('Time  [Myr]')
 plt.ylabel('SFR  [M$_\odot$ yr$^{-1}$]')
+plt.title(os.path.basename(cwd))
 plt.savefig("sfr.png")
 
