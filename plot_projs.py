@@ -3,7 +3,7 @@ yt.enable_parallelism()
 
 datasets = yt.load("DD????/DD????")
 for ds in datasets.piter():
-#  if int(ds.basename[-4:])%5 == 0: #and int(ds.basename[-4:])>85:
+  #if int(ds.basename[-4:])%5 == 0: #and int(ds.basename[-4:])>85:
 
      center = ds.quan(0.5, 'code_length')
      rs = ds.quan(3.5,'kpc')
@@ -18,13 +18,14 @@ for ds in datasets.piter():
                            ['radial_velocity','tangential_velocity'],
                            width=width, data_source=rect, weight_field='ones')
 
-     p.set_cmap('radial_velocity', 'coolwarm')
      p.set_unit('radial_velocity','km/s')
-     #p.set_zlim('radial_velocity', -200, 200)
+     p.set_zlim('radial_velocity', -300, 300)
+     p.set_log('radial_velocity', 'log', linthresh=5)
+     p.set_cmap('radial_velocity', 'coolwarm')
 
-     p.set_cmap('tangential_velocity', 'PiYG')
+     p.set_cmap('tangential_velocity', 'BuPu')
      p.set_unit('tangential_velocity','km/s')
-     #p.set_zlim('tangential_velocity', -150, 150)
+     p.set_zlim('tangential_velocity', 1e-2, 1e3)
 
      p.annotate_timestamp()
      p.save() 
