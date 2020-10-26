@@ -1,7 +1,9 @@
 import yt
 yt.enable_parallelism()
+
 import yt.units as u
 import numpy as np
+import os
 
 quants = ['density','temperature','entropy','pressure',
           'metallicity', 'cooling_time']
@@ -92,7 +94,7 @@ if __name__=="__main__":
 
     if os.path.isfile('last_profile'):
         with open('last_profile','r') as f:
-            last_profile = f.read()
+            last_profile = int(f.read())
 
     else:
         last_profile = -1
@@ -138,6 +140,7 @@ if __name__=="__main__":
             np.savetxt('profiles_{:04d}.txt'.format(int(ds.basename[-4:])), arr,
                        header=header)
 
-    last_profile = int(ds[-1].basename[-4:])
-    with open('last_profile','w') as f:
-        f.write(last_profile)
+    # if yt.is_root():
+    #     last_profile = int(datasets[-1].basename[-4:])
+    #     with open('last_profile','w') as f:
+    #         f.write(str(last_profile))
