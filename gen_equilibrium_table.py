@@ -15,10 +15,10 @@ from pygrackle.utilities.physical_constants import \
 # 1e-29 to 1e-23 g/cm**3
 # 6.5e4 to 1.5e6 K
 
-size_1d = 50 # square table; length of each side
+size_1d = 60 # square table; length of each side
 Z = 0.3 # solar units
 
-dens = np.logspace(np.log10(1e-30), np.log10(1e-23), size_1d) # cgs
+dens = np.logspace(np.log10(1e-31), np.log10(1e-23), size_1d) # cgs
 temp = np.logspace(np.log10(3e3), np.log10(3e6), size_1d) # K
 d, t = np.meshgrid(dens, temp)
 
