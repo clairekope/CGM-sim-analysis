@@ -1,7 +1,7 @@
 import yt
 yt.enable_parallelism()
 import matplotlib.pyplot as plt
-from matplotlib.colors import LogNorm
+from matplotlib.colors import LogNorm, SymLogNorm
 import numpy as np
 
 datasets = yt.load('DD????/DD????')
@@ -17,16 +17,19 @@ for ds in datasets.piter():
 
     for width, thickness, label in zip(widths, thicknesses, labels):
         
-        fig, ax = plt.subplots(nrows=2, ncols=2, sharex=True, sharey=True,
-                               figsize=(12,10))
+        fig, ax = plt.subplots(nrows=2, ncols=3, sharex=True, sharey=True,
+                               figsize=(18,10))
 
         rect = ds.region([center, center, center],
                          [center-thickness/2, center-width/2, center-width/2],
                          [center+thickness/2, center+width/2, center+width/2])
 
-        fields = ['density','temperature','pressure','entropy']
+        fields = ['density','temperature','pressure','entropy',
+                  'radial_velocity','cooling_time']
         p = yt.ProjectionPlot(ds, 'x', fields, width=width,
                               data_source=rect, weight_field ='ones')
+        p.set_unit('radial_velocity', 'km/s')
+        p.set_unit('cooling_time', 'yr')
 
         p_frb = p.data_source.to_frb(width, 512)
 
@@ -34,6 +37,8 @@ for ds in datasets.piter():
         t_arr = np.array(p_frb['temperature'])
         p_arr = np.array(p_frb['pressure'])
         k_arr = np.array(p_frb['entropy'])
+        v_arr = np.array(p_frb['radial_velocity'])
+        c_arr = np.array(p_frb['cooling_time'])
 
         extent = (-width/2, width/2, -width/2, width/2)
     
@@ -49,15 +54,26 @@ for ds in datasets.piter():
         k_im = ax[1,1].imshow(k_arr, origin='lower', norm=LogNorm(1e-2,1e6),
                               extent=extent, cmap='cividis')
 
+        v_im = ax[0,2].imshow(v_arr, origin='lower',
+                              norm=SymLogNorm(1, vmin=-300, vmax=300),
+                              extent=extent, cmap='coolwarm')
+
+        c_im = ax[1,2].imshow(c_arr, origin='lower', norm=LogNorm(2,9),
+                              extent=extent, cmap='twilight')
+
         d_cb = fig.colorbar(d_im, ax=ax[0,0], pad=0.01)
         t_cb = fig.colorbar(t_im, ax=ax[1,0], pad=0.01)
         p_cb = fig.colorbar(p_im, ax=ax[0,1], pad=0.01)
         k_cb = fig.colorbar(k_im, ax=ax[1,1], pad=0.01)
+        v_cb = fig.colorbar(v_im, ax=ax[0,2], pad=0.01)
+        c_cb = fig.colorbar(c_im, ax=ax[1,2], pad=0.01)
 
         d_cb.set_label(r'Density [g cm$^{-3}$]')
         t_cb.set_label(r'Temperature [K]')
         p_cb.set_label(r'Pressure [dyn cm$^{-2}$]')
         k_cb.set_label(r'Entropy [keV cm$^2$]')
+        v_cb.set_label(r'Radial Velocity [km/s]')
+        c_cb.set_label(r'Cooling Time [yr]')
 
         ax[1,0].set_xlabel('y (kpc)')
         ax[1,0].set_ylabel('z (kpc)')
