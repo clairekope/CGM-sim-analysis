@@ -11,15 +11,18 @@ for ds in datasets.piter():
                            figsize=(12,10))
 
     center = ds.quan(0.5,'code_length')
-    rs = ds.quan(3.5,'kpc')
-    width = ds.quan(400,'kpc')
+    rs = ds.quan(3.5,'kpc') * 2
+    #width = ds.quan(400,'kpc')
+    width = ds.quan(800,'kpc')
+    #width = ds.quan(1.0, 'code_length')
+   
     rect = ds.region([center, center, center],
                      [center-rs/2, center-width/2, center-width/2],
                      [center+rs/2, center+width/2, center+width/2])
 
     fields = ['density','temperature','pressure','entropy']
-    p = yt.ProjectionPlot(ds, 'x', fields,
-                          width=width, data_source=rect, weight_field ='ones')
+    p = yt.ProjectionPlot(ds, 'x', fields, width=width,
+                          data_source=rect, weight_field ='ones')
 
     p_frb = p.data_source.to_frb(width, 512)
 
@@ -30,7 +33,7 @@ for ds in datasets.piter():
 
     extent = (-width/2, width/2, -width/2, width/2)
     
-    d_im = ax[0,0].imshow(d_arr, origin='lower', norm=LogNorm(1e-31,1e-24), 
+    d_im = ax[0,0].imshow(d_arr, origin='lower', norm=LogNorm(1e-32,1e-24), 
                           extent=extent)
 
     t_im = ax[1,0].imshow(t_arr, origin='lower', norm=LogNorm(1e3,1e8),
@@ -47,10 +50,10 @@ for ds in datasets.piter():
     p_cb = fig.colorbar(p_im, ax=ax[0,1], pad=0.01)
     k_cb = fig.colorbar(k_im, ax=ax[1,1], pad=0.01)
 
-    d_cb.set_label(r'Density (g cm$^{-3}$)')
-    t_cb.set_label(r'Temperature (K)')
-    p_cb.set_label(r'Pressure (dyn cm$^{-2}$)')
-    k_cb.set_label(r'Entropy (keV cm$^2$)')
+    d_cb.set_label(r'Density [g cm$^{-3}$]')
+    t_cb.set_label(r'Temperature [K]')
+    p_cb.set_label(r'Pressure [dyn cm$^{-2}$]')
+    k_cb.set_label(r'Entropy [keV cm$^2$]')
 
     ax[1,0].set_xlabel('y (kpc)')
     ax[1,0].set_ylabel('z (kpc)')
@@ -60,4 +63,4 @@ for ds in datasets.piter():
                  color='white', size='x-large', weight='bold')
 
     fig.tight_layout()
-    fig.savefig('{}_thermo_slab_proj.png'.format(ds.basename))
+    fig.savefig('{}_thermo_slab_proj_extrawide.png'.format(ds.basename))

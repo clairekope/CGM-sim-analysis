@@ -29,7 +29,7 @@ sfr[sfr == 0] = np.nan
 cwd = os.getcwd()
 
 plt.plot(time/1e6, sfr)
-#plt.ylim(0, 40)
+plt.ylim(0, 10)
 plt.xlabel('Time  [Myr]')
 plt.ylabel('SFR  [M$_\odot$ yr$^{-1}$]')
 plt.title(os.path.basename(cwd))
