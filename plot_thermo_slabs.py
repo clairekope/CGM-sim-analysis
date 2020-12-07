@@ -23,13 +23,12 @@ for ds in datasets.piter():
         rect = ds.region([center, center, center],
                          [center-thickness/2, center-width/2, center-width/2],
                          [center+thickness/2, center+width/2, center+width/2])
-
+        assert (rect.get_field_parameter("center") == center).all()
+        
         fields = ['density','temperature','pressure','entropy',
                   'radial_velocity','cooling_time']
         p = yt.ProjectionPlot(ds, 'x', fields, width=width,
                               data_source=rect, weight_field ='ones')
-        p.set_unit('radial_velocity', 'km/s')
-        p.set_unit('cooling_time', 'yr')
 
         p_frb = p.data_source.to_frb(width, 512)
 
@@ -37,8 +36,8 @@ for ds in datasets.piter():
         t_arr = np.array(p_frb['temperature'])
         p_arr = np.array(p_frb['pressure'])
         k_arr = np.array(p_frb['entropy'])
-        v_arr = np.array(p_frb['radial_velocity'])
-        c_arr = np.array(p_frb['cooling_time'])
+        v_arr = np.array(p_frb['radial_velocity']) / 1e5 # km/s
+        c_arr = np.array(p_frb['cooling_time']) / 3.16887e8 / 1e9 # Gyr
 
         extent = (-width/2, width/2, -width/2, width/2)
     
@@ -55,10 +54,11 @@ for ds in datasets.piter():
                               extent=extent, cmap='cividis')
 
         v_im = ax[0,2].imshow(v_arr, origin='lower',
-                              norm=SymLogNorm(1, vmin=-300, vmax=300),
+                              norm=SymLogNorm(1, linscale=0.3, base=10,
+                                              vmin=-3e3, vmax=3e3),
                               extent=extent, cmap='coolwarm')
 
-        c_im = ax[1,2].imshow(c_arr, origin='lower', norm=LogNorm(2,9),
+        c_im = ax[1,2].imshow(c_arr, origin='lower', norm=LogNorm(1e-2,1e4),
                               extent=extent, cmap='twilight')
 
         d_cb = fig.colorbar(d_im, ax=ax[0,0], pad=0.01)
