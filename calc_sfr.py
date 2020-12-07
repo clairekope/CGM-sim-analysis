@@ -6,13 +6,22 @@ import matplotlib; matplotlib.use('agg')
 import matplotlib.pyplot as plt
 yt.enable_parallelism()
 
+def _initial_mass(field, data):
+    # ripped from star_maker2.F, assuming StarMassEjectionFraction = 0.25
+    time_frac = (ds.current_time - data[('io','creation_time')]) \
+                / data[('io','dynamical_time')]
+    return data[('io','particle_mass')] \
+        / (1 - 0.25*(1 - (1+time_frac)*np.exp(-time_frac)))
+
+yt.add_field('particle_initial_mass', function=_initial_mass, units='g')
+
 latest_output = sorted(glob.glob("DD????/DD????"))[-1]
 
 ds = yt.load(latest_output)
 
 dsk = ds.disk([0.5,0.5,0.5], [0,0,1], (24.5,'kpc'), (2.275, 'kpc'))
 
-masses = dsk['particle_mass'].in_units('Msun') # this doesn't compensate for SNe losses
+masses = dsk['particle_initial_mass'].in_units('Msun')
 formation_time = dsk['creation_time'].in_units('yr')
         
 time_range = [0, 2e10] # years
