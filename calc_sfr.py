@@ -13,7 +13,8 @@ def _initial_mass(field, data):
     return data[('io','particle_mass')] \
         / (1 - 0.25*(1 - (1+time_frac)*np.exp(-time_frac)))
 
-yt.add_field('particle_initial_mass', function=_initial_mass, units='g')
+yt.add_field('particle_initial_mass', function=_initial_mass, units='g',
+             sampling_type='cell')
 
 def calc_sfr(obj, year_bounds, n_bins):
 
