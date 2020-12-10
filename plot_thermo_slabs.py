@@ -68,12 +68,12 @@ for ds in datasets.piter():
         v_cb = fig.colorbar(v_im, ax=ax[0,2], pad=0.01, shrink=0.92)
         c_cb = fig.colorbar(c_im, ax=ax[1,2], pad=0.01, shrink=0.92)
 
-        d_cb.set_label(r'Density [g cm$^{-3}$]')
-        t_cb.set_label(r'Temperature [K]')
-        p_cb.set_label(r'Pressure [dyn cm$^{-2}$]')
-        k_cb.set_label(r'Entropy [keV cm$^2$]')
-        v_cb.set_label(r'Radial Velocity [km/s]')
-        c_cb.set_label(r'Cooling Time [Gyr]')
+        d_cb.set_label(r'<Density> [g cm$^{-3}$]')
+        t_cb.set_label(r'<Temperature> [K]')
+        p_cb.set_label(r'<Pressure> [dyn cm$^{-2}$]')
+        k_cb.set_label(r'<Entropy> [keV cm$^2$]')
+        v_cb.set_label(r'<Radial Velocity> [km/s]')
+        c_cb.set_label(r'<Cooling Time> [Gyr]')
 
         # Phase Diagrams
         dt_ph = yt.PhasePlot(rect, 'density', 'temperature', 'cell_mass').profile
