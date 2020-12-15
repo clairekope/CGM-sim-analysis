@@ -1,5 +1,6 @@
 import matplotlib; matplotlib.use('agg')
 import yt
+from yt.fields.derived_field import ValidateDataField
 import numpy as np
 
 def _initial_mass(field, data):
@@ -9,8 +10,14 @@ def _initial_mass(field, data):
     return data[('io','particle_mass')] \
         / (1 - 0.25*(1 - (1+time_frac)*np.exp(-time_frac)))
 
-yt.add_field('particle_initial_mass', function=_initial_mass, units='g',
-             sampling_type='cell')
+
+def add_initial_mass_field(dataset):
+    dataset.add_field('particle_initial_mass', function=_initial_mass, units='g',
+                      sampling_type='cell', 
+                      validators=[ValidateDataField(('io','creation_time')),
+                                  ValidateDataField(('io','dynamical_time')),
+                                  ValidateDataField(('io','particle_mass'))]
+                  )
 
 def calc_sfr(obj, year_bins):
 
@@ -36,6 +43,7 @@ if __name__=="__main__":
     latest_output = sorted(glob.glob("DD????/DD????"))[-1]
 
     ds = yt.load(latest_output)
+    add_initial_mass(ds)
 
     dsk = ds.disk([0.5,0.5,0.5], [0,0,1], (24.5,'kpc'), (2.275, 'kpc'))
 
