@@ -216,9 +216,8 @@ for ds in datasets.piter():
                     color='C0', ls='--')
         sum_ax.set_ylim(0, 7000)
         sum_ax.tick_params(axis='y', labelcolor='C0')
-        sum_ax.xaxis.label.set_color('C0')
-        sum_ax.set_ylabel(r'$\sum$SFR [M$_\odot$/yr]')
-
+        sum_ax.set_ylabel(r'$\sum$SFR [M$_\odot$/yr]', color='C0')
+        
         ax[0,3].xaxis.tick_top()
         ax[0,3].xaxis.set_label_position('top')
         ax[0,3].yaxis.set_major_locator(MultipleLocator(5))
