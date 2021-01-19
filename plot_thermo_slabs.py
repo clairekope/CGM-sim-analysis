@@ -6,6 +6,7 @@ from matplotlib.colors import LogNorm, SymLogNorm
 from matplotlib.ticker import MultipleLocator
 from mpl_toolkits.axes_grid1 import ImageGrid
 import numpy as np
+from scipy.stats import binned_statistic
 
 rcParams.update({'font.size': 14})
 
@@ -88,11 +89,54 @@ for ds in datasets.piter():
         pk_ph = yt.PhasePlot(rect, 'pressure', 'entropy', 'cell_mass').profile
         rc_ph = yt.PhasePlot(rect, 'radius', 'cooling_time', 'cell_mass').profile
         rk_ph = yt.PhasePlot(rect, 'radius', 'entropy', 'cell_mass').profile
+
+        # 16th, 50th, and 84th precentile 1D profiles
+        # e.g., median temperature in each density bin,
+        # or median entropy in each radial bin
+        dt_med = binned_statistic(rect['density'], rect['temperature'],
+                                  statistic='median', bins=dt_ph.x_bins)
+        dt_16 = binned_statistic(rect['density'], rect['temperature'],
+                                 statistic=lambda y: np.percentile(y,16),
+                                 bins=dt_ph.x_bins)
+        dt_84 = binned_statistic(rect['density'], rect['temperature'],
+                                 statistic=lambda y: np.percentile(y,84),
+                                 bins=dt_ph.x_bins)
+
+        pk_med = binned_statistic(rect['pressure'], rect['entropy'],
+                                  statistic='median', bins=pk_ph.x_bins)
+        pk_16 = binned_statistic(rect['pressure'], rect['entropy'],
+                                 statistic=lambda y: np.percentile(y,16),
+                                 bins=pk_ph.x_bins)
+        pk_84 = binned_statistic(rect['pressure'], rect['entropy'],
+                                 statistic=lambda y: np.percentile(y,84),
+                                 bins=pk_ph.x_bins)
+
+        rc_med = binned_statistic(rect['radius'].to('kpc'),
+                                  rect['cooling_time'].to('Gyr'),
+                                  statistic='median',
+                                  bins=rc_ph.x_bins.to('kpc'))
+        rc_16 = binned_statistic(rect['radius'].to('kpc'),
+                                 rect['cooling_time'].to('Gyr'),
+                                 statistic=lambda y: np.percentile(y,16),
+                                 bins=rc_ph.x_bins.to('kpc'))
+        rc_84 = binned_statistic(rect['radius'].to('kpc'),
+                                 rect['cooling_time'].to('Gyr'),
+                                 statistic=lambda y: np.percentile(y,84),
+                                 bins=rc_ph.x_bins.to('kpc'))
+
+        rk_med = binned_statistic(rect['radius'].to('kpc'), rect['entropy'],
+                                  statistic='median', bins=rk_ph.x_bins.to('kpc'))
+        rk_16 = binned_statistic(rect['radius'].to('kpc'), rect['entropy'],
+                                 statistic=lambda y: np.percentile(y,16),
+                                 bins=rk_ph.x_bins.to('kpc'))
+        rk_84 = binned_statistic(rect['radius'].to('kpc'), rect['entropy'],
+                                 statistic=lambda y: np.percentile(y,84),
+                                 bins=rk_ph.x_bins.to('kpc'))
         
         dt_im = ax[2,0].pcolormesh(dt_ph.x_bins, dt_ph.y_bins,
                                    dt_ph['cell_mass'].T.to('Msun'),
                                    norm=LogNorm(1e-4,1e6), cmap='viridis')
-
+        
         pk_im = ax[2,1].pcolormesh(pk_ph.x_bins, pk_ph.y_bins,
                                    pk_ph['cell_mass'].T.to('Msun'),
                                    norm=LogNorm(1e-4,1e6), cmap='cividis')
@@ -104,6 +148,22 @@ for ds in datasets.piter():
         rk_im = ax[2,3].pcolormesh(rk_ph.x_bins.to('kpc'), rk_ph.y_bins,
                                    rk_ph['cell_mass'].T.to('Msun'),
                                    norm=LogNorm(), cmap='magma')
+
+        ax[2,0].plot(dt_ph.x, dt_med[0], 'k-')
+        ax[2,0].plot(dt_ph.x, dt_16[0], 'k:')
+        ax[2,0].plot(dt_ph.x, dt_84[0], 'k:')
+
+        ax[2,1].plot(pk_ph.x, pk_med[0], 'k-')
+        ax[2,1].plot(pk_ph.x, pk_16[0], 'k:')
+        ax[2,1].plot(pk_ph.x, pk_84[0], 'k:')
+
+        ax[2,2].plot(rc_ph.x.to('kpc'), rc_med[0], 'k-')
+        ax[2,2].plot(rc_ph.x.to('kpc'), rc_16[0], 'k:')
+        ax[2,2].plot(rc_ph.x.to('kpc'), rc_84[0], 'k:')
+
+        ax[2,3].plot(rk_ph.x.to('kpc'), rk_med[0], 'k-')
+        ax[2,3].plot(rk_ph.x.to('kpc'), rk_16[0], 'k:')
+        ax[2,3].plot(rk_ph.x.to('kpc'), rk_84[0], 'k:')
 
         ax[2,0].set_xlim(1e-34, 1e-21)
         ax[2,0].set_xlabel(r'Density [g cm$^{-3}$]')
