@@ -177,23 +177,23 @@ for ds in datasets.piter():
 
         # Plot percentiles
         ax[2,0].plot(dt_ph.x, dt_med[0], 'k-')
-        ax[2,0].plot(dt_ph.x, dt_16[0], 'k:')
-        ax[2,0].plot(dt_ph.x, dt_84[0], 'k:')
+        ax[2,0].plot(dt_ph.x, dt_16[0], 'k--')
+        ax[2,0].plot(dt_ph.x, dt_84[0], 'k--')
 
         ax[2,1].plot(pk_ph.x, pk_med[0], 'k-')
-        ax[2,1].plot(pk_ph.x, pk_16[0], 'k:')
-        ax[2,1].plot(pk_ph.x, pk_84[0], 'k:')
+        ax[2,1].plot(pk_ph.x, pk_16[0], 'k--')
+        ax[2,1].plot(pk_ph.x, pk_84[0], 'k--')
 
-        ax[2,2].plot(rc_ph.x.to('kpc'), rc_med[0], 'k-')
-        ax[2,2].plot(rc_ph.x.to('kpc'), rc_16[0], 'k:')
-        ax[2,2].plot(rc_ph.x.to('kpc'), rc_84[0], 'k:')
+        ax[2,2].plot(rc_ph.x.to('kpc'), rc_med[0], 'w-')
+        ax[2,2].plot(rc_ph.x.to('kpc'), rc_16[0], 'w--')
+        ax[2,2].plot(rc_ph.x.to('kpc'), rc_84[0], 'w--')
 
-        ax[2,3].plot(rk_ph.x.to('kpc'), rk_med[0], 'k-')
-        ax[2,3].plot(rk_ph.x.to('kpc'), rk_16[0], 'k:')
-        ax[2,3].plot(rk_ph.x.to('kpc'), rk_84[0], 'k:')
+        ax[2,3].plot(rk_ph.x.to('kpc'), rk_med[0], 'w-')
+        ax[2,3].plot(rk_ph.x.to('kpc'), rk_16[0], 'w--')
+        ax[2,3].plot(rk_ph.x.to('kpc'), rk_84[0], 'w--')
 
         # Plot tff
-        ax[2,2].plot(rc_ph.x.to('kpc'), t_ff.to('Gyr'), 'g--')
+        ax[2,2].plot(rc_ph.x.to('kpc'), t_ff.to('Gyr'), 'g-')
         ax[2,2].plot(rc_ph.x.to('kpc'), 10*t_ff.to('Gyr'), 'g-.')
 
         # Adjust limits
@@ -254,7 +254,7 @@ for ds in datasets.piter():
         sum_ax = ax[0,3].twinx()
         sum_ax.plot(sfr[past_sfr,0], np.nancumsum(sfr[past_sfr, 1]),
                     color='C0', ls='--')
-        sum_ax.set_ylim(0, 7000)
+        sum_ax.set_ylim(0, 8000)
         sum_ax.tick_params(axis='y', labelcolor='C0')
         sum_ax.set_ylabel(r'$\sum$SFR [M$_\odot$/yr]', color='C0')
         
