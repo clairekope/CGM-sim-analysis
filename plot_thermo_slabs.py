@@ -16,14 +16,19 @@ sfr = np.genfromtxt('sfr.txt')
 
 datasets = yt.load('DD????/DD????')
 for ds in datasets.piter():
-
+ if int(ds.basename[-4:]) == 83 or int(ds.basename[-4:]) == 84:
     center = ds.quan(0.5,'code_length')
     rs = ds.quan(3.5,'kpc')
     
-    widths = [ds.quan(200,'kpc'), ds.quan(400,'kpc'),
-              ds.quan(800,'kpc')]#, ds.quan(1.0, 'code_length')]
-    thicknesses = [rs, rs, rs*2]#, rs*4]
-    labels = ['200kpc','400kpc','800kpc']#,'box']
+    widths = [ds.quan(200,'kpc'), 
+        ds.quan(400,'kpc'),
+        ds.quan(800,'kpc')]
+    thicknesses = [rs, 
+        rs,
+        rs*2]
+    labels = ['200kpc',
+        '400kpc',
+        '800kpc']
 
     for width, thickness, label in zip(widths, thicknesses, labels):
 
@@ -173,7 +178,7 @@ for ds in datasets.piter():
 
         rk_im = ax[2,3].pcolormesh(rk_ph.x_bins.to('kpc'), rk_ph.y_bins,
                                    rk_ph['cell_mass'].T.to('Msun'),
-                                   norm=LogNorm(), cmap='magma')
+                                   norm=LogNorm(1e-3,1e7), cmap='magma')
 
         # Plot percentiles
         ax[2,0].plot(dt_ph.x, dt_med[0], 'k-')
@@ -214,7 +219,7 @@ for ds in datasets.piter():
 
         ax[2,3].set_xlim(1e-1, 1e3)
         ax[2,3].set_xlabel('Radius [kpc]')
-        #ax[2,3].set_ylim()
+        ax[2,3].set_ylim(1e-7, 1e7)
         ax[2,3].set_ylabel(r'Entropy [keV cm$^2$]')
 
         # Add colorbars and labels
@@ -271,7 +276,7 @@ for ds in datasets.piter():
                      ls='-', label=r'$\rm M_{sum}$')       
         ax[1,3].set_xlim(0, 6000)
         ax[1,3].set_xlabel('Time [Myr]')
-        ax[1,3].set_ylim(3e9, 8e9)
+        ax[1,3].set_ylim(0, 8e9)
         ax[1,3].set_ylabel(r'Mass [M$_\odot$]')
         ax[1,3].legend()
 
