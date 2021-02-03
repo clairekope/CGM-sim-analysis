@@ -16,7 +16,7 @@ sfr = np.genfromtxt('sfr.txt')
 
 datasets = yt.load('DD????/DD????')
 for ds in datasets.piter():
- if int(ds.basename[-4:]) == 83 or int(ds.basename[-4:]) == 84:
+
     center = ds.quan(0.5,'code_length')
     rs = ds.quan(3.5,'kpc')
     
@@ -276,7 +276,7 @@ for ds in datasets.piter():
                      ls='-', label=r'$\rm M_{sum}$')       
         ax[1,3].set_xlim(0, 6000)
         ax[1,3].set_xlabel('Time [Myr]')
-        ax[1,3].set_ylim(0, 8e9)
+        ax[1,3].set_ylim(0, 1e10)
         ax[1,3].set_ylabel(r'Mass [M$_\odot$]')
         ax[1,3].legend()
 

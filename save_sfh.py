@@ -1,5 +1,6 @@
 # coding: utf-8
 import glob
+import yt
 import numpy as np
 from calc_sfr import calc_sfr, add_initial_mass_field
 
