@@ -20,24 +20,48 @@ for ds in datasets.piter():
     center = ds.quan(0.5,'code_length')
     rs = ds.quan(3.5,'kpc')
     
-    widths = [ds.quan(200,'kpc'), 
-        ds.quan(400,'kpc'),
-        ds.quan(800,'kpc')]
-    thicknesses = [rs, 
+    widths = [
+        ds.quan(100,'kpc'),
+        ds.quan(100,'kpc'),
+        # ds.quan(200,'kpc'), 
+        # ds.quan(400,'kpc'),
+        # ds.quan(800,'kpc')
+        ]
+    thicknesses = [
         rs,
-        rs*2]
-    labels = ['200kpc',
-        '400kpc',
-        '800kpc']
+        rs,
+        # rs, 
+        # rs,
+        # rs*2
+        ]
+    labels = [
+        '100kpc',
+        '100kpc_face',
+        # '200kpc',
+        # '400kpc',
+        # '800kpc'
+        ]
 
     for width, thickness, label in zip(widths, thicknesses, labels):
 
         fig, ax = plt.subplots(nrows=3, ncols=4, figsize=(24.5,15.5))
 
-        # Thin slab is used for projections so I can avoid weighting by e.g. mass
-        rect = ds.region([center, center, center],
-                         [center-thickness/2, center-width/2, center-width/2],
-                         [center+thickness/2, center+width/2, center+width/2])
+        if 'face' in label:
+            view = 'z'
+
+            # Thin slab is used for projections so I can avoid weighting by e.g. mass
+            rect = ds.region([center, center, center],
+                             [center-width/2, center-width/2, center-thickness/2],
+                             [center+width/2, center+width/2, center+thickness/2])
+            
+        else:
+            view = 'x'
+            
+            # Thin slab is used for projections so I can avoid weighting by e.g. mass
+            rect = ds.region([center, center, center],
+                             [center-thickness/2, center-width/2, center-width/2],
+                             [center+thickness/2, center+width/2, center+width/2])
+
         assert (rect.get_field_parameter("center") == center).all()
 
         # Sphere is used for calculating average tff
@@ -48,7 +72,8 @@ for ds in datasets.piter():
         #
         fields = ['density','temperature','pressure','entropy',
                   'radial_velocity','cooling_time']
-        p = yt.ProjectionPlot(ds, 'x', fields, width=width,
+
+        p = yt.ProjectionPlot(ds, view, fields, width=width,
                               data_source=rect, weight_field ='ones')
 
         # Extract fixed resolution buffers
@@ -250,7 +275,7 @@ for ds in datasets.piter():
         time = masses[index,0]
         past_sfr = sfr[:,0] <= time
         ax[0,3].plot(sfr[past_sfr,0], sfr[past_sfr, 1], 'k')
-        ax[0,3].set_xlim(0, 6000)
+        ax[0,3].set_xlim(0, 4000)
         ax[0,3].set_xlabel('Time [Myr]')
         ax[0,3].set_ylim(0, 47)
         ax[0,3].set_ylabel(r'SFR [M$_\odot$/yr]')
@@ -259,7 +284,7 @@ for ds in datasets.piter():
         sum_ax = ax[0,3].twinx()
         sum_ax.plot(sfr[past_sfr,0], np.nancumsum(sfr[past_sfr, 1]),
                     color='C0', ls='--')
-        sum_ax.set_ylim(0, 8000)
+        sum_ax.set_ylim(0, 10000)
         sum_ax.tick_params(axis='y', labelcolor='C0')
         sum_ax.set_ylabel(r'$\sum$SFR [M$_\odot$/yr]', color='C0')
         
@@ -274,7 +299,7 @@ for ds in datasets.piter():
                      ls='-.', label=r'$\rm M_\ast$')
         ax[1,3].plot(masses[:index,0], masses[:index,3],
                      ls='-', label=r'$\rm M_{sum}$')       
-        ax[1,3].set_xlim(0, 6000)
+        ax[1,3].set_xlim(0, 4000)
         ax[1,3].set_xlabel('Time [Myr]')
         ax[1,3].set_ylim(0, 1e10)
         ax[1,3].set_ylabel(r'Mass [M$_\odot$]')
@@ -283,8 +308,12 @@ for ds in datasets.piter():
         #
         # Final details & save
         #
-        ax[0,0].set_xlabel('y (kpc)')
-        ax[0,0].set_ylabel('z (kpc)')
+        if 'face' in label:
+            ax[0,0].set_xlabel('x (kpc)')
+            ax[0,0].set_ylabel('y (kpc)')
+        else:
+            ax[0,0].set_xlabel('y (kpc)')
+            ax[0,0].set_ylabel('z (kpc)')
         
         time = '{:.0f} Myr'.format(np.round(ds.current_time.to('Myr'),0))
         ax[0,0].text(0.03, 0.03, time, transform=ax[0,0].transAxes,
