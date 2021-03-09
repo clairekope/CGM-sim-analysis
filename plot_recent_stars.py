@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 import yt
+yt.enable_parallelism()
 import numpy as np
 
 @yt.particle_filter(requires=["particle_type"], filtered_type='all')
@@ -19,7 +20,12 @@ def recent_stars(pfilter, data):
 datasets = yt.load("DD????/DD????")
 for ds in datasets.piter():
 
-    ds.add_particle_filter('recent_stars')
+    stars = True
+
+    try:
+        ds.add_particle_filter('recent_stars')
+    except:
+        stars = False
 
     center = ds.quan(0.5,'code_length')
     rs = ds.quan(3.5,'kpc')
@@ -36,7 +42,8 @@ for ds in datasets.piter():
     p1 = yt.ProjectionPlot(ds, 'x', 'density', width=width,
                            data_source=rect, weight_field ='ones')
     p1.set_zlim("density", 1e-32, 1e-24)
-    p1.annotate_particles(width=width, ptype='recent_stars', p_size=5)
+    if stars:
+        p1.annotate_particles(width=width, ptype='recent_stars', p_size=5)
     p1.save(ds.basename+"_edge_on_stars.png")
 
     # Face on
@@ -48,6 +55,7 @@ for ds in datasets.piter():
     p2 = yt.ProjectionPlot(ds, 'z', 'density', width=width,
                            data_source=rect, weight_field ='ones')
     p2.set_zlim("density", 1e-29, 1e-23)
-    p2.annotate_particles(width=width, ptype='recent_stars', p_size=5)
+    if stars:
+        p2.annotate_particles(width=width, ptype='recent_stars', p_size=5)
     p2.save(ds.basename+"_face_on_stars.png")
 
