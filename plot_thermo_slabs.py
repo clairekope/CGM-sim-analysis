@@ -23,22 +23,22 @@ for ds in datasets.piter():
     widths = [
         ds.quan(100,'kpc'),
         ds.quan(100,'kpc'),
-        # ds.quan(200,'kpc'), 
-        # ds.quan(400,'kpc'),
+        ds.quan(200,'kpc'), 
+        ds.quan(400,'kpc'),
         # ds.quan(800,'kpc')
         ]
     thicknesses = [
         rs,
         rs,
-        # rs, 
-        # rs,
+        rs, 
+        rs,
         # rs*2
         ]
     labels = [
         '100kpc',
         '100kpc_face',
-        # '200kpc',
-        # '400kpc',
+        '200kpc',
+        '400kpc',
         # '800kpc'
         ]
 
