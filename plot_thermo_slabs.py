@@ -15,7 +15,7 @@ masses = np.genfromtxt('masses_over_time.txt')
 sfr = np.genfromtxt('sfr.txt')
 
 datasets = yt.load('DD????/DD????')
-for ds in datasets.piter():
+for ds in datasets.piter(dynamic=True, ):
 
     center = ds.quan(0.5,'code_length')
     rs = ds.quan(3.5,'kpc')

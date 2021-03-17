@@ -35,7 +35,7 @@ def recent_stars(pfilter, data):
 
 
 datasets = yt.load("DD????/DD????")
-for ds in datasets.piter():
+for ds in datasets.piter(dynamic=True, ):
 
     stars = True
 

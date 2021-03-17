@@ -2,7 +2,7 @@ import yt
 yt.enable_parallelism()
 
 datasets = yt.load("DD????/DD????")
-for ds in datasets.piter():
+for ds in datasets.piter(dynamic=True, ):
   #if int(ds.basename[-4:])%5 == 0: #and int(ds.basename[-4:])>85:
 
      center = ds.quan(0.5, 'code_length')
