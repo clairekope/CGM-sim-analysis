@@ -5,7 +5,7 @@ from matplotlib.colors import LogNorm, SymLogNorm
 import numpy as np
 
 datasets = yt.load('DD????/DD????')
-for ds in datasets.piter(dynamic=True, ):
+for ds in datasets.piter(dynamic=False, ):
 
     center = ds.quan(0.5,'code_length')
     rs = ds.quan(3.5,'kpc')

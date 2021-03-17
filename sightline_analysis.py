@@ -8,7 +8,7 @@ import pickle
 
 n_theta = 13
 phi_step = np.deg2rad(10)
-files = ['entropy','cooling_time','density','temperature','metallicity','pressure']
+fields = ['entropy','cooling_time','density','temperature','metallicity','pressure']
 units = ['keV*cm**2','Gyr','g*cm**-3','K','Zsun','dyne*cm**-2']
 
 
@@ -24,7 +24,7 @@ theta_coord, phi_coord = np.meshgrid(theta,phi) # each row is const phi
 results = {}
 
 datasets = yt.load("DD????/DD????")
-for sto, ds in datasets.piter(dynamic=True, storage=results):
+for sto, ds in datasets.piter(dynamic=False, storage=results):
 
     length = ds.quan(206, 'kpc')
     s = 0.5 * np.ones((3, n_phi, n_theta)) # dim 1 is const phi; dim 0 is x,y,z
@@ -48,6 +48,8 @@ for sto, ds in datasets.piter(dynamic=True, storage=results):
 
     r_edges = np.logspace(np.log10(2e-1), np.log10(206), 21)
     r_centers = r_edges[:-1] + np.diff(r_edges)/2
+
+    quantity_arrays = {}
 
     # Is this the most efficient outer loop? heck no
     # It should really be the innermost loop
@@ -108,4 +110,5 @@ for sto, ds in datasets.piter(dynamic=True, storage=results):
     sto.result_id = ds.basename
 
 if yt.is_root():
-    pickle.dump(results, "hedgehog_data.pkl", protocol=3)
+    with open("hedgehog_data.pkl","wb") as f:
+        pickle.dump(results, f, protocol=3)

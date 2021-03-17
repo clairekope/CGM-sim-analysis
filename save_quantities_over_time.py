@@ -18,7 +18,7 @@ time = np.linspace(0*Myr, final_time, nbins)
 # Calculate masses over time
 datasets = yt.load("DD????/DD????")
 storage = {}
-for my_storage, ds in datasets.piter(dynamic=True, storage=storage):
+for my_storage, ds in datasets.piter(dynamic=False, storage=storage):
 
     try:
         add_initial_mass_field(ds)

@@ -18,7 +18,7 @@ if os.path.isfile('last_profile'):
 else:
     last_profile = -1
 
-for ds in datasets.piter(dynamic=True, ):
+for ds in datasets.piter(dynamic=False, ):
     if int(ds.basename[-4:]) > last_profile:
         center = ds.quan(0.5, 'code_length')
         le = center-ds.quan(0.6, 'Mpc')

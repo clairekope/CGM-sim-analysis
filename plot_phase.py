@@ -4,7 +4,7 @@ yt.enable_parallelism()
 # datasets = yt.load("DD????/DD????")
 # ds = datasets[-1]
 # if True:
-for ds in datasets.piter(dynamic=True, ):
+for ds in datasets.piter(dynamic=False, ):
 
      center = ds.quan(0.5, 'code_length')
      rs = ds.quan(3.5,'kpc')
