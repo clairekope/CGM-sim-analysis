@@ -95,15 +95,15 @@ for sto, ds in datasets.piter(dynamic=False, storage=results):
 
             for i in range(len(quantities)):
                 quantity_min[i] = np.min(quantities[i])
-                quantity_low[i] = np.percentile(quantities[i], 25)
+                quantity_low[i] = np.percentile(quantities[i], 16)
                 quantity_med[i] = np.median(quantities[i])
-                quantity_upp[i] = np.percentile(quantities[i], 75)
+                quantity_upp[i] = np.percentile(quantities[i], 84)
                 quantity_max[i] = np.max(quantities[i])
 
             quantity_arrays[quantity_name][i_theta] = {'min':quantity_min,
-                                                       'p25':quantity_low,
+                                                       'p16':quantity_low,
                                                        'med':quantity_med,
-                                                       'p75':quantity_upp,
+                                                       'p84':quantity_upp,
                                                        'max':quantity_max}
             
     sto.result = quantity_arrays
