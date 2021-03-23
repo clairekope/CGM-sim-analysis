@@ -8,8 +8,8 @@ import pickle
 
 n_theta = 13
 phi_step = np.deg2rad(10)
-fields = ['entropy','cooling_time','density','temperature','metallicity','pressure']
-units = ['keV*cm**2','Gyr','g*cm**-3','K','Zsun','dyne*cm**-2']
+fields = ['entropy','cooling_time','density','temperature','metallicity','pressure','cell_mass']
+units = ['keV*cm**2','Gyr','g*cm**-3','K','Zsun','dyne*cm**-2','Msun']
 
 
 # currently limit theta to upper hemisphere
