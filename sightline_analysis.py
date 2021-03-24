@@ -5,21 +5,22 @@ yt.enable_parallelism()
 import numpy as np
 import matplotlib.pyplot as plt
 import pickle
+import sys
 
 n_theta = 13
-phi_step = np.deg2rad(10)
+phi_step = 10
 fields = ['entropy','cooling_time','density','temperature','metallicity','pressure','cell_mass']
 units = ['keV*cm**2','Gyr','g*cm**-3','K','Zsun','dyne*cm**-2','Msun']
 
 
 # currently limit theta to upper hemisphere
-theta = np.linspace(0, np.pi, n_theta, endpoint=True)
+theta = np.linspace(0, 180, n_theta, endpoint=True)
 
-phi = np.arange(0, 2*np.pi, phi_step)
+phi = np.arange(0, 360, phi_step)
 n_phi = phi.size
-print(n_phi)
 
-theta_coord, phi_coord = np.meshgrid(theta,phi) # each row is const phi
+# each row is const phi
+theta_coord, phi_coord = np.meshgrid(np.deg2rad(theta), np.deg2rad(phi))
 
 results = {}
 
