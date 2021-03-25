@@ -27,26 +27,39 @@ results = {}
 datasets = yt.load("DD????/DD????")
 for sto, ds in datasets.piter(dynamic=False, storage=results):
 
-    length = ds.quan(206, 'kpc')
-    s = 0.5 * np.ones((3, n_phi, n_theta)) # dim 1 is const phi; dim 0 is x,y,z
-    starts = ds.arr(s, 'code_length')
-    uvec = np.array([np.sin(theta_coord)*np.cos(phi_coord),
-                     np.sin(theta_coord)*np.sin(phi_coord),
-                     np.cos(theta_coord)])
-    ends = starts + length*uvec
+    rays_ok = False
 
-    # each list within rays will have constant theta
-    rays = []
+    while not rays_ok:
+    
+        length = ds.quan(206, 'kpc')
+        s = 0.5 * np.ones((3, n_phi, n_theta)) # dim 1 is const phi; dim 0 is x,y,z
+        starts = ds.arr(s, 'code_length')
+        uvec = np.array([np.sin(theta_coord)*np.cos(phi_coord),
+                         np.sin(theta_coord)*np.sin(phi_coord),
+                         np.cos(theta_coord)])
+        ends = starts + length*uvec
 
-    # the phi angles for i_theta==0 and i_theta==n_theta-1 are all redundant
-    # as these are the poles
-    rays.append(ds.ray(starts[:, 0, 0], ends[:, 0, 0]))
-    for i_theta in range(1,n_theta-1):
-        rays.append([])
-        for i_phi in range(n_phi):
-            rays[i_theta].append(ds.ray(starts[:, i_phi, i_theta], ends[:, i_phi, i_theta]))
-    rays.append(ds.ray(starts[:, -1, -1], ends[:, -1, -1]))
+        # each list within rays will have constant theta
+        rays = []
 
+        # the phi angles for i_theta==0 and i_theta==n_theta-1 are all redundant
+        # as these are the poles
+        rays.append(ds.ray(starts[:, 0, 0], ends[:, 0, 0]))
+        for i_theta in range(1,n_theta-1):
+            rays.append([])
+            for i_phi in range(n_phi):
+                rays[i_theta].append(ds.ray(starts[:, i_phi, i_theta], ends[:, i_phi, i_theta]))
+        rays.append(ds.ray(starts[:, -1, -1], ends[:, -1, -1]))
+
+        # Check the problem children to see if they are, indeed, a problem
+        try:
+            rays[3][12]['density']
+            rays[9][12]['density']
+            rays_ok = True
+        except ValueError:
+            print("Reloading", ds.basename)
+            ds = yt.load(ds.basename+'/'+ds.basename)
+    
     r_edges = np.logspace(np.log10(2e-1), np.log10(206), 21)
     r_centers = r_edges[:-1] + np.diff(r_edges)/2
 
