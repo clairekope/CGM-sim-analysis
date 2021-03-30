@@ -10,8 +10,11 @@ comm = MPI.COMM_WORLD
 rank = comm.Get_rank()
 
 def launch_subprocess(filename):
-    proc = subprocess.Popen(['python',
-                             '/home/claire/isolated_galaxies/CGM_sim_analysis/sightline_analysis.py',
+    proc = subprocess.Popen([#'ibrun',
+                             #'-n',
+                             #'1',
+                             'python',
+                             '/home/kopec/CGM_sim_analysis/sightline_analysis.py',
                              filename])
     return proc
 
