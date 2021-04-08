@@ -26,8 +26,8 @@ for my_storage, ds in datasets.piter(dynamic=False, storage=storage):
     except YTFieldNotFound:
         star_mass = ds.quan(0, 'Msun')
 
-    # 4 scale heights
-    dsk = ds.disk([0.5,0.5,0.5], [0,0,1], (14,'kpc'), (1.3, 'kpc'))
+    # 1.3 kpc is 4 scale heights. Need more than that in radial.
+    dsk = ds.disk([0.5,0.5,0.5], [0,0,1], (20,'kpc'), (1.3, 'kpc'))
     disk_mass = dsk.quantities.total_quantity('cell_mass')
 
     data = {}
