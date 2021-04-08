@@ -22,11 +22,11 @@ def MN_accel(radius):
     MStar = 5.8e10 * u.Msun
     G = u.G
 
-    # sample some phi's and average them
-    phi = np.linspace(0, np.pi/2) # symmetric
-    phicol, radrow = np.meshgrid(phi,radius)
-    r = radrow*np.sin(phicol) # cyl radius from sph
-    z = radrow*np.cos(phicol)
+    # sample some theta's and average them
+    theta = np.linspace(0, np.pi/2) # symmetric
+    thetacol, radrow = np.meshgrid(theta,radius)
+    r = radrow*np.sin(thetacol) # cyl radius from sph
+    z = radrow*np.cos(thetacol)
 
     accel_r = G*MStar*r/np.power(np.power(r,2) \
               + np.power(
