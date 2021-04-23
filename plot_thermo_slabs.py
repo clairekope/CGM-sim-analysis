@@ -6,7 +6,7 @@ from matplotlib.colors import LogNorm, SymLogNorm
 from matplotlib.ticker import MultipleLocator
 from mpl_toolkits.axes_grid1 import ImageGrid
 import numpy as np
-from scipy.stats import binned_statistic
+import wquantiles as wq
 from calc_enclosed_mass import *
 
 rcParams.update({'font.size': 14})
@@ -134,47 +134,84 @@ for ds in datasets.piter(dynamic=False, ):
         rk_ph = yt.PhasePlot(rect, 'radius', 'entropy', 'cell_mass').profile
 
         # 16th, 50th, and 84th precentile 1D profiles
-        # e.g., median temperature in each density bin,
-        # or median entropy in each radial bin
-        dt_med = binned_statistic(rect['density'], rect['temperature'],
-                                  statistic='median', bins=dt_ph.x_bins)
-        dt_16 = binned_statistic(rect['density'], rect['temperature'],
-                                 statistic=lambda y: np.percentile(y,16),
-                                 bins=dt_ph.x_bins)
-        dt_84 = binned_statistic(rect['density'], rect['temperature'],
-                                 statistic=lambda y: np.percentile(y,84),
-                                 bins=dt_ph.x_bins)
+        dt_med = np.ones(dt_ph.x_bins.size-1) * np.nan
+        dt_16 = np.ones(dt_ph.x_bins.size-1) * np.nan
+        dt_84 = np.ones(dt_ph.x_bins.size-1) * np.nan
+        
+        d_binner = np.digitize(rect['density'], dt_ph.x_bins)
+        for i in range(1, dt_ph.x_bins.size):
+            this_bin = d_binner==i
+            try:
+                dt_med[i-1] = wq.median(rect['temperature'][this_bin],
+                                        rect['cell_mass'][this_bin])
+                dt_16[i-1] = wq.quantile(rect['temperature'][this_bin],
+                                         rect['cell_mass'][this_bin],
+                                         0.16)
+                dt_84[i-1] = wq.quantile(rect['temperature'][this_bin],
+                                         rect['cell_mass'][this_bin],
+                                         0.84)
+            except ValueError:
+                continue
+        
 
-        pk_med = binned_statistic(rect['pressure'], rect['entropy'],
-                                  statistic='median', bins=pk_ph.x_bins)
-        pk_16 = binned_statistic(rect['pressure'], rect['entropy'],
-                                 statistic=lambda y: np.percentile(y,16),
-                                 bins=pk_ph.x_bins)
-        pk_84 = binned_statistic(rect['pressure'], rect['entropy'],
-                                 statistic=lambda y: np.percentile(y,84),
-                                 bins=pk_ph.x_bins)
+        pk_med = np.ones(pk_ph.x_bins.size-1) * np.nan
+        pk_16 = np.ones(pk_ph.x_bins.size-1) * np.nan
+        pk_84 = np.ones(pk_ph.x_bins.size-1) * np.nan
+        
+        p_binner = np.digitize(rect['pressure'], pk_ph.x_bins)
+        for i in range(1, pk_ph.x_bins.size):
+            this_bin = p_binner==i
+            try:
+                pk_med[i-1] = wq.median(rect['entropy'][this_bin],
+                                        rect['cell_mass'][this_bin])
+                pk_16[i-1] = wq.quantile(rect['entropy'][this_bin],
+                                         rect['cell_mass'][this_bin],
+                                         0.16)
+                pk_84[i-1] = wq.quantile(rect['entropy'][this_bin],
+                                         rect['cell_mass'][this_bin],
+                                         0.84)
+            except ValueError:
+                continue
+                
 
-        rc_med = binned_statistic(rect['radius'].to('kpc'),
-                                  rect['cooling_time'].to('Gyr'),
-                                  statistic='median',
-                                  bins=rc_ph.x_bins.to('kpc'))
-        rc_16 = binned_statistic(rect['radius'].to('kpc'),
-                                 rect['cooling_time'].to('Gyr'),
-                                 statistic=lambda y: np.percentile(y,16),
-                                 bins=rc_ph.x_bins.to('kpc'))
-        rc_84 = binned_statistic(rect['radius'].to('kpc'),
-                                 rect['cooling_time'].to('Gyr'),
-                                 statistic=lambda y: np.percentile(y,84),
-                                 bins=rc_ph.x_bins.to('kpc'))
+        rc_med = np.ones(rc_ph.x_bins.size-1) * np.nan
+        rc_16 = np.ones(rc_ph.x_bins.size-1) * np.nan
+        rc_84 = np.ones(rc_ph.x_bins.size-1) * np.nan
+        
+        r_binner = np.digitize(rect['radius'], rc_ph.x_bins)
+        for i in range(1, rc_ph.x_bins.size):
+            this_bin = r_binner==i
+            try:
+                rc_med[i-1] = wq.median(rect['cooling_time'][this_bin].to("Gyr"),
+                                        rect['cell_mass'][this_bin])
+                rc_16[i-1] = wq.quantile(rect['cooling_time'][this_bin].to("Gyr"),
+                                         rect['cell_mass'][this_bin],
+                                         0.16)
+                rc_84[i-1] = wq.quantile(rect['cooling_time'][this_bin].to("Gyr"),
+                                         rect['cell_mass'][this_bin],
+                                         0.84)
+            except ValueError:
+                continue
+                
 
-        rk_med = binned_statistic(rect['radius'].to('kpc'), rect['entropy'],
-                                  statistic='median', bins=rk_ph.x_bins.to('kpc'))
-        rk_16 = binned_statistic(rect['radius'].to('kpc'), rect['entropy'],
-                                 statistic=lambda y: np.percentile(y,16),
-                                 bins=rk_ph.x_bins.to('kpc'))
-        rk_84 = binned_statistic(rect['radius'].to('kpc'), rect['entropy'],
-                                 statistic=lambda y: np.percentile(y,84),
-                                 bins=rk_ph.x_bins.to('kpc'))
+        rk_med = np.ones(rk_ph.x_bins.size-1) * np.nan
+        rk_16 = np.ones(rk_ph.x_bins.size-1) * np.nan
+        rk_84 = np.ones(rk_ph.x_bins.size-1) * np.nan
+        
+        r_binner = np.digitize(rect['radius'], rk_ph.x_bins)
+        for i in range(1, rk_ph.x_bins.size):
+            this_bin = r_binner==i
+            try:
+                rk_med[i-1] = wq.median(rect['entropy'][this_bin],
+                                        rect['cell_mass'][this_bin])
+                rk_16[i-1] = wq.quantile(rect['entropy'][this_bin],
+                                         rect['cell_mass'][this_bin],
+                                         0.16)
+                rk_84[i-1] = wq.quantile(rect['entropy'][this_bin],
+                                         rect['cell_mass'][this_bin],
+                                         0.84)
+            except ValueError:
+                continue
 
         # Calculate tff for tcool vs tff plot
         # tff is calculated for material enclosed within a sphere
@@ -206,21 +243,21 @@ for ds in datasets.piter(dynamic=False, ):
                                    norm=LogNorm(1e-3,1e7), cmap='magma')
 
         # Plot percentiles
-        ax[2,0].plot(dt_ph.x, dt_med[0], 'k-')
-        ax[2,0].plot(dt_ph.x, dt_16[0], 'k--')
-        ax[2,0].plot(dt_ph.x, dt_84[0], 'k--')
+        ax[2,0].plot(dt_ph.x, dt_med, 'k-')
+        ax[2,0].plot(dt_ph.x, dt_16, 'k--')
+        ax[2,0].plot(dt_ph.x, dt_84, 'k--')
 
-        ax[2,1].plot(pk_ph.x, pk_med[0], 'k-')
-        ax[2,1].plot(pk_ph.x, pk_16[0], 'k--')
-        ax[2,1].plot(pk_ph.x, pk_84[0], 'k--')
+        ax[2,1].plot(pk_ph.x, pk_med, 'k-')
+        ax[2,1].plot(pk_ph.x, pk_16, 'k--')
+        ax[2,1].plot(pk_ph.x, pk_84, 'k--')
 
-        ax[2,2].plot(rc_ph.x.to('kpc'), rc_med[0], 'w-')
-        ax[2,2].plot(rc_ph.x.to('kpc'), rc_16[0], 'w--')
-        ax[2,2].plot(rc_ph.x.to('kpc'), rc_84[0], 'w--')
+        ax[2,2].plot(rc_ph.x.to('kpc'), rc_med, 'k-')
+        ax[2,2].plot(rc_ph.x.to('kpc'), rc_16, 'k--')
+        ax[2,2].plot(rc_ph.x.to('kpc'), rc_84, 'k--')
 
-        ax[2,3].plot(rk_ph.x.to('kpc'), rk_med[0], 'w-')
-        ax[2,3].plot(rk_ph.x.to('kpc'), rk_16[0], 'w--')
-        ax[2,3].plot(rk_ph.x.to('kpc'), rk_84[0], 'w--')
+        ax[2,3].plot(rk_ph.x.to('kpc'), rk_med, 'k-')
+        ax[2,3].plot(rk_ph.x.to('kpc'), rk_16, 'k--')
+        ax[2,3].plot(rk_ph.x.to('kpc'), rk_84, 'k--')
 
         # Plot tff
         ax[2,2].plot(rc_ph.x.to('kpc'), t_ff.to('Gyr'), 'g-')
