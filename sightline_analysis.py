@@ -11,6 +11,7 @@ import sys
 #
 n_theta = 13
 phi_step = 10
+radial_bins = 51
 fields = ['entropy','cooling_time','density','temperature','metallicity','pressure','cell_mass']
 units = ['keV*cm**2','Gyr','g*cm**-3','K','Zsun','dyne*cm**-2','Msun']
 
@@ -56,7 +57,7 @@ def process_dataset(filename):
                                         ends[:, i_phi, i_theta]))
     rays.append(ds.ray(starts[:, -1, -1], ends[:, -1, -1]))
 
-    r_edges = np.logspace(np.log10(2e-1), np.log10(206), 21)
+    r_edges = np.linspace(2e-1, 206, radial_bins)
     r_centers = r_edges[:-1] + np.diff(r_edges)/2
 
     quantity_arrays = {}
