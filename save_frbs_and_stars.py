@@ -13,7 +13,7 @@ for dataset in ["DD0006/DD0006",
     ds = yt.load(dataset)
 
     width_x = (80, "kpc")
-    width_z = (40, "kpc")
+    width_z = (80, "kpc")
 
     p_x = yt.ProjectionPlot(ds, 'x', 'density', width=width_x)
     p_z = yt.ProjectionPlot(ds, 'z', 'density', width=width_z)
@@ -27,8 +27,10 @@ for dataset in ["DD0006/DD0006",
     np.save(dataset[-6:]+"_x_density.npy", d_x)
     np.save(dataset[-6:]+"_z_density.npy", d_z)
 
-    star_coords = np.column_stack((ds.r['particle_position_x'],
-                                   ds.r['particle_position_y'],
-                                   ds.r['particle_position_z']))
+    center = ds.quan(0.5, "code_length")
+    star_coords = np.column_stack(((ds.r['particle_position_x']-center).to('kpc'),
+                                   (ds.r['particle_position_y']-center).to('kpc'),
+                                   (ds.r['particle_position_z']-center).to('kpc'),
+                                   ds.r['particle_mass'].to('Msun')))
     np.savetxt(dataset[-6:]+"_star_coords.txt", star_coords,
                header="x y z")

@@ -12,8 +12,12 @@ import sys
 n_theta = 13
 phi_step = 10
 radial_bins = 51
-fields = ['entropy','cooling_time','density','temperature','metallicity','pressure','cell_mass']
-units = ['keV*cm**2','Gyr','g*cm**-3','K','Zsun','dyne*cm**-2','Msun']
+fields = ['entropy','cooling_time','density',
+          'temperature','metallicity','pressure',
+          'cell_mass','radial_velocity']
+units = ['keV*cm**2','Gyr','g*cm**-3',
+         'K','Zsun','dyne*cm**-2',
+         'Msun','km/s']
 
 
 #
