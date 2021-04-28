@@ -39,9 +39,9 @@ for sto, ds in datasets.piter(storage=profiles, dynamic=False):
             except ValueError:
                 continue
                 
-    quantity_arrays[quantity] = {'min': prof_med,
-                                 'p16': prof_16,
-                                 'p84': prof_84}
+        quantity_arrays[quantity] = {'min': prof_med,
+                                     'p16': prof_16,
+                                     'p84': prof_84}
     
     sto.result = quantity_arrays
     sto.result_id = ds.basename
