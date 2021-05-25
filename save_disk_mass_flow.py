@@ -83,10 +83,10 @@ if yt.is_root():
             
     header = "Disk_Cold_Mgas Ring_Cold_Mgas Slab_Cold_Mgas " + \
              "Disk_Warm_Mgas Ring_Warm_Mgas Slab_Warm_Mgas " + \
-             "Disk_Hot_Mgas  Ring_Hot_Mgas  Slab_Hot_Mgas" + \
+             "Disk_Hot_Mgas  Ring_Hot_Mgas  Slab_Hot_Mgas " + \
              "Disk_Cold_pz Ring_Cold_pz Slab_Cold_pz " + \
              "Disk_Warm_pz Ring_Warm_pz Slab_Warm_pz " + \
-             "Disk_Hot_pz  Ring_Hot_pz  Slab_Hot_pz" + \
+             "Disk_Hot_pz  Ring_Hot_pz  Slab_Hot_pz " + \
              "Disk_Cold_pr Ring_Cold_pr Slab_Cold_pr " + \
              "Disk_Warm_pr Ring_Warm_pr Slab_Warm_pr " + \
              "Disk_Hot_pr  Ring_Hot_pr  Slab_Hot_pr"
