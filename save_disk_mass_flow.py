@@ -2,7 +2,6 @@ import yt
 from yt import derived_field
 import numpy as np
 yt.enable_parallelism()
-import pdb
 
 @derived_field(name=("gas","momentum_cylindrical_z"), units="g*cm/s")
 def _vertical_flow(field, data):
@@ -78,7 +77,6 @@ for my_storage, ds in datasets.piter(dynamic=False, storage=storage):
                          hot_rng.quantities.total_quantity('momentum_cylindrical_radius'),
                          hot_slb.quantities.total_quantity('momentum_cylindrical_radius'),]
 
-    pdb.set_trace()
     
 if yt.is_root():
     data_arr = np.zeros((len(storage), 27))
