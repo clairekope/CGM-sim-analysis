@@ -38,8 +38,8 @@ for sto, ds in datasets.piter(storage=profiles, dynamic=False):
                                          0.84)
             except ValueError:
                 continue
-                
-        quantity_arrays[quantity] = {'min': prof_med,
+
+        quantity_arrays[quantity] = {'med': prof_med,
                                      'p16': prof_16,
                                      'p84': prof_84}
     

@@ -2,6 +2,7 @@ import yt
 from yt import derived_field
 import numpy as np
 yt.enable_parallelism()
+import pdb
 
 @derived_field(name=("gas","momentum_cylindrical_z"), units="g*cm/s")
 def _vertical_flow(field, data):
@@ -11,18 +12,21 @@ def _vertical_flow(field, data):
 def _radial_flow(field, data):
     return data['cell_mass'] * data['velocity_cylindrical_radius']
 
-datasets = yt.load("DD????/DD????")
+datasets = yt.load("DD????/DD????", unit_system='galactic')
 storage = {}
+
+field_list = ['density','momentum_cylindrical_z','momentum_cylindrical_radius']
+
 for my_storage, ds in datasets.piter(dynamic=False, storage=storage):
 
-    dsk = ds.disk([0.5,0.5,0.5], [0,0,1], (20,'kpc'), (1.3, 'kpc'))
+    dsk = ds.disk([0.5,0.5,0.5], [0,0,1], (20,'kpc'), (1.3, 'kpc'), fields=field_list)
     
     # 10 kpc wider
-    buffer1 = ds.disk([0.5,0.5,0.5], [0,0,1], (30,'kpc'), (1.3, 'kpc'))
+    buffer1 = ds.disk([0.5,0.5,0.5], [0,0,1], (30,'kpc'), (1.3, 'kpc'), fields=field_list)
     rng = buffer1 - dsk
     
     # 5 kpc taller in each direction
-    buffer2 = ds.disk([0.5,0.5,0.5], [0,0,1], (20,'kpc'), (6.3, 'kpc'))
+    buffer2 = ds.disk([0.5,0.5,0.5], [0,0,1], (20,'kpc'), (6.3, 'kpc'), fields=field_list)
     slb = buffer2 - dsk
     
     cold_dsk = dsk.cut_region(["obj['temperature'] < 1e4"])
@@ -73,13 +77,14 @@ for my_storage, ds in datasets.piter(dynamic=False, storage=storage):
                          hot_dsk.quantities.total_quantity('momentum_cylindrical_radius'),
                          hot_rng.quantities.total_quantity('momentum_cylindrical_radius'),
                          hot_slb.quantities.total_quantity('momentum_cylindrical_radius'),]
+
+    pdb.set_trace()
     
 if yt.is_root():
     data_arr = np.zeros((len(storage), 27))
     for ds_name, lst in storage.items():
-        print(lst)
-        for i in range(9):
-            data_arr[ds_name, i] = lst[i].to("Msun").v
+        for i in range(data_arr.shape[1]):
+            data_arr[ds_name, i] = lst[i].v
             
     header = "Disk_Cold_Mgas Ring_Cold_Mgas Slab_Cold_Mgas " + \
              "Disk_Warm_Mgas Ring_Warm_Mgas Slab_Warm_Mgas " + \
