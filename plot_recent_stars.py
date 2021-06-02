@@ -1,5 +1,11 @@
 #!/usr/bin/env python
 # coding: utf-8
+############################################
+# Plot narrow FOV thin slab projections with
+# new (w/in last dataset) and 
+# recent (between last two datasets) stars
+############################################
+
 import yt
 yt.enable_parallelism()
 import numpy as np

@@ -1,3 +1,10 @@
+#####################################################
+# Calculate mass enclosed as a function of radius for
+# 1. NFW dark matter profile
+# 2. Miyamoto & Nagai stellar profile (angle averaged)
+# 3. Simulation cells & particles
+#####################################################
+
 import yt
 import yt.units as u
 import numpy as np

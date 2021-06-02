@@ -1,3 +1,8 @@
+##########################################################
+# For determining where the disk gas & stars are,
+# save narrow FOV density projections & the star positions
+##########################################################
+
 import yt
 import numpy as np
 

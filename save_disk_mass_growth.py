@@ -1,3 +1,7 @@
+#######################################################
+# Save disk masses (gas, stars, total) for all datasets
+#######################################################
+
 import glob
 import yt
 from yt.units import Myr

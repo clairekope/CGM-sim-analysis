@@ -1,3 +1,5 @@
+# pump a list of untarred directories into tar_list.txt
+
 if [ -f tar_list.txt ]; then
     rm tar_list.txt
 fi

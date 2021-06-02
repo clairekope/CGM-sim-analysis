@@ -1,3 +1,9 @@
+#####################################################
+# Save multipanel plot with
+# thin slab projections of density, temperature,
+# and radial velocity with the disk edge on & face on
+#####################################################
+
 import yt
 yt.enable_parallelism()
 import matplotlib.pyplot as plt

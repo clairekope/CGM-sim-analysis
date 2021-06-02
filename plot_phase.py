@@ -1,3 +1,11 @@
+####################################
+# Plot individual phase diagrams for
+# 1. density-temperature
+# 2. radius-cooling time
+# 3. radius-temperature
+# 4. radius-entropy
+####################################
+
 import yt
 yt.enable_parallelism()
 

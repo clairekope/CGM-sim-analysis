@@ -1,5 +1,11 @@
 #!/usr/bin/env python
 # coding: utf-8
+####################################################
+# For a single dataset, cast sightlines
+# in a grid of theta & phi, radially bin together
+# sightlines at constant theta, and take percentiles
+####################################################
+
 import yt
 yt.funcs.mylog.setLevel(50) # disable logging
 import numpy as np

@@ -1,3 +1,9 @@
+###########################################################
+# Save radial profiles of listed quantities and t_cool/t_ff
+# Attempts to start off with the last processed dataset
+# but I don't think it works
+###########################################################
+
 import yt
 yt.enable_parallelism()
 

@@ -1,3 +1,8 @@
+####################################################
+# Calculate equilibrium chemistry values for a range
+# of temperatures and densities & store as HDF5
+####################################################
+
 import numpy as np
 import yt
 

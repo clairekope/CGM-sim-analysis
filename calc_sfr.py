@@ -1,3 +1,8 @@
+#####################################################
+# Calculate the star formation rate in provided bins
+# When run standalone, will save as png (but not txt)
+#####################################################
+
 import matplotlib; matplotlib.use('agg')
 import yt
 from yt.fields.derived_field import ValidateDataField

@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 # coding: utf-8
+###############################################
+# Add isobars and adiabats in an automated way
+# to yt profile-entropy phase plots
+###############################################
+
 
 import numpy as np
 import yt

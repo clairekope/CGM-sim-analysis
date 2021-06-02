@@ -1,3 +1,7 @@
+##############################################################
+# Save whole-galaxy mass-weighted medians of listed quantities
+##############################################################
+
 import yt
 yt.enable_parallelism()
 import numpy as np

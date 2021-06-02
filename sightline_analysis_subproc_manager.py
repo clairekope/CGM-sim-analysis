@@ -1,3 +1,8 @@
+#################################################
+# Manage processes running sightline_analysis.py,
+# as it likes to read datasets wrong & segfault
+#################################################
+
 import yt
 yt.enable_parallelism(suppress_logging=True)
 import glob

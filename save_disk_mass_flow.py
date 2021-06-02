@@ -1,3 +1,8 @@
+###############################################
+# Save mass and momentum in and around the disk
+# for three temperature regimes
+###############################################
+
 import yt
 from yt import derived_field
 import numpy as np

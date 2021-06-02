@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 # coding: utf-8
+############################################
+# Use the function in plot_multi_profiles.py
+# Converted from an ipython notebook
+############################################
 
 # In[1]:
 

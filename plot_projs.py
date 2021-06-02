@@ -1,3 +1,8 @@
+#################################################
+# Plot individual projection plots of density and
+# radial and tangential velocities
+#################################################
+
 import yt
 yt.enable_parallelism()
 

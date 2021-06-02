@@ -1,4 +1,8 @@
 # coding: utf-8
+################################################
+# Save SFR to file using function in calc_sfr.py
+################################################
+
 import glob
 import yt
 import numpy as np

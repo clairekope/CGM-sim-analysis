@@ -1,4 +1,10 @@
 # coding: utf-8
+###################################################
+# Repackage the individual pickle files produced by
+# sightline_analysis(_subproc_manager).py for each
+# dataset into one pickle file
+###################################################
+
 import pickle
 import glob
 

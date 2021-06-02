@@ -1,3 +1,8 @@
+###################################################
+# Compare pressure gradient to NFW profile to check
+# hydrostatic equilibrium
+###################################################
+
 import yt
 import yt.units as u
 import numpy as np

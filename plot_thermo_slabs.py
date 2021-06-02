@@ -1,3 +1,8 @@
+####################################################
+# Plot a large 12 panel plot with thin slab
+# projection, phase plots, SFR, and disk mass growth
+####################################################
+
 import yt
 yt.enable_parallelism()
 import matplotlib.pyplot as plt

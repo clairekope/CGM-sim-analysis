@@ -1,3 +1,8 @@
+####################################################
+# Plot the table created by gen_equilibrium_table.py
+# Might not work with current table format?
+####################################################
+
 import matplotlib.pyplot as plt
 from matplotlib.colors import LogNorm
 from mpl_toolkits.mplot3d import axes3d
