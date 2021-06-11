@@ -8,8 +8,11 @@
 import yt
 import yt.units as u
 import numpy as np
+import astropy.units as au # required by gala
+import gala
+from collections.abc import Iterable
 
-def NFW_mass_enclosed(radius):
+def NFW_ps_mass_enclosed(radius):
     Mtot = 1e12 * u.Msun
     C = 10
 
@@ -22,6 +25,31 @@ def NFW_mass_enclosed(radius):
           (np.log((Rs+radius)/Rs) - radius/(Rs+radius))
 
     return M_r.to('g')
+
+def NFW_mass_enclosed(radius):
+    """Uses gala NFW profile. Returns in yt units instead of astropy."""
+    Mtot = 1e12 * au.Msun
+    C = 10
+
+    rho_crit = 1.8788e-29*0.49 * au.g/au.cm**3
+    Rvir = ( 3.0/(4.0*np.pi)*Mtot / (200.*rho_crit) )**(1./3.)
+    Rs = Rvir/C
+    
+    usys = gala.units.UnitSystem(au.kpc, au.s, au.g, au.radian)
+    NFW = gala.potential.potential.NFWPotential(Mtot, Rs, units=usys)
+
+    radius = radius.to('kpc')
+    
+    if isinstance(radius, Iterable):
+        M_r = np.zeros(len(radius))
+        for i, r in enumerate(radius):
+            # usys ensures this comes back in grams
+            # profile is sph symmetric but gala still requires 3D vec
+            M_r[i] = NFW.mass_enclosed([r.value,0,0]).value
+    else:
+        M_r = NFW.mass_enclosed([radius.value,0,0]).value
+    
+    return M_r * u.g
 
 def MN_accel(radius):
     rs = 3.5 * u.kpc
@@ -67,25 +95,25 @@ def cell_and_particle_mass_enclosed(data_obj, rad_bins, rad_unit='kpc'):
 
     mass_enc = yt.create_profile(data_obj, 'radius', ['cell_mass'],
                                  weight_field=None, accumulation=True,
-                                 units={'radius':'kpc',
+                                 units={'radius':rad_unit,
                                         'cell_mass':'Msun'},
                                  override_bins={'radius':rad_bins})
 
     assert np.allclose(rad_bins, mass_enc.x_bins.v)
+    
+    M_enc = mass_enc['cell_mass']
         
     if ('all','particle_mass') in data_obj.ds.field_list:
         mass_enc_part = yt.create_profile(data_obj,
                                           'particle_radius', [('all','particle_mass')],
                                           weight_field=None, accumulation=True,
-                                          units={'particle_radius':'kpc',
+                                          units={'particle_radius':rad_unit,
                                                  ('all','particle_mass'):'Msun'},
                                           override_bins={'particle_radius':rad_bins})
 
         assert np.allclose(rad_bins, mass_enc_part.x_bins.v)
 
-    M_enc = mass_enc['cell_mass']
-    if ('all','particle_mass') in data_obj.ds.field_list:
         M_enc += mass_enc_part[('all','particle_mass')]
 
-    return M_enc
+    return M_enc.to('g')
 
