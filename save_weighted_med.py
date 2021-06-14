@@ -10,8 +10,8 @@ import pickle
 
 radial_bins = 51
 
-quantities = ['cooling_time','entropy']
-units = ['Gyr', 'keV*cm**2']
+quantities = ['cooling_time','entropy','pressure']
+units = ['Gyr', 'keV*cm**2', 'dyn*cm**-2']
 profiles = {}
 
 datasets = yt.load('DD????/DD????')
