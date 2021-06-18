@@ -6,12 +6,10 @@
 import glob
 import yt
 import numpy as np
-from calc_sfr import calc_sfr, add_initial_mass_field
+from calc_sfr import calc_sfr
 
 latest_output = sorted(glob.glob("DD????/DD????"))[-1]
 ds = yt.load(latest_output)
-
-add_initial_mass_field(ds)
 
 bins = np.linspace(0, 6e9, 10000)
 time, sfr = calc_sfr(ds.all_data(),bins)

@@ -8,25 +8,22 @@ import yt
 from yt.fields.derived_field import ValidateDataField
 import numpy as np
 
-def _initial_mass(field, data):
+@yt.derived_field(name=('all','particle_initial_mass'), units='g',
+                  sampling_type='particle')
+
+def _initial_mass(field, data):    
     # ripped from star_maker2.F, assuming StarMassEjectionFraction = 0.25
+    # Also assuming all particles are stars!
+    
     time_frac = (data.ds.current_time - data[('io','creation_time')]) \
                 / data[('io','dynamical_time')]
     return data[('io','particle_mass')] \
         / (1 - 0.25*(1 - (1+time_frac)*np.exp(-time_frac)))
 
 
-def add_initial_mass_field(dataset):
-    dataset.add_field('particle_initial_mass', function=_initial_mass, units='g',
-                      sampling_type='cell', 
-                      validators=[ValidateDataField(('io','creation_time')),
-                                  ValidateDataField(('io','dynamical_time')),
-                                  ValidateDataField(('io','particle_mass'))]
-                  )
-
 def calc_sfr(obj, year_bins):
 
-    masses = obj['particle_initial_mass'].in_units('Msun')
+    masses = obj[('all','particle_initial_mass')].in_units('Msun')
     formation_time = obj['creation_time'].in_units('yr')
         
     inds = np.digitize(formation_time, bins=year_bins) # what bin does each time fall in?
@@ -48,7 +45,6 @@ if __name__=="__main__":
     latest_output = sorted(glob.glob("DD????/DD????"))[-1]
 
     ds = yt.load(latest_output)
-    add_initial_mass(ds)
 
     dsk = ds.disk([0.5,0.5,0.5], [0,0,1], (24.5,'kpc'), (2.275, 'kpc'))
 
