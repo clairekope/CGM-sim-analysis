@@ -61,6 +61,9 @@ for ds in datasets.piter(dynamic=False, ):
     d_edge = ax[1].imshow(np.array(frb_edge['density']),
                           origin='lower', extent=extent_edge,
                           norm=d_norm)
+    
+    ax[0].text(0.04, 0.9, f"{ds.current_time.to('Gyr'):.2f}", transform=ax[0].transAxes,
+           fontdict={'size':'x-large','weight':'bold','color':'white'})
 
     ax = grid.axes_row[1]
     t_face = ax[0].imshow(np.array(frb_face['temperature']),
