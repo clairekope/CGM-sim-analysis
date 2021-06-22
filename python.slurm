@@ -17,12 +17,13 @@ cd $SCRATCH/$dir
 #ibrun python ~/CGM-sim-analysis/calc_sfr.py
 #ibrun python ~/CGM-sim-analysis/plot_projs.py
 #ibrun python ~/CGM-sim-analysis/plot_phase.py
+ibrun -n 48 python ~/CGM-sim-analysis/plot_pres_4panel.py
 #ibrun -n 48 python ~/CGM-sim-analysis/save_disk_mass_growth.py
 #ibrun -n 48 python ~/CGM-sim-analysis/save_disk_mass_flow.py
 #ibrun -n 48 python ~/CGM-sim-analysis/plot_thermo_slabs.py
 #ibrun -n 24 python ~/CGM-sim-analysis/sightline_analysis_subproc_manager.py
 #ibrun -n 48 python ~/CGM-sim-analysis/plot_gal_ev.py
 #ibrun -n 48 python ~/CGM-sim-analysis/save_weighted_med.py
-ibrun -n 48 python ~/CGM-sim-analysis/save_tcool_mass_dist.py
+#ibrun -n 48 python ~/CGM-sim-analysis/save_tcool_mass_dist.py
 
 done
