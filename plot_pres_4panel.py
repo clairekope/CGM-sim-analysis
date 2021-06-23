@@ -42,7 +42,7 @@ for ds in datasets.piter(dynamic=False, ):
     frb_face = p_face.data_source.to_frb(width_face, 512)
 
 
-    fig = plt.figure(figsize=(6,6))
+    fig = plt.figure(figsize=(7,6))
     grid = ImageGrid(fig, 111, nrows_ncols=(2,2), aspect=True,
                    axes_pad=0, label_mode='1', share_all=True,
                    cbar_mode='edge', cbar_location='right', cbar_pad=0)
@@ -96,4 +96,5 @@ for ds in datasets.piter(dynamic=False, ):
     d_cb.set_label(r'Density  [g cm$^{-3}$]', fontsize='x-large')
     t_cb.set_label(r'Temperature  [K]', fontsize='x-large')
 
+    fig.subplots_adjust(left=0.02, right=0.87, bottom=0.01, top=0.99)
     fig.savefig(f"{ds.basename}_4panel.png", dpi=300)
