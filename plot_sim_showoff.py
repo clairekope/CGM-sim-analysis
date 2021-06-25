@@ -10,12 +10,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import LogNorm, SymLogNorm
 from matplotlib.ticker import FixedLocator, NullFormatter, NullLocator
+from matplotlib.patches import Circle
 from mpl_toolkits.axes_grid1 import ImageGrid
 from mpl_toolkits.axes_grid1.anchored_artists import AnchoredSizeBar
 
 ds_fid20 = yt.load("DD0020/DD0020") # 1 Gyr
 ds_fid40 = yt.load("DD0040/DD0040") # 2 Gyr
-ds_fid60 = yt.load("../sample_data/fid/DD0060/DD0060") # 3 Gyr
+ds_fid60 = yt.load("DD0060/DD0060") # 3 Gyr
 ds_fid80 = yt.load("DD0080/DD0080") # 4 Gyr
 
 # code length is the same in all sims
@@ -84,6 +85,10 @@ bar = AnchoredSizeBar(ax[0].transData, 100, "100 kpc", 3,
                        fontproperties={'size':'x-large',
                                        'weight':'bold'})
 ax[0].add_artist(bar)
+
+circle = Circle((0,0), 206, transform=ax[1].transData,
+                edgecolor='white', fill=False, ls='--')
+ax[1].add_artist(circle)
 
 ax[0].text(0.04, 0.9, f"{ds_fid20.current_time.to('Gyr'):.2f}", 
            transform=ax[0].transAxes,
