@@ -8,7 +8,7 @@ import yt
 from yt.fields.derived_field import ValidateDataField
 import numpy as np
 
-@yt.derived_field(name=('all','particle_initial_mass'), units='g',
+@yt.derived_field(name=('io','particle_initial_mass'), units='g',
                   sampling_type='particle')
 
 def _initial_mass(field, data):    
@@ -23,7 +23,7 @@ def _initial_mass(field, data):
 
 def calc_sfr(obj, year_bins):
 
-    masses = obj[('all','particle_initial_mass')].in_units('Msun')
+    masses = obj[('io','particle_initial_mass')].in_units('Msun')
     formation_time = obj['creation_time'].in_units('yr')
         
     inds = np.digitize(formation_time, bins=year_bins) # what bin does each time fall in?
