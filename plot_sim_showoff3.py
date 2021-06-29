@@ -50,8 +50,8 @@ frb_hih60 = prep_frb(ds_hih60)
 frb_lin60 = prep_frb(ds_lin60)
 frb_nor60 = prep_frb(ds_nor60)
 
-fig = plt.figure(figsize=(6,16))
-grid = ImageGrid(fig, 111, nrows_ncols=(6,len(fields)),
+fig = plt.figure(figsize=(11,9))
+grid = ImageGrid(fig, 111, nrows_ncols=(3,2*len(fields)),
                axes_pad=0, label_mode='1', share_all=True,
                cbar_mode='edge', cbar_location='top',
                cbar_pad=0)
@@ -72,9 +72,9 @@ bar = AnchoredSizeBar(ax[0].transData, 10, "10 kpc", 3,
                                        'weight':'bold'})
 ax[0].add_artist(bar)
 
-circle = Circle((0,0), 20, transform=ax[1].transData,
-                edgecolor='white', fill=False, ls=':')
-ax[1].add_artist(circle)
+circle = Circle((0,0), 6.874581203331226, transform=ax[0].transData,
+                edgecolor='white', fill=False, ls='-', lw=1)
+ax[0].add_artist(circle)
 
 ax[0].text(0.04, 0.9, "Fiducial", 
            transform=ax[0].transAxes,
@@ -94,6 +94,10 @@ ax[0].text(0.04, 0.9, "CoolFlow",
            transform=ax[0].transAxes,
            fontdict={'size':'x-large','weight':'bold','color':'white'})
 
+circle = Circle((0,0), 9.607565846320332, transform=ax[0].transData,
+                edgecolor='white', fill=False, ls='-', lw=1)
+ax[0].add_artist(circle)
+
 d_cfw60 = ax[0].imshow(np.array(frb_cfw60['density']),
                          origin='lower', extent=extent,
                          norm=d_norm)
@@ -106,6 +110,10 @@ ax[0].text(0.04, 0.9, "LowRatio",
            transform=ax[0].transAxes,
            fontdict={'size':'x-large','weight':'bold','color':'white'})
 
+circle = Circle((0,0), 10.312465486062305, transform=ax[0].transData,
+                edgecolor='white', fill=False, ls='-', lw=1)
+ax[0].add_artist(circle)
+
 d_low60 = ax[0].imshow(np.array(frb_low60['density']),
                          origin='lower', extent=extent,
                          norm=d_norm)
@@ -113,54 +121,77 @@ t_low60 = ax[1].imshow(np.array(frb_low60['temperature']),
                          origin='lower', extent=extent,
                          cmap='magma', norm=t_norm)
 
-ax = grid.axes_row[3]
-ax[0].text(0.04, 0.9, "HighRatio", 
-           transform=ax[0].transAxes,
+ax = grid.axes_row[0]
+ax[2].text(0.04, 0.9, "HighRatio", 
+           transform=ax[2].transAxes,
            fontdict={'size':'x-large','weight':'bold','color':'white'})
 
-d_hih60 = ax[0].imshow(np.array(frb_hih60['density']),
+circle = Circle((0,0), 5.445915564113368, transform=ax[2].transData,
+                edgecolor='white', fill=False, ls='-', lw=1)
+ax[2].add_artist(circle)
+
+d_hih60 = ax[2].imshow(np.array(frb_hih60['density']),
                          origin='lower', extent=extent,
                          norm=d_norm)
-t_hih60 = ax[1].imshow(np.array(frb_hih60['temperature']),
+t_hih60 = ax[3].imshow(np.array(frb_hih60['temperature']),
                          origin='lower', extent=extent,
                          cmap='magma', norm=t_norm)
                          
-ax = grid.axes_row[4]
-ax[0].text(0.04, 0.9, "LinRot", 
-           transform=ax[0].transAxes,
+ax = grid.axes_row[1]
+ax[2].text(0.04, 0.9, "LinRot", 
+           transform=ax[2].transAxes,
            fontdict={'size':'x-large','weight':'bold','color':'white'})
 
-d_lin60 = ax[0].imshow(np.array(frb_lin60['density']),
+circle = Circle((0,0), 8.578234112925314, transform=ax[2].transData,
+                edgecolor='white', fill=False, ls='-', lw=1)
+ax[2].add_artist(circle)
+
+d_lin60 = ax[2].imshow(np.array(frb_lin60['density']),
                          origin='lower', extent=extent,
                          norm=d_norm)
-t_lin60 = ax[1].imshow(np.array(frb_lin60['temperature']),
+t_lin60 = ax[3].imshow(np.array(frb_lin60['temperature']),
                          origin='lower', extent=extent,
                          cmap='magma', norm=t_norm)
 
-ax = grid.axes_row[5]
-ax[0].text(0.04, 0.9, "NoRot", 
-           transform=ax[0].transAxes,
+ax = grid.axes_row[2]
+ax[2].text(0.04, 0.9, "NoRot", 
+           transform=ax[2].transAxes,
            fontdict={'size':'x-large','weight':'bold','color':'white'})
 
-d_nor60 = ax[0].imshow(np.array(frb_nor60['density']),
+circle = Circle((0,0), 7.236936862951981, transform=ax[2].transData,
+                edgecolor='white', fill=False, ls='-', lw=1)
+ax[2].add_artist(circle)
+
+d_nor60 = ax[2].imshow(np.array(frb_nor60['density']),
                          origin='lower', extent=extent,
                          norm=d_norm)
-t_nor60 = ax[1].imshow(np.array(frb_nor60['temperature']),
+t_nor60 = ax[3].imshow(np.array(frb_nor60['temperature']),
                          origin='lower', extent=extent,
                          cmap='magma', norm=t_norm)
 
 d_cb = fig.colorbar(d_fid60, cax=grid.cbar_axes[0], extend='both', orientation='horizontal', ticklocation='top')
 t_cb = fig.colorbar(t_fid60, cax=grid.cbar_axes[1], extend='both', orientation='horizontal', ticklocation='top')
 
-d_cb.ax.xaxis.set_minor_locator(FixedLocator([1e-29, 1e-27, 1e-25, 1e-23]))
+d_cb2 = fig.colorbar(d_fid60, cax=grid.cbar_axes[2], extend='both', orientation='horizontal', ticklocation='top')
+t_cb2 = fig.colorbar(t_fid60, cax=grid.cbar_axes[3], extend='both', orientation='horizontal', ticklocation='top')
+
+d_cb.ax.xaxis.set_major_locator(FixedLocator([1e-29, 1e-27, 1e-25, 1e-23]))
+d_cb.ax.xaxis.set_minor_locator(FixedLocator([1e-30, 1e-28, 1e-26, 1e-24]))
 d_cb.ax.xaxis.set_minor_formatter(NullFormatter())
+d_cb2.ax.xaxis.set_major_locator(FixedLocator([1e-29, 1e-27, 1e-25, 1e-23]))
+d_cb2.ax.xaxis.set_minor_locator(FixedLocator([1e-30, 1e-28, 1e-26, 1e-24]))
+d_cb2.ax.xaxis.set_minor_formatter(NullFormatter())
 
 t_cb.set_ticks(FixedLocator([1e3,1e4,1e5,1e6,1e7,1e8]))
 t_cb.minorticks_off()
+t_cb2.set_ticks(FixedLocator([1e3,1e4,1e5,1e6,1e7,1e8]))
+t_cb2.minorticks_off()
 
-d_cb.set_label(r'Density  [g cm$^{-3}$]')
-t_cb.set_label(r'Temperature  [K]')
+d_cb.set_label(r'Density  [g cm$^{-3}$]', fontsize='large')
+t_cb.set_label(r'Temperature  [K]', fontsize='large')
+d_cb2.set_label(r'Density  [g cm$^{-3}$]', fontsize='large')
+t_cb2.set_label(r'Temperature  [K]', fontsize='large')
 
-fig.subplots_adjust(left=0.01, right=0.99, bottom=0.02, top=0.95)
+fig.subplots_adjust(left=0.01, right=0.99, bottom=0.01, top=0.95)
 fig.savefig("../fig_face-comp.eps")
 
