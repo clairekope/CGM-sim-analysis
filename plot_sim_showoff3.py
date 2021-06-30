@@ -11,7 +11,7 @@ import yt
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import LogNorm, SymLogNorm
-from matplotlib.ticker import FixedLocator, NullFormatter, NullLocator
+from matplotlib.ticker import FixedLocator, NullFormatter, NullLocator, MultipleLocator
 from matplotlib.patches import Circle
 from mpl_toolkits.axes_grid1 import ImageGrid
 from mpl_toolkits.axes_grid1.anchored_artists import AnchoredSizeBar
@@ -59,8 +59,11 @@ grid = ImageGrid(fig, 111, nrows_ncols=(3,2*len(fields)),
 grid.axes_llc.tick_params(labelleft=False, labelbottom=False)
 for ax in grid:
     ax.tick_params(which='both', axis='both', direction='in')
-    ax.xaxis.set_major_locator(FixedLocator([-300,-200,-100,0,100,200,300]))
-
+    ax.xaxis.set_major_locator(MultipleLocator(10))
+    ax.xaxis.set_minor_locator(MultipleLocator(5))
+    ax.yaxis.set_major_locator(MultipleLocator(10))
+    ax.yaxis.set_minor_locator(MultipleLocator(5))
+    
 d_norm = LogNorm(1e-30, 1e-23)
 t_norm = LogNorm(5e3, 1e7)
 
