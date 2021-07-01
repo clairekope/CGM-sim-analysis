@@ -76,7 +76,7 @@ d_norm = LogNorm(1e-32, 1e-26)
 t_norm = LogNorm(1e3, 1e8)
 k_norm = LogNorm(1e-1, 1e6)
 p_norm = LogNorm(1e-19, 1e-12)
-v_norm = SymLogNorm(1, linscale=0.2, base=10, vmin=-1e3, vmax=1e3)
+v_norm = SymLogNorm(1, linscale=0.2, base=10, vmin=-5e3, vmax=5e3)
 
 ax = grid.axes_column[0]
 bar = AnchoredSizeBar(ax[0].transData, 100, "100 kpc", 3, 
