@@ -36,8 +36,8 @@ def prep_frb(ds):
                      [center-width/2, center-width/2, center-thickness/2],
                      [center+width/2, center+width/2, center+thickness/2])
 
-    p = yt.ProjectionPlot(ds, 'z', fields, width=width,
-                          data_source=rect, weight_field='ones')
+    p = yt.SlicePlot(ds, 'z', fields, width=width,
+                          data_source=rect)#, weight_field='ones')
                           
     frb = p.data_source.to_frb(width, 512)
 
@@ -65,7 +65,7 @@ for ax in grid:
     ax.yaxis.set_minor_locator(MultipleLocator(5))
     
 d_norm = LogNorm(1e-30, 1e-23)
-t_norm = LogNorm(2e3, 1e7)
+t_norm = LogNorm(1e3, 5e6)
 
 ax = grid.axes_row[0]
 bar = AnchoredSizeBar(ax[0].transData, 10, "10 kpc", 3, 
@@ -196,11 +196,11 @@ t_cb = fig.colorbar(t_fid60, cax=grid.cbar_axes[1], extend='both', orientation='
 d_cb2 = fig.colorbar(d_fid60, cax=grid.cbar_axes[2], extend='both', orientation='horizontal', ticklocation='top')
 t_cb2 = fig.colorbar(t_fid60, cax=grid.cbar_axes[3], extend='both', orientation='horizontal', ticklocation='top')
 
-d_cb.ax.xaxis.set_major_locator(FixedLocator([1e-29, 1e-27, 1e-25, 1e-23]))
-d_cb.ax.xaxis.set_minor_locator(FixedLocator([1e-30, 1e-28, 1e-26, 1e-24]))
+d_cb.ax.xaxis.set_minor_locator(FixedLocator([1e-29, 1e-27, 1e-25, 1e-23]))
+d_cb.ax.xaxis.set_major_locator(FixedLocator([1e-30, 1e-28, 1e-26, 1e-24]))
 d_cb.ax.xaxis.set_minor_formatter(NullFormatter())
-d_cb2.ax.xaxis.set_major_locator(FixedLocator([1e-29, 1e-27, 1e-25, 1e-23]))
-d_cb2.ax.xaxis.set_minor_locator(FixedLocator([1e-30, 1e-28, 1e-26, 1e-24]))
+d_cb2.ax.xaxis.set_minor_locator(FixedLocator([1e-29, 1e-27, 1e-25, 1e-23]))
+d_cb2.ax.xaxis.set_major_locator(FixedLocator([1e-30, 1e-28, 1e-26, 1e-24]))
 d_cb2.ax.xaxis.set_minor_formatter(NullFormatter())
 
 t_cb.set_ticks(FixedLocator([1e3,1e4,1e5,1e6,1e7,1e8]))
@@ -214,5 +214,5 @@ d_cb2.set_label(r'Density  [g cm$^{-3}$]', fontsize='large')
 t_cb2.set_label(r'Temperature  [K]', fontsize='large')
 
 fig.subplots_adjust(left=0.01, right=0.99, bottom=0.01, top=0.95)
-fig.savefig("../fig_face-comp.eps")
+fig.savefig("../fig_face-comp_slices.eps")
 
