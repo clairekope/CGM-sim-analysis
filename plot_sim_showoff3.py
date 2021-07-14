@@ -25,7 +25,7 @@ ds_nor60 = yt.load("../sample_data/norot/DD0060/DD0060")
 
 # code length is the same in all sims
 center = yt.YTQuantity(ds_fid60.quan(0.5,'code_length').to('cm'))
-thickness = 2*yt.YTQuantity(3.5,'kpc')
+thickness = yt.YTQuantity(1.3,'kpc')
 width = yt.YTQuantity(100, 'kpc')
 extent = (-width/2, width/2, -width/2, width/2)
 
@@ -65,7 +65,7 @@ for ax in grid:
     ax.yaxis.set_minor_locator(MultipleLocator(5))
     
 d_norm = LogNorm(1e-30, 1e-23)
-t_norm = LogNorm(5e3, 1e7)
+t_norm = LogNorm(2e3, 1e7)
 
 ax = grid.axes_row[0]
 bar = AnchoredSizeBar(ax[0].transData, 10, "10 kpc", 3, 
@@ -78,6 +78,9 @@ ax[0].add_artist(bar)
 circle = Circle((0,0), 6.874581203331226, transform=ax[0].transData,
                 edgecolor='white', fill=False, ls='-', lw=1)
 ax[0].add_artist(circle)
+circle = Circle((0,0), 6.874581203331226, transform=ax[1].transData,
+                edgecolor='white', fill=False, ls='-', lw=1)
+ax[1].add_artist(circle)
 
 ax[0].text(0.04, 0.9, "Fiducial", 
            transform=ax[0].transAxes,
@@ -100,6 +103,9 @@ ax[0].text(0.04, 0.9, "CoolFlow",
 circle = Circle((0,0), 9.607565846320332, transform=ax[0].transData,
                 edgecolor='white', fill=False, ls='-', lw=1)
 ax[0].add_artist(circle)
+circle = Circle((0,0), 9.607565846320332, transform=ax[1].transData,
+                edgecolor='white', fill=False, ls='-', lw=1)
+ax[1].add_artist(circle)
 
 d_cfw60 = ax[0].imshow(np.array(frb_cfw60['density']),
                          origin='lower', extent=extent,
@@ -116,6 +122,9 @@ ax[0].text(0.04, 0.9, "LowRatio",
 circle = Circle((0,0), 10.312465486062305, transform=ax[0].transData,
                 edgecolor='white', fill=False, ls='-', lw=1)
 ax[0].add_artist(circle)
+circle = Circle((0,0), 10.312465486062305, transform=ax[1].transData,
+                edgecolor='white', fill=False, ls='-', lw=1)
+ax[1].add_artist(circle)
 
 d_low60 = ax[0].imshow(np.array(frb_low60['density']),
                          origin='lower', extent=extent,
@@ -132,6 +141,9 @@ ax[2].text(0.04, 0.9, "HighRatio",
 circle = Circle((0,0), 5.445915564113368, transform=ax[2].transData,
                 edgecolor='white', fill=False, ls='-', lw=1)
 ax[2].add_artist(circle)
+circle = Circle((0,0), 5.445915564113368, transform=ax[3].transData,
+                edgecolor='white', fill=False, ls='-', lw=1)
+ax[3].add_artist(circle)
 
 d_hih60 = ax[2].imshow(np.array(frb_hih60['density']),
                          origin='lower', extent=extent,
@@ -148,6 +160,9 @@ ax[2].text(0.04, 0.9, "LinRot",
 circle = Circle((0,0), 8.578234112925314, transform=ax[2].transData,
                 edgecolor='white', fill=False, ls='-', lw=1)
 ax[2].add_artist(circle)
+circle = Circle((0,0), 8.578234112925314, transform=ax[3].transData,
+                edgecolor='white', fill=False, ls='-', lw=1)
+ax[3].add_artist(circle)
 
 d_lin60 = ax[2].imshow(np.array(frb_lin60['density']),
                          origin='lower', extent=extent,
@@ -164,6 +179,9 @@ ax[2].text(0.04, 0.9, "NoRot",
 circle = Circle((0,0), 7.236936862951981, transform=ax[2].transData,
                 edgecolor='white', fill=False, ls='-', lw=1)
 ax[2].add_artist(circle)
+circle = Circle((0,0), 7.236936862951981, transform=ax[3].transData,
+                edgecolor='white', fill=False, ls='-', lw=1)
+ax[3].add_artist(circle)
 
 d_nor60 = ax[2].imshow(np.array(frb_nor60['density']),
                          origin='lower', extent=extent,
@@ -186,9 +204,9 @@ d_cb2.ax.xaxis.set_minor_locator(FixedLocator([1e-30, 1e-28, 1e-26, 1e-24]))
 d_cb2.ax.xaxis.set_minor_formatter(NullFormatter())
 
 t_cb.set_ticks(FixedLocator([1e3,1e4,1e5,1e6,1e7,1e8]))
-t_cb.minorticks_off()
+#t_cb.minorticks_off()
 t_cb2.set_ticks(FixedLocator([1e3,1e4,1e5,1e6,1e7,1e8]))
-t_cb2.minorticks_off()
+#t_cb2.minorticks_off()
 
 d_cb.set_label(r'Density  [g cm$^{-3}$]', fontsize='large')
 t_cb.set_label(r'Temperature  [K]', fontsize='large')
