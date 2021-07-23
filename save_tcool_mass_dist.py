@@ -19,7 +19,7 @@ for my_storage, ds in datasets.piter(dynamic=False, storage=storage):
     cgm.set_field_parameter('center', ds.arr([0.5,0.5,0.5], 'code_length'))
     
     prof = yt.create_profile(cgm, "cooling_time", "cell_mass", 
-                             accumulation=False, fractional=True, weight_field=None,
+                             accumulation=False, fractional=False, weight_field=None,
                              units={'cooling_time':'Gyr','cell_mass':'Msun'},
                              extrema={"cooling_time":(1e-6, 1e6)})
     my_storage.result_id = int(ds.basename[-4:])
