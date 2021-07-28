@@ -26,12 +26,20 @@ for my_storage, ds in datasets.piter(dynamic=False, storage=storage):
     dsk = ds.disk([0.5,0.5,0.5], [0,0,1], (20,'kpc'), (1.3, 'kpc'), fields=field_list)
     
     # 10 kpc wider
-    buffer1 = ds.disk([0.5,0.5,0.5], [0,0,1], (30,'kpc'), (1.3, 'kpc'), fields=field_list)
-    rng = buffer1 - dsk
+    # buffer1 = ds.disk([0.5,0.5,0.5], [0,0,1], (30,'kpc'), (1.3, 'kpc'), fields=field_list)
+    # rng = buffer1 - dsk
+
+    # Thin ring at edge of disk, 1 radial scale height thick
+    buffer1 = ds.disk([0.5,0.5,0.5], [0,0,1], (16.5, 'kpc'), (1.3, 'kpc'), fields=field_list)
+    rng = dsk - buffer1
     
     # 5 kpc taller in each direction
-    buffer2 = ds.disk([0.5,0.5,0.5], [0,0,1], (20,'kpc'), (6.3, 'kpc'), fields=field_list)
-    slb = buffer2 - dsk
+    # buffer2 = ds.disk([0.5,0.5,0.5], [0,0,1], (20,'kpc'), (6.3, 'kpc'), fields=field_list)
+    # slb = buffer2 - dsk
+
+    # Thin slabs at top & bottom faces of disk, each 1 vertical scale height thick
+    buffer2 = ds.disk([0.5,0.5,0.5], [0,0,1], (20, 'kpc'), (0.975, 'kpc'), fields=field_list)
+    slb = dsk - buffer2
     
     cold_dsk = dsk.cut_region(["obj['temperature'] < 1e4"])
     warm_dsk = dsk.cut_region(["(obj['temperature'] > 1e4) & (obj['temperature'] < 1e6)"])
