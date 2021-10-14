@@ -82,6 +82,13 @@ circle = Circle((0,0), 6.874581203331226, transform=ax[1].transData,
                 edgecolor='white', fill=False, ls='-', lw=1)
 ax[1].add_artist(circle)
 
+circle = Circle((0,0), 28.5, transform=ax[0].transData,
+                edgecolor='white', fill=False, ls=':', lw=1)
+ax[0].add_artist(circle)
+circle = Circle((0,0), 28.5, transform=ax[1].transData,
+                edgecolor='white', fill=False, ls=':', lw=1)
+ax[1].add_artist(circle)
+
 ax[0].text(0.04, 0.9, "Fiducial", 
            transform=ax[0].transAxes,
            fontdict={'size':'x-large',
@@ -107,6 +114,13 @@ circle = Circle((0,0), 11.192377, transform=ax[1].transData,
                 edgecolor='white', fill=False, ls='-', lw=1)
 ax[1].add_artist(circle)
 
+circle = Circle((0,0), 28.5, transform=ax[0].transData,
+                edgecolor='white', fill=False, ls=':', lw=1)
+ax[0].add_artist(circle)
+circle = Circle((0,0), 28.5, transform=ax[1].transData,
+                edgecolor='white', fill=False, ls=':', lw=1)
+ax[1].add_artist(circle)
+
 d_cfw60 = ax[0].imshow(np.array(frb_cfw60['density']),
                          origin='lower', extent=extent,
                          norm=d_norm)
@@ -124,6 +138,13 @@ circle = Circle((0,0), 10.344807, transform=ax[0].transData,
 ax[0].add_artist(circle)
 circle = Circle((0,0), 10.344807, transform=ax[1].transData,
                 edgecolor='white', fill=False, ls='-', lw=1)
+ax[1].add_artist(circle)
+
+circle = Circle((0,0), 27.5, transform=ax[0].transData,
+                edgecolor='white', fill=False, ls=':', lw=1)
+ax[0].add_artist(circle)
+circle = Circle((0,0), 27.5, transform=ax[1].transData,
+                edgecolor='white', fill=False, ls=':', lw=1)
 ax[1].add_artist(circle)
 
 d_low60 = ax[0].imshow(np.array(frb_low60['density']),
@@ -145,6 +166,13 @@ circle = Circle((0,0), 5.549395, transform=ax[3].transData,
                 edgecolor='white', fill=False, ls='-', lw=1)
 ax[3].add_artist(circle)
 
+circle = Circle((0,0), 29, transform=ax[2].transData,
+                edgecolor='white', fill=False, ls=':', lw=1)
+ax[2].add_artist(circle)
+circle = Circle((0,0), 29, transform=ax[3].transData,
+                edgecolor='white', fill=False, ls=':', lw=1)
+ax[3].add_artist(circle)
+
 d_hih60 = ax[2].imshow(np.array(frb_hih60['density']),
                          origin='lower', extent=extent,
                          norm=d_norm)
@@ -164,6 +192,13 @@ circle = Circle((0,0), 8.549943, transform=ax[3].transData,
                 edgecolor='white', fill=False, ls='-', lw=1)
 ax[3].add_artist(circle)
 
+circle = Circle((0,0), 28.5, transform=ax[2].transData,
+                edgecolor='white', fill=False, ls=':', lw=1)
+ax[2].add_artist(circle)
+circle = Circle((0,0), 28.5, transform=ax[3].transData,
+                edgecolor='white', fill=False, ls=':', lw=1)
+ax[3].add_artist(circle)
+
 d_lin60 = ax[2].imshow(np.array(frb_lin60['density']),
                          origin='lower', extent=extent,
                          norm=d_norm)
@@ -181,6 +216,13 @@ circle = Circle((0,0), 7.217424, transform=ax[2].transData,
 ax[2].add_artist(circle)
 circle = Circle((0,0), 7.217424, transform=ax[3].transData,
                 edgecolor='white', fill=False, ls='-', lw=1)
+ax[3].add_artist(circle)
+
+circle = Circle((0,0), 28.5, transform=ax[2].transData,
+                edgecolor='white', fill=False, ls=':', lw=1)
+ax[2].add_artist(circle)
+circle = Circle((0,0), 28.5, transform=ax[3].transData,
+                edgecolor='white', fill=False, ls=':', lw=1)
 ax[3].add_artist(circle)
 
 d_nor60 = ax[2].imshow(np.array(frb_nor60['density']),
