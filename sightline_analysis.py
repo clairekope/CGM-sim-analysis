@@ -12,6 +12,11 @@ import numpy as np
 import pickle
 import sys
 
+def _ram_pressure(field, data):
+    return data['density'] * data['radial_velocity']**2
+
+yt.add_field(name=('gas','ram_pressure'), function=_ram_pressure, sampling_type='cell', units="dyne/cm**2")
+
 #
 # User Settings
 #
@@ -20,10 +25,10 @@ phi_step = 10
 radial_bins = 51
 fields = ['entropy','cooling_time','density',
           'temperature','metallicity','pressure',
-          'cell_mass','radial_velocity']
+          'ram_pressure','cell_mass','radial_velocity']
 units = ['keV*cm**2','Gyr','g*cm**-3',
          'K','Zsun','dyne*cm**-2',
-         'Msun','km/s']
+         'dyne*cm**-2','Msun','km/s']
 
 
 #
