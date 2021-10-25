@@ -11,8 +11,6 @@ from matplotlib.colors import LogNorm, SymLogNorm
 from matplotlib.ticker import MultipleLocator
 from mpl_toolkits.axes_grid1 import ImageGrid
 import numpy as np
-import wquantiles as wq
-from calc_enclosed_mass import *
 
 rcParams.update({'font.size': 14})
 
@@ -46,7 +44,7 @@ for ds in datasets.piter(dynamic=False, ):
 
     for width, thickness, label in zip(widths, thicknesses, labels):
 
-        fig, ax = plt.subplots(nrows=2, ncols=3, figsize=(24.5,15.5))
+        fig, ax = plt.subplots(nrows=2, ncols=3, figsize=(22,15))
 
         if 'face' in label:
             view = 'z'
@@ -88,24 +86,24 @@ for ds in datasets.piter(dynamic=False, ):
         # Plot FRBs
         extent = (-width/2, width/2, -width/2, width/2)
     
-        d_im = ax[0,0].imshow(d_arr, origin='lower', norm=LogNorm(1e-29,1e-22), 
+        d_im = ax[0,0].imshow(d_arr, origin='lower', norm=LogNorm(1e-31,1e-23), 
                               extent=extent)
 
-        t_im = ax[1,0].imshow(t_arr, origin='lower', norm=LogNorm(1e5,1e9),
+        t_im = ax[1,0].imshow(t_arr, origin='lower', norm=LogNorm(1e3,1e7),
                               extent=extent, cmap='magma')
 
-        p_im = ax[0,1].imshow(p_arr, origin='lower', norm=LogNorm(1e-17,1e-11),
+        p_im = ax[0,1].imshow(p_arr, origin='lower', norm=LogNorm(1e-20,1e-12),
                               extent=extent, cmap='inferno')
 
-        k_im = ax[1,1].imshow(k_arr, origin='lower', norm=LogNorm(1e-2,1e4),
+        k_im = ax[1,1].imshow(k_arr, origin='lower', norm=LogNorm(1e-2,1e3),
                               extent=extent, cmap='cividis')
 
         v_im = ax[0,2].imshow(v_arr, origin='lower',
                               norm=SymLogNorm(1, linscale=0.3, base=10,
-                                              vmin=-2.5e2, vmax=2.5e2),
+                                              vmin=-2e2, vmax=2e2),
                               extent=extent, cmap='coolwarm')
 
-        c_im = ax[1,2].imshow(c_arr, origin='lower', norm=LogNorm(1e-2,1e2),
+        c_im = ax[1,2].imshow(c_arr, origin='lower', norm=LogNorm(1e-3,1e2),
                               extent=extent, cmap='plasma')
 
         # Add colorbars
