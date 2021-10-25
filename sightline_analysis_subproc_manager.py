@@ -19,7 +19,7 @@ def launch_subprocess(filename):
                              #'-n',
                              #'1',
                              'python',
-                             '/home/kopec/CGM_sim_analysis/sightline_analysis.py',
+                             '/home/kopec/CGM-sim-analysis/sightline_analysis.py',
                              filename])
     return proc
 
