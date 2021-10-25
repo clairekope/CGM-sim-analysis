@@ -12,6 +12,8 @@ import numpy as np
 import pickle
 import sys
 
+mass_dist_mode = True
+
 def _ram_pressure(field, data):
     return data['density'] * data['radial_velocity']**2
 
@@ -22,13 +24,18 @@ yt.add_field(name=('gas','ram_pressure'), function=_ram_pressure, sampling_type=
 #
 n_theta = 13
 phi_step = 10
-radial_bins = 51
-fields = ['entropy','cooling_time','density',
-          'temperature','metallicity','pressure',
-          'ram_pressure','cell_mass','radial_velocity']
-units = ['keV*cm**2','Gyr','g*cm**-3',
-         'K','Zsun','dyne*cm**-2',
-         'dyne*cm**-2','Msun','km/s']
+bins = 51
+
+if not mass_dist_mode:
+    fields = ['entropy','cooling_time','density',
+              'temperature','metallicity','pressure',
+              'ram_pressure','cell_mass','radial_velocity']
+    units = ['keV*cm**2','Gyr','g*cm**-3',
+             'K','Zsun','dyne*cm**-2',
+             'dyne*cm**-2','Msun','km/s']
+else:
+    fields = ['cooling_time']
+    units = ['Gyr']
 
 
 #
@@ -72,8 +79,13 @@ def process_dataset(filename):
                                         ends[:, i_phi, i_theta]))
     rays.append(ds.ray(starts[:, -1, -1], ends[:, -1, -1]))
 
-    r_edges = np.linspace(2e-1, 206, radial_bins)
-    r_centers = r_edges[:-1] + np.diff(r_edges)/2
+    
+    if not mass_dist_mode:
+        edges = np.linspace(2e-1, 206, bins)
+    else:
+        edges = np.linspace(1e-1, 1e2, bins)
+        
+    centers = edges[:-1] + np.diff(edges)/2
 
     quantity_arrays = {}
     
@@ -92,24 +104,24 @@ def process_dataset(filename):
             # Theta = 0 or 2pi
             if i_theta==0 or i_theta==n_theta-1:
                 ray = rays[0]
-                r_binner = np.digitize(ray['radius'].to('kpc'), r_edges)
-                for i in range(1, r_edges.size):
-                    this_bin = r_binner==i
+                binner = np.digitize(ray['radius'].to('kpc'), edges)
+                for i in range(1, edges.size):
+                    this_bin = binner==i
                     quantities.append(list(ray[quantity_name][this_bin].to(unit).value))
 
             else:
                 # first ray at this theta 
                 ray = rays[i_theta][0]    
-                r_binner = np.digitize(ray['radius'].to('kpc'), r_edges)
-                for i in range(1, r_edges.size):
-                    this_bin = r_binner==i
+                binner = np.digitize(ray['radius'].to('kpc'), edges)
+                for i in range(1, edges.size):
+                    this_bin = binner==i
                     quantities.append(list(ray[quantity_name][this_bin].to(unit).value))
 
                 # subsequent rays at this theta
                 for ray in rays[i_theta][1:]:
-                    r_binner = np.digitize(ray['radius'].to('kpc'), r_edges)
-                    for i in range(1, r_edges.size):
-                        this_bin = r_binner==i
+                    binner = np.digitize(ray['radius'].to('kpc'), edges)
+                    for i in range(1, edges.size):
+                        this_bin = binner==i
                         quantities[i-1].extend(ray[quantity_name][this_bin].to(unit).value)
 
             # Process/compress bins into med, min, and max
@@ -137,5 +149,5 @@ def process_dataset(filename):
 if __name__=="__main__":
     assert len(sys.argv) == 2
     data = process_dataset(sys.argv[1])
-    with open(f"data_{sys.argv[1][-6:]}.pkl","wb") as f:
+    with open(f"data_{sys.argv[1][-6:]}{'_mass' if mass_dist_mode else ''}.pkl","wb") as f:
         pickle.dump(data, f, protocol=3)
