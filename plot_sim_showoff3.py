@@ -256,5 +256,5 @@ d_cb2.set_label(r'Density  [g cm$^{-3}$]', fontsize='large')
 t_cb2.set_label(r'Temperature  [K]', fontsize='large')
 
 fig.subplots_adjust(left=0.01, right=0.99, bottom=0.01, top=0.95)
-fig.savefig("../fig_face-comp_slices.eps")
+fig.savefig("../fig_face-comp_slices.png", dpi=300)
 

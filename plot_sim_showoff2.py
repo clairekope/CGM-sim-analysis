@@ -230,5 +230,5 @@ k_cb.set_label(r'Entropy  [keV cm$^2$]')
 v_cb.set_label(r'Radial Velocity  [km/s]')
 
 fig.subplots_adjust(left=0.02, right=0.95, bottom=0.01, top=0.99)
-fig.savefig("../fig_edge-comp.eps")
+fig.savefig("../fig_edge-comp.png", dpi=300)
 
