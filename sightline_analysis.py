@@ -12,7 +12,7 @@ import numpy as np
 import pickle
 import sys
 
-mass_dist_mode = True
+tcool_dist_mode = True
 
 def _ram_pressure(field, data):
     return data['density'] * data['radial_velocity']**2
@@ -26,7 +26,7 @@ n_theta = 13
 phi_step = 10
 bins = 51
 
-if not mass_dist_mode:
+if not tcool_dist_mode:
     fields = ['entropy','cooling_time','density',
               'temperature','metallicity','pressure',
               'ram_pressure','cell_mass','radial_velocity']
@@ -34,8 +34,8 @@ if not mass_dist_mode:
              'K','Zsun','dyne*cm**-2',
              'dyne*cm**-2','Msun','km/s']
 else:
-    fields = ['cooling_time']
-    units = ['Gyr']
+    fields = ['cell_mass']
+    units = ['Msun']
 
 
 #
@@ -80,10 +80,14 @@ def process_dataset(filename):
     rays.append(ds.ray(starts[:, -1, -1], ends[:, -1, -1]))
 
     
-    if not mass_dist_mode:
+    if not tcool_dist_mode:
         edges = np.linspace(2e-1, 206, bins)
+        bin_field = "radius"
+        bin_unit = "kpc"
     else:
         edges = np.linspace(1e-1, 1e2, bins)
+        bin_field = "cooling_time"
+        bin_unit = "Gyr"
         
     centers = edges[:-1] + np.diff(edges)/2
 
@@ -104,7 +108,7 @@ def process_dataset(filename):
             # Theta = 0 or 2pi
             if i_theta==0 or i_theta==n_theta-1:
                 ray = rays[0]
-                binner = np.digitize(ray['radius'].to('kpc'), edges)
+                binner = np.digitize(ray[bin_field].to(bin_unit), edges)
                 for i in range(1, edges.size):
                     this_bin = binner==i
                     quantities.append(list(ray[quantity_name][this_bin].to(unit).value))
@@ -112,42 +116,52 @@ def process_dataset(filename):
             else:
                 # first ray at this theta 
                 ray = rays[i_theta][0]    
-                binner = np.digitize(ray['radius'].to('kpc'), edges)
+                binner = np.digitize(ray[bin_field].to(bin_unit), edges)
                 for i in range(1, edges.size):
                     this_bin = binner==i
                     quantities.append(list(ray[quantity_name][this_bin].to(unit).value))
 
                 # subsequent rays at this theta
                 for ray in rays[i_theta][1:]:
-                    binner = np.digitize(ray['radius'].to('kpc'), edges)
+                    binner = np.digitize(ray[bin_field].to(bin_unit), edges)
                     for i in range(1, edges.size):
                         this_bin = binner==i
                         quantities[i-1].extend(ray[quantity_name][this_bin].to(unit).value)
 
-            # Process/compress bins into med, min, and max
-            quantity_min = np.zeros(len(quantities))
-            quantity_low = np.zeros(len(quantities))
-            quantity_med = np.zeros(len(quantities))
-            quantity_upp = np.zeros(len(quantities))
-            quantity_max = np.zeros(len(quantities))
 
-            for i in range(len(quantities)):
-                quantity_min[i] = np.min(quantities[i])
-                quantity_low[i] = np.percentile(quantities[i], 16)
-                quantity_med[i] = np.median(quantities[i])
-                quantity_upp[i] = np.percentile(quantities[i], 84)
-                quantity_max[i] = np.max(quantities[i])
+            if not tcool_dist_mode:
+                # Process/compress bins into med, min, and max
+                quantity_min = np.zeros(len(quantities))
+                quantity_low = np.zeros(len(quantities))
+                quantity_med = np.zeros(len(quantities))
+                quantity_upp = np.zeros(len(quantities))
+                quantity_max = np.zeros(len(quantities))
 
-            quantity_arrays[quantity_name][i_theta] = {'min':quantity_min,
-                                                       'p16':quantity_low,
-                                                       'med':quantity_med,
-                                                       'p84':quantity_upp,
-                                                       'max':quantity_max}
+                for i in range(len(quantities)):
+                    quantity_min[i] = np.min(quantities[i])
+                    quantity_low[i] = np.percentile(quantities[i], 16)
+                    quantity_med[i] = np.median(quantities[i])
+                    quantity_upp[i] = np.percentile(quantities[i], 84)
+                    quantity_max[i] = np.max(quantities[i])
 
+                quantity_arrays[quantity_name][i_theta] = {'min':quantity_min,
+                                                           'p16':quantity_low,
+                                                           'med':quantity_med,
+                                                           'p84':quantity_upp,
+                                                           'max':quantity_max}
+
+            else:
+                quantity_sum = np.zeros(len(quantities))
+                
+                for i in range(len(quantities)):
+                    quantity_sum[i] = np.sum(quantities[i])
+
+                quantity_arrays[quantity_name][i_theta] = {'sum':quantity_sum}
+                
     return quantity_arrays
 
 if __name__=="__main__":
     assert len(sys.argv) == 2
     data = process_dataset(sys.argv[1])
-    with open(f"data_{sys.argv[1][-6:]}{'_mass' if mass_dist_mode else ''}.pkl","wb") as f:
+    with open(f"data_{sys.argv[1][-6:]}{'_mass' if tcool_dist_mode else ''}.pkl","wb") as f:
         pickle.dump(data, f, protocol=3)
