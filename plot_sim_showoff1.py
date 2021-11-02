@@ -7,6 +7,7 @@
 
 import yt
 import numpy as np
+import seaborn as sns
 import matplotlib.pyplot as plt
 from matplotlib.colors import LogNorm, SymLogNorm, LinearSegmentedColormap
 from matplotlib.ticker import FixedLocator, NullFormatter, NullLocator
@@ -74,13 +75,12 @@ for ax in grid:
 
 d_norm = LogNorm(1e-32, 1e-26)
 t_norm = LogNorm(1e3, 1e8)
-k_norm = LogNorm(1e-1, 1e6)
-p_norm = LogNorm(1e-19, 1e-12)
-v_norm = SymLogNorm(1, linscale=0.2, base=10, vmin=-5e3, vmax=5e3)
+k_norm = LogNorm(1e0, 1e6)
+p_norm = LogNorm(1e-18, 1e-14)
+v_norm = SymLogNorm(1, linscale=0.2, base=10, vmin=-3e3, vmax=3e3)
 
-# with bounds of 1e-1 to 1e6, mixed cmap is cleanly divided in half
-ent_lo_cmap = plt.get_cmap('cividis')(np.linspace(0, 1, 128))
-ent_hi_cmap = plt.get_cmap('Greys')(np.linspace(0, 1, 128))
+ent_lo_cmap = plt.get_cmap('crest')(np.linspace(0, 1, 86))
+ent_hi_cmap = plt.get_cmap('flare_r')(np.linspace(0, 1, 170))
 colors = np.vstack((ent_lo_cmap, ent_hi_cmap))
 ent_cmap = LinearSegmentedColormap.from_list(colors)
 
@@ -111,7 +111,7 @@ k_fid20 = ax[2].imshow(np.array(frb_fid20['entropy']),
                          cmap=ent_cmap, norm=k_norm)
 p_fid20 = ax[3].imshow(np.array(frb_fid20['pressure']),
                          origin='lower', extent=extent,
-                         cmap='inferno', norm=p_norm)
+                         cmap='cividis', norm=p_norm)
 v_fid20 = ax[4].imshow(np.array(frb_fid20['radial_velocity'])/1e5, 
                          origin='lower', extent=extent,
                          cmap='coolwarm', norm=v_norm)
@@ -132,7 +132,7 @@ k_fid40 = ax[2].imshow(np.array(frb_fid40['entropy']),
                          cmap=ent_cmap, norm=k_norm)
 p_fid40 = ax[3].imshow(np.array(frb_fid40['pressure']),
                          origin='lower', extent=extent,
-                         cmap='inferno', norm=p_norm)
+                         cmap='cividis', norm=p_norm)
 v_fid40 = ax[4].imshow(np.array(frb_fid40['radial_velocity'])/1e5, 
                          origin='lower', extent=extent,
                          cmap='coolwarm', norm=v_norm)
@@ -153,7 +153,7 @@ k_fid60 = ax[2].imshow(np.array(frb_fid60['entropy']),
                          cmap=ent_cmap, norm=k_norm)
 p_fid60 = ax[3].imshow(np.array(frb_fid60['pressure']),
                          origin='lower', extent=extent,
-                         cmap='inferno', norm=p_norm)
+                         cmap='cividis', norm=p_norm)
 v_fid60 = ax[4].imshow(np.array(frb_fid60['radial_velocity'])/1e5, 
                          origin='lower', extent=extent,
                          cmap='coolwarm', norm=v_norm)
@@ -174,7 +174,7 @@ k_fid80 = ax[2].imshow(np.array(frb_fid80['entropy']),
                          cmap=ent_cmap, norm=k_norm)
 p_fid80 = ax[3].imshow(np.array(frb_fid80['pressure']),
                          origin='lower', extent=extent,
-                         cmap='inferno', norm=p_norm)
+                         cmap='cividis', norm=p_norm)
 v_fid80 = ax[4].imshow(np.array(frb_fid80['radial_velocity'])/1e5, 
                          origin='lower', extent=extent,
                          cmap='coolwarm', norm=v_norm)
