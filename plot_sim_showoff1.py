@@ -8,7 +8,7 @@
 import yt
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.colors import LogNorm, SymLogNorm
+from matplotlib.colors import LogNorm, SymLogNorm, LinearSegmentedColormap
 from matplotlib.ticker import FixedLocator, NullFormatter, NullLocator
 from matplotlib.patches import Circle
 from mpl_toolkits.axes_grid1 import ImageGrid
@@ -78,6 +78,12 @@ k_norm = LogNorm(1e-1, 1e6)
 p_norm = LogNorm(1e-19, 1e-12)
 v_norm = SymLogNorm(1, linscale=0.2, base=10, vmin=-5e3, vmax=5e3)
 
+# with bounds of 1e-1 to 1e6, mixed cmap is cleanly divided in half
+ent_lo_cmap = plt.get_cmap('cividis')(np.linspace(0, 1, 128))
+ent_hi_cmap = plt.get_cmap('Greys')(np.linspace(0, 1, 128))
+colors = np.vstack((ent_lo_cmap, ent_hi_cmap))
+ent_cmap = LinearSegmentedColormap.from_list(colors)
+
 ax = grid.axes_column[0]
 bar = AnchoredSizeBar(ax[0].transData, 100, "100 kpc", 3, 
                        label_top=True, color='white', frameon=False,
@@ -102,7 +108,7 @@ t_fid20 = ax[1].imshow(np.array(frb_fid20['temperature']),
                          cmap='magma', norm=t_norm)
 k_fid20 = ax[2].imshow(np.array(frb_fid20['entropy']),
                          origin='lower', extent=extent,
-                         cmap='cividis', norm=k_norm)
+                         cmap=ent_cmap, norm=k_norm)
 p_fid20 = ax[3].imshow(np.array(frb_fid20['pressure']),
                          origin='lower', extent=extent,
                          cmap='inferno', norm=p_norm)
@@ -123,7 +129,7 @@ t_fid40 = ax[1].imshow(np.array(frb_fid40['temperature']),
                          cmap='magma', norm=t_norm)
 k_fid40 = ax[2].imshow(np.array(frb_fid40['entropy']),
                          origin='lower', extent=extent,
-                         cmap='cividis', norm=k_norm)
+                         cmap=ent_cmap, norm=k_norm)
 p_fid40 = ax[3].imshow(np.array(frb_fid40['pressure']),
                          origin='lower', extent=extent,
                          cmap='inferno', norm=p_norm)
@@ -144,7 +150,7 @@ t_fid60 = ax[1].imshow(np.array(frb_fid60['temperature']),
                          cmap='magma', norm=t_norm)
 k_fid60 = ax[2].imshow(np.array(frb_fid60['entropy']),
                          origin='lower', extent=extent,
-                         cmap='cividis', norm=k_norm)
+                         cmap=ent_cmap, norm=k_norm)
 p_fid60 = ax[3].imshow(np.array(frb_fid60['pressure']),
                          origin='lower', extent=extent,
                          cmap='inferno', norm=p_norm)
@@ -165,7 +171,7 @@ t_fid80 = ax[1].imshow(np.array(frb_fid80['temperature']),
                          cmap='magma', norm=t_norm)
 k_fid80 = ax[2].imshow(np.array(frb_fid80['entropy']),
                          origin='lower', extent=extent,
-                         cmap='cividis', norm=k_norm)
+                         cmap=ent_cmap, norm=k_norm)
 p_fid80 = ax[3].imshow(np.array(frb_fid80['pressure']),
                          origin='lower', extent=extent,
                          cmap='inferno', norm=p_norm)
