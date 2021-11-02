@@ -26,8 +26,11 @@ for my_storage, ds in datasets.piter(dynamic=False, storage=storage):
 
     try:
         add_initial_mass_field(ds)
-        star_mass = ds.all_data().quantities.total_quantity('particle_initial_mass')
+        ad = ds.all_data()
+        formed_mass = ad.quantities.total_quantity('particle_initial_mass')
+        star_mass = ad.quantities.total_quantity('particle_mass')
     except YTFieldNotFound:
+        formed_mass = ds.quan(0, 'Msun')
         star_mass = ds.quan(0, 'Msun')
 
     # 1.3 kpc is 4 scale heights. Need more than that in radial.
@@ -36,6 +39,7 @@ for my_storage, ds in datasets.piter(dynamic=False, storage=storage):
 
     data = {}
     data['disk_mass'] = disk_mass.to('Msun')
+    data['formed_mass'] = formed_mass.to('Msun')
     data['star_mass'] = star_mass.to('Msun')
     data['total_mass'] = (disk_mass + star_mass).to('Msun')
     
@@ -44,11 +48,12 @@ for my_storage, ds in datasets.piter(dynamic=False, storage=storage):
 
 # Compile and save data
 if yt.is_root():
-    data_arr = np.zeros((len(storage), 4))
+    data_arr = np.zeros((len(storage), 5))
     for ds_name, dic in storage.items():
         data_arr[ds_name, 0] = time[ds_name]
         data_arr[ds_name, 1] = dic['disk_mass']
-        data_arr[ds_name, 2] = dic['star_mass']
+        data_arr[ds_name, 2] = dic['formed_mass']
         data_arr[ds_name, 3] = dic['total_mass']
+        data_arr[ds_name, 4] = dic['star_mass']
 
-    np.savetxt('masses_over_time.txt', data_arr, header="Time_Myr DiskGas_Msun StellarMass_Msun Sum_Msun")
+    np.savetxt('masses_over_time.txt', data_arr, header="Time_Myr DiskGas_Msun StellarMass_Msun Sum_Msun FormedMass_Msun")
