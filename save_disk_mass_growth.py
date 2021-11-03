@@ -7,7 +7,7 @@ import yt
 from yt.units import Myr
 from yt.utilities.exceptions import YTFieldNotFound
 import numpy as np
-from calc_sfr import add_initial_mass_field
+import calc_sfr
 yt.enable_parallelism()
 
 # Calculate SFR
@@ -24,10 +24,9 @@ datasets = yt.load("DD????/DD????")
 storage = {}
 for my_storage, ds in datasets.piter(dynamic=False, storage=storage):
 
+    ad = ds.all_data()
     try:
-        add_initial_mass_field(ds)
-        ad = ds.all_data()
-        formed_mass = ad.quantities.total_quantity('particle_initial_mass')
+        formed_mass = ad.quantities.total_quantity(('io','particle_initial_mass'))
         star_mass = ad.quantities.total_quantity('particle_mass')
     except YTFieldNotFound:
         formed_mass = ds.quan(0, 'Msun')
