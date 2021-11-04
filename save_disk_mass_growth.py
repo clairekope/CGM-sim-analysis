@@ -24,17 +24,22 @@ datasets = yt.load("DD????/DD????")
 storage = {}
 for my_storage, ds in datasets.piter(dynamic=False, storage=storage):
 
-    ad = ds.all_data()
-    try:
+    ds.index # load field index
+
+    if all([field in ds.field_list for field in calc_sfr.required_fields]):
+
+        ds.add_field(name=('io','particle_initial_mass'),
+                     units='g',
+                     sampling_type='particle',
+                     function=calc_sfr.field_initial_mass)
+
+        ad = ds.all_data()
         formed_mass = ad.quantities.total_quantity(('io','particle_initial_mass'))
-        star_mass = ad.quantities.total_quantity('particle_mass')
-    except YTFieldNotFound:
-        formed_mass = ds.quan(0, 'Msun')
-        star_mass = ds.quan(0, 'Msun')
+        star_mass = ad.quantities.total_quantity(('io','particle_mass'))
 
     # 1.3 kpc is 4 scale heights. Need more than that in radial.
     dsk = ds.disk([0.5,0.5,0.5], [0,0,1], (20,'kpc'), (1.3, 'kpc'))
-    disk_mass = dsk.quantities.total_quantity('cell_mass')
+    disk_mass = dsk.quantities.total_quantity(('gas','cell_mass'))
 
     data = {}
     data['disk_mass'] = disk_mass.to('Msun')

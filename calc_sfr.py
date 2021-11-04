@@ -8,10 +8,12 @@ import yt
 from yt.fields.derived_field import ValidateDataField
 import numpy as np
 
-@yt.derived_field(name=('io','particle_initial_mass'), units='g',
-                  sampling_type='particle')
+# ValidateDataField is broken
+#@yt.derived_field(name=('io','particle_initial_mass'), units='g',
+#                  sampling_type='particle',
+#                  validators=[ValidateDataField(('io','creation_time'))])
 
-def _initial_mass(field, data):    
+def field_initial_mass(field, data):
     # ripped from star_maker2.F, assuming StarMassEjectionFraction = 0.25
     # Also assuming all particles are stars!
     
@@ -20,11 +22,15 @@ def _initial_mass(field, data):
     return data[('io','particle_mass')] \
         / (1 - 0.25*(1 - (1+time_frac)*np.exp(-time_frac)))
 
+required_fields = [("io", "creation_time"),
+                   ("io", "particle_mass"),
+                   ("io", "dynamical_time")]
+
 
 def calc_sfr(obj, year_bins):
 
     masses = obj[('io','particle_initial_mass')].in_units('Msun')
-    formation_time = obj['creation_time'].in_units('yr')
+    formation_time = obj[('io','creation_time')].in_units('yr')
         
     inds = np.digitize(formation_time, bins=year_bins) # what bin does each time fall in?
     time = (year_bins[:-1] + year_bins[1:])/2 # center of bin
