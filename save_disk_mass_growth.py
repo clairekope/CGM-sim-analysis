@@ -36,7 +36,10 @@ for my_storage, ds in datasets.piter(dynamic=False, storage=storage):
         ad = ds.all_data()
         formed_mass = ad.quantities.total_quantity(('io','particle_initial_mass'))
         star_mass = ad.quantities.total_quantity(('io','particle_mass'))
-
+    else:
+        formed_mass = ds.quan(0, 'g')
+        star_mass = ds.quan(0, 'g')
+        
     # 1.3 kpc is 4 scale heights. Need more than that in radial.
     dsk = ds.disk([0.5,0.5,0.5], [0,0,1], (20,'kpc'), (1.3, 'kpc'))
     disk_mass = dsk.quantities.total_quantity(('gas','cell_mass'))
