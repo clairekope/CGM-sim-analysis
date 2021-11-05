@@ -59,8 +59,8 @@ if yt.is_root():
     for ds_name, dic in storage.items():
         data_arr[ds_name, 0] = time[ds_name]
         data_arr[ds_name, 1] = dic['disk_mass']
-        data_arr[ds_name, 2] = dic['formed_mass']
+        data_arr[ds_name, 2] = dic['star_mass']
         data_arr[ds_name, 3] = dic['total_mass']
-        data_arr[ds_name, 4] = dic['star_mass']
+        data_arr[ds_name, 4] = dic['formed_mass']
 
     np.savetxt('masses_over_time.txt', data_arr, header="Time_Myr DiskGas_Msun StellarMass_Msun Sum_Msun FormedMass_Msun")
