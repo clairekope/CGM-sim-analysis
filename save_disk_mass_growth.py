@@ -26,6 +26,9 @@ for my_storage, ds in datasets.piter(dynamic=False, storage=storage):
 
     ds.index # load field index
 
+    # 1.3 kpc is 4 scale heights. Need more than that in radial.
+    dsk = ds.disk([0.5,0.5,0.5], [0,0,1], (20,'kpc'), (1.3, 'kpc'))
+
     if all([field in ds.field_list for field in calc_sfr.required_fields]):
 
         ds.add_field(name=('io','particle_initial_mass'),
@@ -33,15 +36,12 @@ for my_storage, ds in datasets.piter(dynamic=False, storage=storage):
                      sampling_type='particle',
                      function=calc_sfr.field_initial_mass)
 
-        ad = ds.all_data()
-        formed_mass = ad.quantities.total_quantity(('io','particle_initial_mass'))
-        star_mass = ad.quantities.total_quantity(('io','particle_mass'))
+        formed_mass = dsk.quantities.total_quantity(('io','particle_initial_mass'))
+        star_mass = dsk.quantities.total_quantity(('io','particle_mass'))
     else:
         formed_mass = ds.quan(0, 'g')
         star_mass = ds.quan(0, 'g')
         
-    # 1.3 kpc is 4 scale heights. Need more than that in radial.
-    dsk = ds.disk([0.5,0.5,0.5], [0,0,1], (20,'kpc'), (1.3, 'kpc'))
     disk_mass = dsk.quantities.total_quantity(('gas','cell_mass'))
 
     data = {}
