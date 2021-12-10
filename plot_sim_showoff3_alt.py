@@ -50,7 +50,7 @@ frb_hih60 = prep_frb(ds_hih60)
 frb_lin60 = prep_frb(ds_lin60)
 frb_nor60 = prep_frb(ds_nor60)
 
-fig = plt.figure(figsize=(7,14.5))
+fig = plt.figure(figsize=(6,12))
 grid = ImageGrid(fig, 111, nrows_ncols=(6,len(fields)),
                axes_pad=0, label_mode='1', share_all=True,
                cbar_mode='edge', cbar_location='top',
@@ -72,7 +72,7 @@ ax = grid.axes_row[0]
 bar = AnchoredSizeBar(ax[0].transData, 10, "10 kpc", 3, 
                        label_top=True, color='white', frameon=False,
                        borderpad=1, size_vertical=2,
-                       fontproperties={'size':'x-large',
+                       fontproperties={'size':'large',
                                        'weight':'bold'})
 ax[0].add_artist(bar)
 
@@ -98,7 +98,7 @@ ax[2].add_artist(circle)
 
 ax[0].text(0.04, 0.9, "Fiducial", 
            transform=ax[0].transAxes,
-           fontdict={'size':'x-large',
+           fontdict={'size':'large',
                      'weight':'bold',
                      'color':'white'})
 
@@ -115,7 +115,7 @@ v_fid60 = ax[2].imshow(np.array(frb_fid60['radial_velocity'])/1e5,
 ax = grid.axes_row[1]
 ax[0].text(0.04, 0.9, "CoolFlow", 
            transform=ax[0].transAxes,
-           fontdict={'size':'x-large','weight':'bold','color':'white'})
+           fontdict={'size':'large','weight':'bold','color':'white'})
 
 circle = Circle((0,0), 11.192377, transform=ax[0].transData,
                 edgecolor='white', fill=False, ls='-', lw=1)
@@ -150,7 +150,7 @@ v_cfw60 = ax[2].imshow(np.array(frb_cfw60['radial_velocity'])/1e5,
 ax = grid.axes_row[2]
 ax[0].text(0.04, 0.9, "LowRatio", 
            transform=ax[0].transAxes,
-           fontdict={'size':'x-large','weight':'bold','color':'white'})
+           fontdict={'size':'large','weight':'bold','color':'white'})
 
 circle = Circle((0,0), 10.344807, transform=ax[0].transData,
                 edgecolor='white', fill=False, ls='-', lw=1)
@@ -185,7 +185,7 @@ v_low60 = ax[2].imshow(np.array(frb_low60['radial_velocity'])/1e5,
 ax = grid.axes_row[3]
 ax[0].text(0.04, 0.9, "HighRatio", 
            transform=ax[0].transAxes,
-           fontdict={'size':'x-large','weight':'bold','color':'white'})
+           fontdict={'size':'large','weight':'bold','color':'white'})
 
 circle = Circle((0,0), 5.549395, transform=ax[0].transData,
                 edgecolor='white', fill=False, ls='-', lw=1)
@@ -220,7 +220,7 @@ v_hih60 = ax[2].imshow(np.array(frb_hih60['radial_velocity'])/1e5,
 ax = grid.axes_row[4]
 ax[0].text(0.04, 0.9, "LinRot", 
            transform=ax[0].transAxes,
-           fontdict={'size':'x-large','weight':'bold','color':'white'})
+           fontdict={'size':'large','weight':'bold','color':'white'})
 
 circle = Circle((0,0), 8.549943, transform=ax[0].transData,
                 edgecolor='white', fill=False, ls='-', lw=1)
@@ -255,7 +255,7 @@ v_lin60 = ax[2].imshow(np.array(frb_lin60['radial_velocity'])/1e5,
 ax = grid.axes_row[5]
 ax[0].text(0.04, 0.9, "NoRot", 
            transform=ax[0].transAxes,
-           fontdict={'size':'x-large','weight':'bold','color':'white'})
+           fontdict={'size':'large','weight':'bold','color':'white'})
 
 circle = Circle((0,0), 7.217424, transform=ax[0].transData,
                 edgecolor='white', fill=False, ls='-', lw=1)
