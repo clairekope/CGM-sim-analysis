@@ -82,7 +82,7 @@ v_norm = SymLogNorm(1, linscale=0.2, base=10, vmin=-3e3, vmax=3e3)
 ent_lo_cmap = plt.get_cmap('crest')(np.linspace(0, 1, 86))
 ent_hi_cmap = plt.get_cmap('flare_r')(np.linspace(0, 1, 170))
 colors = np.vstack((ent_lo_cmap, ent_hi_cmap))
-ent_cmap = LinearSegmentedColormap.from_list(colors)
+ent_cmap = LinearSegmentedColormap.from_list('crest_flare', colors)
 
 ax = grid.axes_column[0]
 bar = AnchoredSizeBar(ax[0].transData, 100, "100 kpc", 3, 
