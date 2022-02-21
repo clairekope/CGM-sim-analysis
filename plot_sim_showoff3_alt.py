@@ -4,7 +4,7 @@
 
 #########################################################################
 # Plot multipanel figures comparing sim variants (stored locally) @ 3 Gyr
-# using face on view of disk
+# using face on view of disk. Now with radial velocity!
 #########################################################################
 
 import yt
@@ -297,8 +297,9 @@ d_cb.ax.xaxis.set_minor_formatter(NullFormatter())
 
 t_cb.set_ticks(FixedLocator([1e3,1e4,1e5,1e6,1e7,1e8]))
 
-#v_cb.set_ticks(FixedLocator([-1e2, -1e1, -1e0, 1e0, 1e1, 1e2]))
-# v_cb.set_ticklabels(['-$10^2$','-$10^1$','-$10^0$','','$10^0$','$10^1$','$10^2$'])
+v_cb.set_ticks(FixedLocator([-1e2, -1e1, -1e0, 0, 1e0, 1e1, 1e2]))
+v_cb.set_ticklabels(['-$10^2$','','-$10^0$','','$10^0$','','$10^2$'])
+v_cb.ax.xaxis.set_minor_formatter(NullFormatter())
 
 d_cb.set_label(r'Density  [g cm$^{-3}$]', fontsize='large')
 t_cb.set_label(r'Temperature  [K]', fontsize='large')
