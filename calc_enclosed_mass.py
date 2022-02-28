@@ -8,11 +8,8 @@
 import yt
 import yt.units as u
 import numpy as np
-import astropy.units as au # required by gala
-import gala
-from collections.abc import Iterable
 
-def NFW_ps_mass_enclosed(radius):
+def NFW_mass_enclosed(radius):
     Mtot = 1e12 * u.Msun
     C = 10
 
@@ -25,31 +22,6 @@ def NFW_ps_mass_enclosed(radius):
           (np.log((Rs+radius)/Rs) - radius/(Rs+radius))
 
     return M_r.to('g')
-
-def NFW_mass_enclosed(radius):
-    """Uses gala NFW profile. Returns in yt units instead of astropy."""
-    Mtot = 1e12 * au.Msun
-    C = 10
-
-    rho_crit = 1.8788e-29*0.49 * au.g/au.cm**3
-    Rvir = ( 3.0/(4.0*np.pi)*Mtot / (200.*rho_crit) )**(1./3.)
-    Rs = Rvir/C
-    
-    usys = gala.units.UnitSystem(au.kpc, au.s, au.g, au.radian)
-    NFW = gala.potential.potential.NFWPotential(Mtot, Rs, units=usys)
-
-    radius = radius.to('kpc')
-    
-    if isinstance(radius, Iterable):
-        M_r = np.zeros(len(radius))
-        for i, r in enumerate(radius):
-            # usys ensures this comes back in grams
-            # profile is sph symmetric but gala still requires 3D vec
-            M_r[i] = NFW.mass_enclosed([r.value,0,0]).value
-    else:
-        M_r = NFW.mass_enclosed([radius.value,0,0]).value
-    
-    return M_r * u.g
 
 def MN_accel(radius):
     rs = 3.5 * u.kpc
