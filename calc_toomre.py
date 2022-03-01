@@ -5,18 +5,19 @@ from unyt import accepts, returns
 
 class DiskModel():
 
-    @accepts(Mvir=udim.mass, Mstar=udim.mass, rs_star=udim.length, zs_star=udim.length)
+    @accepts(Mvir=udim.mass, Mstar=udim.mass, rs_star=udim.length, zs_star=udim.length, T_disk=udim.temperature)
     def __init__(self, 
                  M_vir=1e12*u.Msun,
                  C=10, 
                  M_star=5.8e10*u.Msun,
                  rs_star=3.5*u.kpc,
-                 zs_star=0.325*u.kpc):
+                 zs_star=0.325*u.kpc,
+                 T_disk=1e5*u.K):
         """
         Class for calculating the Toomre criterion as a function of radius.
         Initializer sets some basic parameters about the disk model.
 
-        Mvir (unyt quantity)
+        M_vir (unyt quantity)
             Virial (dark matter) mass of the system.
             Default: 1e12 Msun
 
@@ -24,7 +25,7 @@ class DiskModel():
             Concentration of the NFW profile.
             Default: 10
 
-        Mstar (unyt quantity)
+        M_star (unyt quantity)
             Stellar mass for the disk potential.
             Default: 5.8e10 Msun
 
@@ -35,6 +36,10 @@ class DiskModel():
         zs_star (unyt quantity)
             Scale height for the stellar disk potential.
             Default: 0.325 kpc
+
+        T_disk (unyt quantity)
+            Temperature of the gaseous disk. Assumed to be an ideal gas.
+            Default: 1e5 K
         """
         
         self.M_vir = M_vir
@@ -42,6 +47,7 @@ class DiskModel():
         self.M_star = M_star
         self.rs_star = rs_star
         self.zs_star = zs_star
+        self.T_disk = T_disk
 
         self.rho_crit = 1.8788e-29*0.49 * u.g/u.cm**3
         self.Rvir = ( 3.0/(4.0*np.pi)*self.M_vir / (200.*self.rho_crit) )**(1./3.)
@@ -177,14 +183,37 @@ class DiskModel():
 
         return np.sqrt(2*omega/radii * deriv)
 
+    @accepts(radii=udim.length)
+    @returns(udim.length/udim.time)
+    def c_sound(self, radii):
+        """
+        Calculate the sound speed of an isothermal disk, 
+        assuming an ideal gas and mean molecular weight = 0.6 (primordial)
+
+        Inputs:
+        -------
+        radii (unyt array)
+            Radii at which to calculate the acceleration's derivative
+
+        Outputs:
+        --------
+        cs (unyt array)
+            Sound speed at supplied radii
+        """
+
+        gamma = 5/3
+
+        return np.sqrt(gamma * u.kb * self.T_disk / (0.6*u.mp))
+
 if __name__ == "__main__":
 
     r = np.linspace(0,30) * u.kpc
     dsk = DiskModel()
 
     # Function decorators ensure return products have desired units
-    dsk.g(r)
-    dsk.dg_dr(r)
-    dsk.omega(r)
-    dsk._epicyclic_derivative(r)
-    dsk.kappa(r)
+    # dsk.g(r)
+    # dsk.dg_dr(r)
+    # dsk.omega(r)
+    # dsk._epicyclic_derivative(r)
+    kappa = dsk.kappa(r) # Depends on the preceeding functions
+    cs = dsk.c_sound(r)
