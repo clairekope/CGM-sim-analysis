@@ -39,7 +39,7 @@ def MN_accel(radius):
               + np.power(
                   rs+np.sqrt(np.power(z,2) \
                              + zs**2),
-                  2),3/2);
+                  2),3/2)
 
     accel_z = G*MStar*z/np.sqrt(np.power(z,2) \
               + zs**2)/np.power(np.power(r,2) \
@@ -47,7 +47,7 @@ def MN_accel(radius):
                                     + zs**2),2),3/2) \
                 *(  rs+np.sqrt(np.power(z,2) \
                   + zs**2)
-                 );
+                 )
 
     g = np.sqrt(np.power(accel_r,2) + np.power(accel_z,2)) # no phi accel
 
