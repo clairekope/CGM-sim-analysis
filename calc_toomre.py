@@ -280,8 +280,8 @@ if __name__ == "__main__":
     Q_cold = dsk3.Q(r)
 
     plt.semilogy(r, Q_hot, label="T=1e5 K", color='C1')
-    plt.semilogy(r, Q_cool, label="T=1e4 K", color='C0')
-    plt.semilogy(r, Q_cold, label="T=1e3 K", color='C2')
+    plt.semilogy(r, Q_cool, label="T=1e4 K", color='C2')
+    plt.semilogy(r, Q_cold, label="T=1e3 K", color='C0')
 
     plt.axvline(28.5, color="gray", ls="--")
     plt.axhline(1, color='gray', ls='--')
