@@ -112,7 +112,7 @@ class DiskModel():
         return dg_NFW + dg_MN
 
     @accepts(radii=udim.length)
-    @returns(udim.angle/udim.time)
+    @returns(1/udim.time)
     def omega(self, radii):
         """
         Rotation frequency Omega = v_phi/r, where v_phi = sqrt(r * g(r))
@@ -125,17 +125,66 @@ class DiskModel():
         Outputs:
         --------
         omega (unyt array)
-            Rotation frequency as a function of radius
+            Rotation frequency as a function of radius. Radians are implied.
         """
 
-        return np.sqrt(self.g(radii) / radii) * u.rad
+        return np.sqrt(self.g(radii) / radii)
+
+    @accepts(radii=udim.length)
+    @returns(udim.length/udim.time)
+    def _epicyclic_derivative(self, radii):
+        """
+        Calculates the d/dr (r^2 * Omega) term of the epicyclic frequency, kappa.
+
+        Inputs:
+        -------
+        radii (unyt array)
+            Radii at which to calculate the acceleration's derivative
+
+        Outputs:
+        --------
+        ep_deriv (unyt array)
+            Derivative of r^2 * Omega at supplied radii
+        """
+
+        g = self.g(radii)
+        dg_dr = self.dg_dr(radii)
+
+        num = 3*np.power(radii,2)*g + np.power(radii,3)*dg_dr
+        denom = 2*np.sqrt( np.power(radii, 3) * g )
+
+        return num/denom
+
+    @accepts(radii=udim.length)
+    @returns(1/udim.time)
+    def kappa(self, radii):
+        """
+        Epicyclic frequency as a function of radius
+
+        Inputs:
+        -------
+        radii (unyt array)
+            Radii at which to calculate the acceleration's derivative
+
+        Outputs:
+        --------
+        kappa (unyt array)
+            Epicyclic frequency at supplied radii
+        """
+
+        omega = self.omega(radii)
+        deriv = self._epicyclic_derivative(radii)
+
+        return np.sqrt(2*omega/radii * deriv)
 
 if __name__ == "__main__":
 
     r = np.linspace(0,30) * u.kpc
     dsk = DiskModel()
 
-    # Function decorators should ensure return products have desired units
+    # Function decorators ensure return products have desired units
     dsk.g(r)
     dsk.dg_dr(r)
     dsk.omega(r)
+    dsk._epicyclic_derivative(r)
+    dsk.kappa(r)
