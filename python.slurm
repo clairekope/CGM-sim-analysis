@@ -1,13 +1,13 @@
 #!/bin/bash
 
-#SBATCH -J dmass         # Job name
-#SBATCH -o dmass.o%j       # Name of stdout output file
+#SBATCH -J ext_data           # Job name
+#SBATCH -o ext_data.o%j       # Name of stdout output file
 #SBATCH --account=TG-AST090040
 #SBATCH --partition=shared
-#SBATCH -N 1                # Total # of nodes
-#SBATCH --ntasks-per-node 64
-#SBATCH --mem=128G
-#SBATCH -t 4:00:00        # Run time (hh:mm:ss)
+#SBATCH -N 1                  # Total # of nodes
+#SBATCH --ntasks-per-node 128
+#SBATCH --mem=249325M
+#SBATCH -t 24:00:00            # Run time (hh:mm:ss)
 
 module load parallel
 
@@ -26,19 +26,21 @@ do
     
     #srun python ~/enzo_storage_tools/tar_snapshots.py tar_list.txt
     #srun python ~/enzo_storage_tools/verify_tar.py
+
     #srun python ~/CGM-sim-analysis/save_profiles.py
-    #srun python ~/CGM-sim-analysis/calc_sfr.py
-    #srun python ~/CGM-sim-analysis/plot_projs.py
+    srun python ~/CGM-sim-analysis/save_sfh.py
+    srun python ~/CGM-sim-analysis/save_disk_mass_growth.py
+    #srun python ~/CGM-sim-analysis/save_disk_mass_flow.py
+    #srun python ~/CGM-sim-analysis/save_weighted_med.py
+    srun python ~/CGM-sim-analysis/save_tcool_mass_dist.py
+
+    srun -n 64 python ~/CGM-sim-analysis/sightline_analysis_subproc_manager.py
+    
+    srun python ~/CGM-sim-analysis/plot_thermo_slabs.py
+    #srun python ~/CGM-sim-analysis/plot_thermo_slabs_subset.py
     #srun python ~/CGM-sim-analysis/plot_phase.py
     #srun python ~/CGM-sim-analysis/plot_pres_4panel.py
-    srun python ~/CGM-sim-analysis/save_disk_mass_growth.py
-    #srun  python ~/CGM-sim-analysis/save_disk_mass_flow.py
-    #srun python ~/CGM-sim-analysis/plot_thermo_slabs.py
-    #srun python ~/CGM-sim-analysis/plot_thermo_slabs_subset.py
-    #srun -n 64 python ~/CGM-sim-analysis/sightline_analysis_subproc_manager.py
     #srun python ~/CGM-sim-analysis/plot_gal_ev.py
-    #srun python ~/CGM-sim-analysis/save_weighted_med.py
-    #srun python ~/CGM-sim-analysis/save_tcool_mass_dist.py
 
     echo Copying data products to lustre scratch
     
