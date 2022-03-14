@@ -293,4 +293,4 @@ if __name__ == "__main__":
     plt.xlabel("r [kpc]")
 
     plt.legend()
-    plt.savefig("toomre.png")
+    plt.savefig("../toomre.png")

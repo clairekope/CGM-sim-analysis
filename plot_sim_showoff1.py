@@ -15,10 +15,10 @@ from matplotlib.patches import Circle
 from mpl_toolkits.axes_grid1 import ImageGrid
 from mpl_toolkits.axes_grid1.anchored_artists import AnchoredSizeBar
 
-ds_fid20 = yt.load("DD0020/DD0020") # 1 Gyr
-ds_fid40 = yt.load("DD0040/DD0040") # 2 Gyr
-ds_fid60 = yt.load("DD0060/DD0060") # 3 Gyr
-ds_fid80 = yt.load("DD0080/DD0080") # 4 Gyr
+ds_fid20 = yt.load("../sample_data/fid/DD0020/DD0020") # 1 Gyr
+ds_fid40 = yt.load("../sample_data/fid/DD0040/DD0040") # 2 Gyr
+ds_fid60 = yt.load("../sample_data/fid/DD0060/DD0060") # 3 Gyr
+ds_fid80 = yt.load("../sample_data/fid/DD0080/DD0080") # 4 Gyr
 
 # code length is the same in all sims
 center = yt.YTQuantity(ds_fid20.quan(0.5,'code_length').to('cm'))
@@ -204,5 +204,5 @@ k_cb.set_label(r'Entropy  [keV cm$^2$]')
 v_cb.set_label(r'Radial Velocity  [km/s]')
 
 fig.subplots_adjust(left=0.02, right=0.95, bottom=0.01, top=0.99)
-fig.savefig("fig_edge-ev_fid.pdf")
+fig.savefig("../fig_edge-ev_fid.pdf")
 
