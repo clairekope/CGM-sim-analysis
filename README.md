@@ -16,10 +16,13 @@ A collection of scripts for plotting & extracting data from my CGM simulations.
 * test_HSE.py - explore deviations from hydrostatic equilibrium that may be present in initial conditions
 * manual_profile_snippet.txt - an exerpt of code showing how to make yt-esque profiles with SciPy (more flexible, too).
 
-# Running on Comet (SLURM)
+# Running on Expanse (SLURM)
 
-Use `sbatch python.slurm` to submit. Un/comment the lines according to which script you want to run.
-It's low tech, man. If you're someone else using this code, consider this file a template.
+Use `sbatch python.slurm` to submit. 
+
+Importantly, Expanse doesn't like it when you analyze data on the Lustre Scratch filesystem (to many file accesses). Instead, this script will use the `parallel` module to copy and untar compressed outputs from the Project storage to node local NVMe storage, and then copy the analysis products to Lustre scratch.
+
+Un/comment the lines according to which script you want to run. It's low tech, man. If you're someone else using this code, consider this file a template.
 
 # Sightline Analysis Scripts
 
