@@ -12,7 +12,7 @@ import numpy as np
 import pickle
 import sys
 
-tcool_dist_mode = True
+tcool_dist_mode = False
 
 def _ram_pressure(field, data):
     return data['density'] * data['radial_velocity']**2

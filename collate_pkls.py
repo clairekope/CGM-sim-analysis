@@ -9,7 +9,7 @@ import pickle
 import glob
 import re
 
-pickles = glob.glob('*mass.pkl')
+pickles = glob.glob('*.pkl')
 
 data = {}
 
@@ -18,5 +18,5 @@ for file in pickles:
     with open(file, 'rb') as f:
         data[name] = pickle.load(f)
 
-with open("hedgehog_mass.pkl", "wb") as f:
+with open("hedgehog.pkl", "wb") as f:
     pickle.dump(data, f)
