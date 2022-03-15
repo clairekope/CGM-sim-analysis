@@ -29,13 +29,17 @@ do
 
     #srun python ~/CGM-sim-analysis/save_profiles.py
     python ~/CGM-sim-analysis/save_sfh.py
-    srun python ~/CGM-sim-analysis/save_disk_mass_growth.py
+    #srun python ~/CGM-sim-analysis/save_disk_mass_growth.py
     #srun python ~/CGM-sim-analysis/save_disk_mass_flow.py
     #srun python ~/CGM-sim-analysis/save_weighted_med.py
-    srun python ~/CGM-sim-analysis/save_tcool_mass_dist.py
+    #srun python ~/CGM-sim-analysis/save_tcool_mass_dist.py
 
-    srun -n 64 python ~/CGM-sim-analysis/sightline_analysis_subproc_manager.py
-    
+    #srun -n 64 python ~/CGM-sim-analysis/sightline_analysis_subproc_manager.py
+
+    # If previously made SFH and masses over time, copy them over
+    cp ~/data_products/$dir\_sfh.txt ./sfr.txt
+    cp ~/data_products/$dir\_masses_over_time.txt ./masses_over_time.txt
+
     srun python ~/CGM-sim-analysis/plot_thermo_slabs.py
     #srun python ~/CGM-sim-analysis/plot_thermo_slabs_subset.py
     #srun python ~/CGM-sim-analysis/plot_phase.py
