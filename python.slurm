@@ -3,7 +3,7 @@
 #SBATCH -J ext_data           # Job name
 #SBATCH -o ext_data.o%j       # Name of stdout output file
 #SBATCH --account=TG-AST090040
-#SBATCH --partition=shared
+#SBATCH --partition=compute
 #SBATCH -N 1                  # Total # of nodes
 #SBATCH --ntasks-per-node 128
 #SBATCH --mem=249325M
@@ -14,7 +14,7 @@ module load parallel
 # Switch to node scratch
 cd /scratch/kopec/job_$SLURM_JOB_ID/
 
-for dir in cflow fid tctff5 tctff20 linrot norot
+for dir in cflow fid linrot norot # tctff5 tctff20 
 do
 
     # Extract data out of project
@@ -28,7 +28,7 @@ do
     #srun python ~/enzo_storage_tools/verify_tar.py
 
     #srun python ~/CGM-sim-analysis/save_profiles.py
-    srun python ~/CGM-sim-analysis/save_sfh.py
+    python ~/CGM-sim-analysis/save_sfh.py
     srun python ~/CGM-sim-analysis/save_disk_mass_growth.py
     #srun python ~/CGM-sim-analysis/save_disk_mass_flow.py
     #srun python ~/CGM-sim-analysis/save_weighted_med.py

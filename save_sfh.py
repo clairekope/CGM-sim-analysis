@@ -20,6 +20,6 @@ if all([field in ds.field_list for field in calc_sfr.required_fields]):
                  sampling_type='particle',
                  function=calc_sfr.field_initial_mass)
 
-time, sfr = calc_sfr(ds.all_data(),bins)
+time, sfr = calc_sfr.calc_sfr(ds.all_data(),bins)
 
 np.savetxt('sfr.txt',np.column_stack((time/1e6,sfr)),header='Time_Myr SFR_Msun/Yr')
