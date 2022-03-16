@@ -29,7 +29,7 @@ required_fields = [("io", "creation_time"),
 
 def calc_sfr(obj, year_bins):
 
-    masses = obj[('io','particle_initial_mass')].in_units('Msun')
+    masses = obj[('all','particle_initial_mass')].in_units('Msun')
     formation_time = obj[('io','creation_time')].in_units('yr')
         
     inds = np.digitize(formation_time, bins=year_bins) # what bin does each time fall in?
@@ -51,6 +51,13 @@ if __name__=="__main__":
     latest_output = sorted(glob.glob("DD????/DD????"))[-1]
 
     ds = yt.load(latest_output)
+
+    if all([field in ds.field_list for field in required_fields]):
+
+        ds.add_field(name=('all','particle_initial_mass'),
+                    units='g',
+                    sampling_type='particle',
+                    function=field_initial_mass)
 
     dsk = ds.disk([0.5,0.5,0.5], [0,0,1], (24.5,'kpc'), (2.275, 'kpc'))
 
