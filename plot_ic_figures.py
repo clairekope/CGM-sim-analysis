@@ -4,7 +4,7 @@ import unyt as u
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import LogNorm
-from matplotlib.ticker import FixedLocator, NullFormatter
+from matplotlib.ticker import FixedLocator, NullFormatter, MultipleLocator
 from calc_enclosed_mass import *
 
 
@@ -136,7 +136,7 @@ fig.savefig("../fig_ics.pdf")
 
 # AMR demo
 
-width = ds.quan(400, 'kpc')
+width = ds.quan(600, 'kpc')
 width2 = ds.quan(100, 'kpc')
 x = np.linspace(-width/2, width/2, 512)
 x2 = np.linspace(-width2/2, width2/2, 512)
@@ -161,12 +161,16 @@ fig, ax = plt.subplots(nrows=2, ncols=1, figsize=(5,7))
 # for some reason you can't save levels are a var b/c of float messiness
 im = ax[0].imshow(d_3_x, origin="lower", extent=(-width/2,width/2,-width/2,width/2), norm=LogNorm(1e-5,1e-1))
 c = ax[0].contour(x, x, dx_3_x, levels=[100, 200, 400, 800, 1600, 3200, 6400, 12800], colors=colors)
-ax[0].clabel(c, fmt="%0.0f pc", manual=[(-112,-150),(-60,-100),(-10,-50)])
+# manual placement of contour labels goes in descending order
+ax[0].clabel(c, fmt="%0.0f pc", manual=[(-200, -140), # 200, -120
+                                        (-180, -110),
+                                        (-30, -100),
+                                        (0, -50)])
 
 ax[1].imshow(d_3_z, origin="lower", extent=(-width2/2,width2/2,-width2/2,width2/2), norm=LogNorm(1e-5,1e-1))
 c = ax[1].contour(x2, x2, dx_3_z, levels=[100, 200, 400, 800, 1600, 3200, 6400, 12800], colors=colors)
-c.clabel([200], fmt="%0.0f pc", manual=[(13, 22)])
-ax[1].text(-20,-23,"100 pc", fontsize=10, color=colors[0])
+c.clabel([200], fmt="%0.0f pc")
+ax[1].text(-23,-23,"100 pc", fontsize=10, color=colors[0])
 
 ax[0].set_xlabel('y  [kpc]')
 ax[0].set_ylabel('z  [kpc]')
@@ -176,6 +180,8 @@ ax[1].set_ylabel('y  [kpc]')
 
 for i in range(2):
     ax[i].tick_params(right=True, top=True)
+ax[0].xaxis.set_minor_locator(MultipleLocator(20))
+ax[1].xaxis.set_minor_locator(MultipleLocator(5))
 
 fig.subplots_adjust(bottom=0.07, top=0.97, left=0.15, right=0.7, hspace=0.2)
 cb_ax = fig.add_axes([0.77, 0.1, 0.05, 0.85])
