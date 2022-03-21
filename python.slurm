@@ -14,7 +14,7 @@ module load parallel
 # Switch to node scratch
 cd /scratch/kopec/job_$SLURM_JOB_ID/
 
-for dir in cflow fid linrot norot # tctff5 tctff20 
+for dir in cflow fid linrot norot tctff5 tctff20 
 do
 
     # Extract data out of project
@@ -27,14 +27,15 @@ do
     #srun python ~/enzo_storage_tools/tar_snapshots.py tar_list.txt
     #srun python ~/enzo_storage_tools/verify_tar.py
 
-    #srun python ~/CGM-sim-analysis/save_profiles.py
     python ~/CGM-sim-analysis/save_sfh.py
-    #srun python ~/CGM-sim-analysis/save_disk_mass_growth.py
+    srun python ~/CGM-sim-analysis/save_sf_details.py
+    srun python ~/CGM-sim-analysis/save_disk_mass_growth.py
     #srun python ~/CGM-sim-analysis/save_disk_mass_flow.py
+    #srun python ~/CGM-sim-analysis/save_profiles.py
     #srun python ~/CGM-sim-analysis/save_weighted_med.py
-    #srun python ~/CGM-sim-analysis/save_tcool_mass_dist.py
+    srun python ~/CGM-sim-analysis/save_tcool_mass_dist.py
 
-    #srun -n 64 python ~/CGM-sim-analysis/sightline_analysis_subproc_manager.py
+    srun -n 64 python ~/CGM-sim-analysis/sightline_analysis_subproc_manager.py
 
     # If previously made SFH and masses over time, copy them over
     cp ~/data_products/$dir\_sfh.txt ./sfr.txt
