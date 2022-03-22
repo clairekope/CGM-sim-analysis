@@ -50,15 +50,19 @@ for sto, ds in datasets.piter(dynamic=False, storage=storage):
 
         ds.add_particle_filter('new_stars')
         
-    ad = ds.all_data()
-    ad.set_field_parameter('normal', ds.arr([0,0,1], 'code_length'))
+        ad = ds.all_data()
+        ad.set_field_parameter('normal', ds.arr([0,0,1], 'code_length'))
+        
+        total_mform = ad.quantities.total_quantity(('all', 'particle_mass_formed')).to('Msun')
+        
+        farthest_star = ad.quantities.extrema(('new_stars','particle_position_cylindrical_radius')).to('kpc')[1]
     
-    total_mform = ad.quantities.total_quantity(('all', 'particle_mass_formed')).to('Msun')
-    
-    farthest_star = ad.quantities.extrema(('new_stars','particle_position_cylindrical_radius')).to('kpc')[1]
-    
-    sto.result_id = int(ds.basename[-4:])
-    sto.result = [total_mform, farthest_star]
+        sto.result = [total_mform, farthest_star]
+
+    else:
+        sto.result = [0, 0]    
+
+    sto.result_id = int(ds.basename[-4:])    
     
 # Compile and save data
 if yt.is_root():
