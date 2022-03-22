@@ -32,7 +32,7 @@ def _formed_mass(field, data):
     return m_form
 
 
-datasets = yt.load("../sample_data/fid/DD??6?/DD??6?")
+datasets = yt.load("DD????/DD????")
 storage = {}
 for sto, ds in datasets.piter(dynamic=False, storage=storage):
 
