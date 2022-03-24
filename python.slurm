@@ -3,10 +3,10 @@
 #SBATCH -J ext_data           # Job name
 #SBATCH -o ext_data.o%j       # Name of stdout output file
 #SBATCH --account=TG-AST090040
-#SBATCH --partition=compute
+#SBATCH --partition=shared
 #SBATCH -N 1                  # Total # of nodes
-#SBATCH --ntasks-per-node 128
-#SBATCH --mem=249325M
+#SBATCH --ntasks-per-node 80
+#SBATCH --mem=120GB
 #SBATCH -t 24:00:00            # Run time (hh:mm:ss)
 
 module load parallel
@@ -20,7 +20,7 @@ do
     # Extract data out of project
     echo Exracting data for $dir	
     mkdir $dir
-    parallel -j128 tar -xzf {} -C $dir/ ::: $PROJECT/$dir/*tar.gz
+    parallel -j80 tar -xzf {} -C $dir/ ::: $PROJECT/$dir/*tar.gz
     cd $dir
     # ls .
     
@@ -35,7 +35,7 @@ do
     #srun python ~/CGM-sim-analysis/save_weighted_med.py
     srun python ~/CGM-sim-analysis/save_tcool_mass_dist.py
 
-    srun -n 64 python ~/CGM-sim-analysis/sightline_analysis_subproc_manager.py
+    srun -n 40 python ~/CGM-sim-analysis/sightline_analysis_subproc_manager.py
 
     # If previously made SFH and masses over time, copy them over
     cp ~/data_products/$dir\_sfh.txt ./sfr.txt
