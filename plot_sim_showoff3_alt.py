@@ -65,7 +65,7 @@ for ax in grid:
     ax.yaxis.set_minor_locator(MultipleLocator(5))
     
 d_norm = LogNorm(1e-30, 1e-23)
-t_norm = LogNorm(1e3, 5e6)
+t_norm = LogNorm(1e3, 1e7)
 v_norm = SymLogNorm(1, linscale=0.7, base=10, vmin=-3e2, vmax=3e2)
 
 ax = grid.axes_row[0]
@@ -76,13 +76,13 @@ bar = AnchoredSizeBar(ax[0].transData, 10, "10 kpc", 3,
                                        'weight':'bold'})
 ax[0].add_artist(bar)
 
-circle = Circle((0,0), 6.874581203331226, transform=ax[0].transData,
+circle = Circle((0,0), 9.003862, transform=ax[0].transData,
                 edgecolor='white', fill=False, ls='-', lw=1)
 ax[0].add_artist(circle)
-circle = Circle((0,0), 6.874581203331226, transform=ax[1].transData,
+circle = Circle((0,0), 9.003862, transform=ax[1].transData,
                 edgecolor='white', fill=False, ls='-', lw=1)
 ax[1].add_artist(circle)
-circle = Circle((0,0), 6.874581203331226, transform=ax[2].transData,
+circle = Circle((0,0), 9.003862, transform=ax[2].transData,
                 edgecolor='white', fill=False, ls='-', lw=1)
 ax[2].add_artist(circle)
 
@@ -117,13 +117,13 @@ ax[0].text(0.04, 0.9, "CoolFlow",
            transform=ax[0].transAxes,
            fontdict={'size':'large','weight':'bold','color':'white'})
 
-circle = Circle((0,0), 11.192377, transform=ax[0].transData,
+circle = Circle((0,0), 15.366613, transform=ax[0].transData,
                 edgecolor='white', fill=False, ls='-', lw=1)
 ax[0].add_artist(circle)
-circle = Circle((0,0), 11.192377, transform=ax[1].transData,
+circle = Circle((0,0), 15.366613, transform=ax[1].transData,
                 edgecolor='white', fill=False, ls='-', lw=1)
 ax[1].add_artist(circle)
-circle = Circle((0,0), 11.192377, transform=ax[2].transData,
+circle = Circle((0,0), 15.366613, transform=ax[2].transData,
                 edgecolor='white', fill=False, ls='-', lw=1)
 ax[2].add_artist(circle)
 
@@ -152,13 +152,13 @@ ax[0].text(0.04, 0.9, "LowRatio",
            transform=ax[0].transAxes,
            fontdict={'size':'large','weight':'bold','color':'white'})
 
-circle = Circle((0,0), 10.344807, transform=ax[0].transData,
+circle = Circle((0,0), 11.708780, transform=ax[0].transData,
                 edgecolor='white', fill=False, ls='-', lw=1)
 ax[0].add_artist(circle)
-circle = Circle((0,0), 10.344807, transform=ax[1].transData,
+circle = Circle((0,0), 11.708780, transform=ax[1].transData,
                 edgecolor='white', fill=False, ls='-', lw=1)
 ax[1].add_artist(circle)
-circle = Circle((0,0), 10.344807, transform=ax[2].transData,
+circle = Circle((0,0), 11.708780, transform=ax[2].transData,
                 edgecolor='white', fill=False, ls='-', lw=1)
 ax[2].add_artist(circle)
 
@@ -187,13 +187,13 @@ ax[0].text(0.04, 0.9, "HighRatio",
            transform=ax[0].transAxes,
            fontdict={'size':'large','weight':'bold','color':'white'})
 
-circle = Circle((0,0), 5.549395, transform=ax[0].transData,
+circle = Circle((0,0), 8.123520, transform=ax[0].transData,
                 edgecolor='white', fill=False, ls='-', lw=1)
 ax[0].add_artist(circle)
-circle = Circle((0,0), 5.549395, transform=ax[1].transData,
+circle = Circle((0,0), 8.123520, transform=ax[1].transData,
                 edgecolor='white', fill=False, ls='-', lw=1)
 ax[1].add_artist(circle)
-circle = Circle((0,0), 5.549395, transform=ax[2].transData,
+circle = Circle((0,0), 8.123520, transform=ax[2].transData,
                 edgecolor='white', fill=False, ls='-', lw=1)
 ax[2].add_artist(circle)
 
@@ -222,13 +222,13 @@ ax[0].text(0.04, 0.9, "LinRot",
            transform=ax[0].transAxes,
            fontdict={'size':'large','weight':'bold','color':'white'})
 
-circle = Circle((0,0), 8.549943, transform=ax[0].transData,
+circle = Circle((0,0), 10.356253, transform=ax[0].transData,
                 edgecolor='white', fill=False, ls='-', lw=1)
 ax[0].add_artist(circle)
-circle = Circle((0,0), 8.549943, transform=ax[1].transData,
+circle = Circle((0,0), 10.356253, transform=ax[1].transData,
                 edgecolor='white', fill=False, ls='-', lw=1)
 ax[1].add_artist(circle)
-circle = Circle((0,0), 8.549943, transform=ax[2].transData,
+circle = Circle((0,0), 10.356253, transform=ax[2].transData,
                 edgecolor='white', fill=False, ls='-', lw=1)
 ax[2].add_artist(circle)
 
@@ -257,13 +257,13 @@ ax[0].text(0.04, 0.9, "NoRot",
            transform=ax[0].transAxes,
            fontdict={'size':'large','weight':'bold','color':'white'})
 
-circle = Circle((0,0), 7.217424, transform=ax[0].transData,
+circle = Circle((0,0), 10.382294, transform=ax[0].transData,
                 edgecolor='white', fill=False, ls='-', lw=1)
 ax[0].add_artist(circle)
-circle = Circle((0,0), 7.217424, transform=ax[1].transData,
+circle = Circle((0,0), 10.382294, transform=ax[1].transData,
                 edgecolor='white', fill=False, ls='-', lw=1)
 ax[1].add_artist(circle)
-circle = Circle((0,0), 7.217424, transform=ax[2].transData,
+circle = Circle((0,0), 10.382294, transform=ax[2].transData,
                 edgecolor='white', fill=False, ls='-', lw=1)
 ax[2].add_artist(circle)
 

@@ -120,46 +120,30 @@ ax[1,1].loglog(fid[lb:ub,0],
 
 # ax[0].loglog(tctff5[:,0], tctff5[:,  1]/np.sum(tctff5[:43,  1]), c='C2')
 ax[0,0].loglog(tctff5[lb:ub,0],
-               np.cumsum(tctff5[lb:ub, 21]) \
-               / (np.cumsum(tctff5[lb:ub, 21])[-1]/np.cumsum(fid[lb:ub, 21])[-1]) \
-               / np.cumsum(fid[lb:ub, 21])[-1],
+               np.cumsum(tctff5[lb:ub, 21]) / np.cumsum(tctff5[lb:ub, 21])[-1],
                c='C2', label='LowR')
 ax[0,1].loglog(tctff5[lb:ub,0],
-               np.cumsum(tctff5[lb:ub, 41]) \
-               / (np.cumsum(tctff5[lb:ub, 41])[-1]/np.cumsum(fid[lb:ub, 41])[-1]) \
-               / np.cumsum(fid[lb:ub, 41])[-1],
+               np.cumsum(tctff5[lb:ub, 41]) / np.cumsum(tctff5[lb:ub, 41])[-1],
                c='C2')
 ax[1,0].loglog(tctff5[lb:ub,0],
-               np.cumsum(tctff5[lb:ub, 61]) \
-               / (np.cumsum(tctff5[lb:ub, 61])[-1]/np.cumsum(fid[lb:ub, 61])[-1]) \
-               / np.cumsum(fid[lb:ub, 61])[-1],
+               np.cumsum(tctff5[lb:ub, 61]) / np.cumsum(tctff5[lb:ub, 61])[-1],
                c='C2')
 ax[1,1].loglog(tctff5[lb:ub,0],
-               np.cumsum(tctff5[lb:ub, 81]) \
-               / (np.cumsum(tctff5[lb:ub, 81])[-1]/np.cumsum(fid[lb:ub, 81])[-1]) \
-               / np.cumsum(fid[lb:ub, 81])[-1],
+               np.cumsum(tctff5[lb:ub, 81]) / np.cumsum(tctff5[lb:ub, 81])[-1],
                c='C2')
 
 # ax[0].loglog(tctff20[:,0], tctff20[:,  1]/np.sum(tctff20[:43,  1]), c='C1')
 ax[0,0].loglog(tctff20[lb:ub,0],
-               np.cumsum(tctff20[lb:ub, 21]) \
-               / (np.cumsum(tctff20[lb:ub, 21])[-1]/np.cumsum(fid[lb:ub, 21])[-1]) \
-               / np.cumsum(fid[lb:ub, 21])[-1],
+               np.cumsum(tctff20[lb:ub, 21]) / np.cumsum(tctff20[lb:ub, 21])[-1],
                c='C1', label='HighR')
 ax[0,1].loglog(tctff20[lb:ub,0],
-               np.cumsum(tctff20[lb:ub, 41]) \
-               / (np.cumsum(tctff20[lb:ub, 41])[-1]/np.cumsum(fid[lb:ub, 41])[-1]) \
-               / np.cumsum(fid[lb:ub, 41])[-1],
+               np.cumsum(tctff20[lb:ub, 41]) / np.cumsum(tctff20[lb:ub, 41])[-1],
                c='C1')
 ax[1,0].loglog(tctff20[lb:ub,0],
-               np.cumsum(tctff20[lb:ub, 61]) \
-               / (np.cumsum(tctff20[lb:ub, 61])[-1]/np.cumsum(fid[lb:ub, 61])[-1]) \
-               / np.cumsum(fid[lb:ub, 61])[-1],
+               np.cumsum(tctff20[lb:ub, 61]) / np.cumsum(tctff20[lb:ub, 61])[-1],
                c='C1')
 ax[1,1].loglog(tctff20[lb:ub,0],
-               np.cumsum(tctff20[lb:ub, 81]) \
-               / (np.cumsum(tctff20[lb:ub, 81])[-1]/np.cumsum(fid[lb:ub, 81])[-1]) \
-               / np.cumsum(fid[lb:ub, 81])[-1],
+               np.cumsum(tctff20[lb:ub, 81]) / np.cumsum(tctff20[lb:ub, 81])[-1],
                c='C1')
 
 ax[0,0].legend(framealpha=1)

@@ -350,12 +350,16 @@ ax[1,2].yaxis.set_label_position("right")
 ax[1,2].set_title("No Rotation ", loc='right', y=0.85)
 
 ax[0,0].set_xlim(2, 4)
-ax[0,0].set_ylim(0,12)
+ax[0,0].set_ylim(0,17)
+
 
 # ax[0,0].set_ylabel("SFR  [M$_\odot$ yr$^{-1}$]", labelpad=0.08)
 # ax[0,0].yaxis.set_label_position("right")
 
 ax[0,0].xaxis.set_minor_locator(MultipleLocator(0.1))
+
+ax[0,0].yaxis.set_major_locator(MultipleLocator(5))
+ax[0,0].yaxis.set_minor_locator(MultipleLocator(1))
 
 for i in range(3):
     ax[1,i].set_xlabel('$t$  [Gyr]', fontsize='large')
