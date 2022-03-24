@@ -19,8 +19,8 @@ python plot_disk_mass_evolution.py       # fig_mass-ev.pdf,
                                          # fig_net-gas-mass.pdf
 python plot_sim_showoff1.py              # fig_edge-ev_fid.pdf
 python plot_sim_showoff2.py              # fig_edge-comp.pdf
-python cooling_time_dist.py              # fig_tcool-mass-dist_cumm-big.pdf,
+python plot_tcool_dist.py                # fig_tcool-mass-dist_cumm-big.pdf,
                                          # fig_tcool-mass-dis_tctfff-var.pdf
-python hedgehog_entropy_tcool            # fig_entropy-pressure-tctff-mass_fid.pdf,
+python plot_hedgehog.py                  # fig_entropy-pressure-tctff-mass_fid.pdf,
                                          # fig_CGM90_entropy-tctff-vel.pdf
 

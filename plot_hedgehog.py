@@ -229,7 +229,7 @@ ax[2].set_ylabel(r"$t_{\rm c}/t_{\rm ff}$", fontsize='large')
 ax[3].set_ylabel(r"$M_{\rm cell}\ \ [\rm M_\odot]$", fontsize='large')
 ax[1].set_ylabel(r"P  [erg cm$^{-3}$]", fontsize='large')
 
-ax[0].set_ylim(1e0, 1e5)
+ax[0].set_ylim(1e0, 1e6)
 ax[2].set_ylim(1e-1, 1e5)
 ax[3].set_ylim(1e-2, 1e5)
 ax[1].set_ylim(1e-18, 1e-13)
@@ -562,7 +562,7 @@ ax[0,1].semilogy(r_centers, ent_med_lin[ind], color='C4', label='Linear Rotation
 ax[0,1].fill_between(r_centers, ent_p16_lin[ind], ent_p84_lin[ind], alpha=0.2, color='C4')
 ax[0,1].semilogy(r_centers, ent_med_nor[ind], color='C5', label='No Rotation')
 ax[0,1].fill_between(r_centers, ent_p16_nor[ind], ent_p84_nor[ind], alpha=0.2, color='C5')
-ax[0,1].semilogy(r_centers, ent_p16_nor[ind], color='C5', ls=':')
+#ax[0,1].semilogy(r_centers, ent_p16_nor[ind], color='C5', ls=':')
 
 # ax[0,1].legend()
 
@@ -579,7 +579,7 @@ ax[1,1].semilogy(r_centers, tctff_med_lin[ind], color='C4')
 ax[1,1].fill_between(r_centers, tctff_p16_lin[ind], tctff_p84_lin[ind], alpha=0.2, color='C4')
 ax[1,1].semilogy(r_centers, tctff_med_nor[ind], color='C5')
 ax[1,1].fill_between(r_centers, tctff_p16_nor[ind], tctff_p84_nor[ind], alpha=0.2, color='C5')
-ax[1,1].semilogy(r_centers, tctff_p16_nor[ind], color='C5', ls=':')
+#ax[1,1].semilogy(r_centers, tctff_p16_nor[ind], color='C5', ls=':')
 
 ax[2,0].plot(r_centers, vel_med[ind], color='C0', label='Fiducial')
 ax[2,0].fill_between(r_centers, vel_p16[ind], vel_p84[ind], alpha=0.2, color='C0')
@@ -588,7 +588,7 @@ ax[2,0].fill_between(r_centers, vel_p16_5[ind], vel_p84_5[ind], alpha=0.2, color
 ax[2,0].plot(r_centers, vel_med_20[ind], color='C1', label=r'$t_{\rm c}/t_{\rm ff} = 20$')
 ax[2,0].fill_between(r_centers, vel_p16_20[ind], vel_p84_20[ind], alpha=0.2, color='C1')
 
-ax[2,0].legend()
+ax[2,0].legend(loc="lower right")
 
 ax[2,1].plot(r_centers, vel_med[ind], color='C0', label='Fiducial')
 ax[2,1].fill_between(r_centers, vel_p16[ind], vel_p84[ind], alpha=0.2, color='C0')
@@ -596,14 +596,14 @@ ax[2,1].plot(r_centers, vel_med_lin[ind], color='C4', label='Linear Rotation')
 ax[2,1].fill_between(r_centers, vel_p16_lin[ind], vel_p84_lin[ind], alpha=0.2, color='C4')
 ax[2,1].plot(r_centers, vel_med_nor[ind], color='C5', label='No Rotation')
 ax[2,1].fill_between(r_centers, vel_p16_nor[ind], vel_p84_nor[ind], alpha=0.2, color='C5')
-ax[2,1].plot(r_centers, vel_p16_nor[ind], color='C5', ls=':')
+#ax[2,1].plot(r_centers, vel_p16_nor[ind], color='C5', ls=':')
 
-ax[2,1].legend()
+ax[2,1].legend(loc="lower right")
 
 for i in range(2):
-    ax[0,i].set_ylim(1e-2, 1e3)
+    ax[0,i].set_ylim(1e-2, 1e4)
     ax[1,i].set_ylim(1e-1,1e4)
-    ax[2,i].set_ylim(-50,200)
+    ax[2,i].set_ylim(-100,100)
     ax[1,i].axhline(5, color='gray', ls='--')
     ax[1,i].axhline(20, color='gray', ls='--')
     ax[2,i].axhline(0, color='gray', ls='--')
