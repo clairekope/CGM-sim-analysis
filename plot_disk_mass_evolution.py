@@ -108,10 +108,10 @@ for i in range(3):
     ax[0,i].set_ylim(0, 12)
     #ax[1,i].set_ylim(0, 10)
     ax[1,i].set_yscale('log')
-    ax[1,i].set_ylim(1e-1,1e2)
-    ax[1,i].yaxis.set_minor_locator(FixedLocator([1e-1, 1e1]))
-    ax[1,i].yaxis.set_minor_formatter(NullFormatter())
-    ax[1,i].grid(axis='y', which='both')
+    ax[1,i].set_ylim(1e-1,2e1)
+    #ax[1,i].yaxis.set_minor_locator(FixedLocator([1e-1, 1e1]))
+    #ax[1,i].yaxis.set_minor_formatter(NullFormatter())
+    ax[1,i].grid(axis='y', which='major')
 
 for i in range(3):
     for j in range(2):
@@ -217,8 +217,8 @@ ax[1].set_ylim(-8.5, 6)
 
 ax[1].set_xlabel("$t\ \ $[Gyr]", fontsize='large')
 
-ax[0].set_ylabel(r"Stellar Mass Growth ($\rm 10^8\ M_\odot$)", fontsize='large')
-ax[1].set_ylabel(r"Gas Mass Growth ($\rm 10^8\ M_\odot$)", fontsize='large')
+ax[0].set_ylabel(r"Stellar Mass ($\rm 10^8\ M_\odot$)", fontsize='large')
+ax[1].set_ylabel(r"Gas Mass ($\rm 10^8\ M_\odot$)", fontsize='large')
 
 ax[0].legend(loc='upper left')
 ax[1].legend(loc='lower left')
