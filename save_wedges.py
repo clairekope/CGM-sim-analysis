@@ -21,26 +21,26 @@ units = ['keV*cm**2','Gyr','g*cm**-3',
          'K','Zsun','dyne*cm**-2',
          'Msun','km/s']
 
-theta = np.arange(15,180,30)
+theta = [0,]
+theta.extend(np.arange(15,180,30))
+theta.append(180)
 
 edges = np.linspace(2e-1, 206, bins)
 centers = edges[:-1] + np.diff(edges)/2
 
-datasets = yt.load("../sample_data/fid/DD????/DD????")
+datasets = yt.load("DD????/DD????")
 storage = {}
 
 for my_storage, ds in datasets.piter(storage=storage):
 
     quantity_arrays = {}
     for quantity_name in fields:
-        quantity_arrays[quantity_name] = {}
+        quantity_arrays[quantity_name[1]] = {}
 
     sph = ds.sphere('c',(206,'kpc'))
 
     for t in range(len(theta)-1):
 
-        #select = f"(obj[('index','spherical_theta')] < {np.deg2rad(theta[t])})"
-        # problem child is below
         select = f"(obj[('index','spherical_theta')] > {np.deg2rad(theta[t])}) &"\
                  f"(obj[('index','spherical_theta')] < {np.deg2rad(theta[t+1])})"
 
@@ -71,7 +71,7 @@ for my_storage, ds in datasets.piter(storage=storage):
                 quantity_upp[i] = np.percentile(quantities[i], 84)
                 quantity_max[i] = np.max(quantities[i])
 
-            quantity_arrays[quantity_name][t] = {'min':quantity_min,
+            quantity_arrays[quantity_name[1]][t] = {'min':quantity_min,
                                                  'p16':quantity_low,
                                                  'med':quantity_med,
                                                  'p84':quantity_upp,
@@ -80,6 +80,8 @@ for my_storage, ds in datasets.piter(storage=storage):
     my_storage.result = quantity_arrays
     my_storage.result_id = ds.basename
 
+    ds.close()
+    
 if yt.is_root():
     with open("wedges.pkl","wb") as f:
         pickle.dump(storage, f, protocol=3)
