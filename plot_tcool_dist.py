@@ -99,6 +99,7 @@ fig.tight_layout()
 fig.savefig("../fig_tcool-mass-dist_cumm-big.pdf")
 
 
+
 fig, ax = plt.subplots(nrows=2, ncols=2, sharex=True, sharey=True, figsize=(5,5))
 
 lb = 26
@@ -121,7 +122,7 @@ ax[1,1].loglog(fid[lb:ub,0],
 # ax[0].loglog(tctff5[:,0], tctff5[:,  1]/np.sum(tctff5[:43,  1]), c='C2')
 ax[0,0].loglog(tctff5[lb:ub,0],
                np.cumsum(tctff5[lb:ub, 21]) / np.cumsum(tctff5[lb:ub, 21])[-1],
-               c='C2', label='LowR')
+               c='C2', label='LowRatio')
 ax[0,1].loglog(tctff5[lb:ub,0],
                np.cumsum(tctff5[lb:ub, 41]) / np.cumsum(tctff5[lb:ub, 41])[-1],
                c='C2')
@@ -135,7 +136,7 @@ ax[1,1].loglog(tctff5[lb:ub,0],
 # ax[0].loglog(tctff20[:,0], tctff20[:,  1]/np.sum(tctff20[:43,  1]), c='C1')
 ax[0,0].loglog(tctff20[lb:ub,0],
                np.cumsum(tctff20[lb:ub, 21]) / np.cumsum(tctff20[lb:ub, 21])[-1],
-               c='C1', label='HighR')
+               c='C1', label='HighRatio')
 ax[0,1].loglog(tctff20[lb:ub,0],
                np.cumsum(tctff20[lb:ub, 41]) / np.cumsum(tctff20[lb:ub, 41])[-1],
                c='C1')
@@ -178,3 +179,85 @@ ax[0,0].set_ylim(1e-3,1.5e0)
 
 fig.tight_layout()
 fig.savefig("../fig_tcool-mass-dist_tctff-var.pdf")
+
+
+
+fig, ax = plt.subplots(nrows=2, ncols=2, sharex=True, sharey=True, figsize=(5,5))
+
+lb = 26
+ub = -20
+
+# ax[0].loglog(fid[:,0], fid[:,  1]/np.sum(fid[:43,  1]), c='C0')
+ax[0,0].loglog(fid[lb:ub,0], 
+               np.cumsum(fid[lb:ub, 21])/np.cumsum(fid[lb:ub, 21])[-1],
+               c='C0', label='Fid')
+ax[0,1].loglog(fid[lb:ub,0], 
+               np.cumsum(fid[lb:ub, 41])/np.cumsum(fid[lb:ub, 41])[-1],
+               c='C0')
+ax[1,0].loglog(fid[lb:ub,0], 
+               np.cumsum(fid[lb:ub, 61])/np.cumsum(fid[lb:ub, 61])[-1],
+               c='C0')
+ax[1,1].loglog(fid[lb:ub,0], 
+               np.cumsum(fid[lb:ub, 81])/np.cumsum(fid[lb:ub, 81])[-1],
+               c='C0')
+
+# ax[0].loglog(linrot[:,0], linrot[:,  1]/np.sum(linrot[:43,  1]), c='C2')
+ax[0,0].loglog(linrot[lb:ub,0],
+               np.cumsum(linrot[lb:ub, 21]) / np.cumsum(linrot[lb:ub, 21])[-1],
+               c='C4', label='LinRot')
+ax[0,1].loglog(linrot[lb:ub,0],
+               np.cumsum(linrot[lb:ub, 41]) / np.cumsum(linrot[lb:ub, 41])[-1],
+               c='C4')
+ax[1,0].loglog(linrot[lb:ub,0],
+               np.cumsum(linrot[lb:ub, 61]) / np.cumsum(linrot[lb:ub, 61])[-1],
+               c='C4')
+ax[1,1].loglog(linrot[lb:ub,0],
+               np.cumsum(linrot[lb:ub, 81]) / np.cumsum(linrot[lb:ub, 81])[-1],
+               c='C4')
+
+# ax[0].loglog(norot[:,0], norot[:,  1]/np.sum(norot[:43,  1]), c='C1')
+ax[0,0].loglog(norot[lb:ub,0],
+               np.cumsum(norot[lb:ub, 21]) / np.cumsum(norot[lb:ub, 21])[-1],
+               c='C5', label='NoRot')
+ax[0,1].loglog(norot[lb:ub,0],
+               np.cumsum(norot[lb:ub, 41]) / np.cumsum(norot[lb:ub, 41])[-1],
+               c='C5')
+ax[1,0].loglog(norot[lb:ub,0],
+               np.cumsum(norot[lb:ub, 61]) / np.cumsum(norot[lb:ub, 61])[-1],
+               c='C5')
+ax[1,1].loglog(norot[lb:ub,0],
+               np.cumsum(norot[lb:ub, 81]) / np.cumsum(norot[lb:ub, 81])[-1],
+               c='C5')
+
+ax[0,0].legend(framealpha=1)
+
+ax[0,0].text(0.05, 0.9, '1 Gyr', transform=ax[0,0].transAxes, fontweight='bold',
+             ha='left', va='top')
+ax[0,1].text(0.05, 0.9, '2 Gyr', transform=ax[0,1].transAxes, fontweight='bold',
+             ha='left', va='top')
+ax[1,0].text(0.05, 0.9, '3 Gyr', transform=ax[1,0].transAxes, fontweight='bold',
+             ha='left', va='top')
+ax[1,1].text(0.05, 0.9, '4 Gyr', transform=ax[1,1].transAxes, fontweight='bold',
+             ha='left', va='top')
+
+# ax[0,0].set_title('0 Gyr')
+# ax[0,1].set_title('1 Gyr')
+# ax[0,2].set_title('2 Gyr')
+# ax[0,3].set_title('3 Gyr')
+# ax[0,4].set_title('4 Gyr')
+
+ax[0,0].set_xlim(1e-1, 1e2)
+
+for i in range(2):
+    ax[i,0].set_ylabel(r"Mass PDF", fontsize='large')
+    ax[1,i].set_xlabel(r"$t_{\rm c}$  [Gyr]", fontsize='large')
+    for j in range(2):
+        ax[i,j].grid()
+        
+ax[0,0].set_ylim(1e-3,1.5e0)
+#ax[0,0].yaxis.set_major_locator(FixedLocator([1e-6, 1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0]))
+#ax[0,0].set_xticks([1e-2,1e-1,1e0,1e1,1e2,1e3,1e4,1e5])
+#ax[0,0].set_xticklabels(['$10^{-2}$','','$10^{0}$','','$10^{2}$','','$10^4$',''])
+
+fig.tight_layout()
+fig.savefig("../fig_tcool-mass-dist_rot-var.pdf")

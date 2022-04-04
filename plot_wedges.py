@@ -9,21 +9,19 @@ import seaborn as sns
 import unyt as u
 import pickle
 
-# Setup
 
-n_theta = 13
-theta = np.round(np.linspace(0, 180, n_theta, endpoint=True))
+# # Setup
+theta = np.array([0,15,45,75,105,135,165,180])
+theta_mid = np.array([0, 30, 60, 90, 120, 150, 180])
+n_theta = len(theta)-1
 
 r_edges = np.linspace(2e-1, 206, 51) * u.kpc
 r_centers = r_edges[:-1] + np.diff(r_edges)/2
 
-# Calculate t_ff
-# adding in stars as a point source is restricted to r > 30 kpc,
-# which is the edge of the stellar distribution at the end of the sim
-tff_cut = r_centers > 2*u.kpc
-
 time_myr, fid_mgas, fid_mstar = np.genfromtxt("../extracted_data/fid_masses_over_time.txt", 
                                               usecols=(0,1,2), unpack=True)
+
+# Calculate freefall time from NFW and current stars (NFW dominates)
 
 Mtot = 1e12 * u.Msun
 C = 10
@@ -33,9 +31,10 @@ Rvir = ( 3.0/(4.0*np.pi)*Mtot / (200.*rho_crit) )**(1./3.)
 Rs = Rvir/C
 rho_0 = 200.0*rho_crit * C**3/3.0 / (np.log(1.0+C) - C/(1.0+C))
 
-M_r = 4.0*np.pi * rho_0 * Rs**3.0 * (np.log((Rs+r_centers)/Rs) - r_centers/(Rs+r_centers))
+M_r = 4.0*np.pi * rho_0 * Rs**3.0 *(np.log((Rs+r_centers)/Rs) - r_centers/(Rs+r_centers))
 
 g_NFW = (u.G*M_r/r_centers**2).to("cm/s**2")
+
 
 def MN_accel(Mstar_add = None):
     rs = 3.5 * u.kpc
@@ -45,7 +44,7 @@ def MN_accel(Mstar_add = None):
     if Mstar_add is not None:
         MStar += Mstar_add
 
-    thetacol, radrow = np.meshgrid(theta, r_centers[tff_cut])
+    thetacol, radrow = np.meshgrid(theta_mid, r_centers)
     r = radrow*np.sin(thetacol) # cyl radius from sph
     z = radrow*np.cos(thetacol)
 
@@ -60,6 +59,7 @@ def MN_accel(Mstar_add = None):
     
     return g.to('cm/s**2')
 
+
 tff = {}
 for t in range(time_myr.size):
     label = f"DD{t:04d}"
@@ -68,18 +68,22 @@ for t in range(time_myr.size):
     g_MN = MN_accel(fid_mstar[t]*u.Msun)
     
     #g_gas = u.G * fid_mgas[t]*u.Msun / np.power(r_centers[tff_cut], 2)
-    
+
     for i in range(n_theta):
         tff[label][i] = np.zeros(r_centers.size) * np.nan
         g_total = g_NFW + g_MN[:,i]# + g_gas
-        tff[label][i][tff_cut] = np.sqrt(2*r_centers[tff_cut] / g_total).to("Gyr")
+        tff[label][i] = np.sqrt(2*r_centers / g_total).to("Gyr")
 
 
-# Fiducial Late Time (3-4 Gyr) Averages
+# # Fiducial
 
-with open("../extracted_data/fid_hedgehog.pkl","rb") as f:
+with open("../extracted_data/fid_wedges.pkl","rb") as f:
     fid = pickle.load(f)
 
+
+# ## Late Times (3-4 Gyr)
+
+# ### Time Averages
 ent_meds = np.empty((20, n_theta, 50))
 ent_p16s = np.empty_like(ent_meds)
 ent_p84s = np.empty_like(ent_meds)
@@ -111,37 +115,6 @@ tctff_med = np.mean(tctff_meds, axis=0)
 tctff_p16 = np.mean(tctff_p16s, axis=0)
 tctff_p84 = np.mean(tctff_p84s, axis=0)
 
-
-temp_meds = np.empty((20, n_theta, 50))
-temp_p16s = np.empty_like(temp_meds)
-temp_p84s = np.empty_like(temp_meds)
-
-for i in range(20):
-    dd = i+60
-    for t in range(n_theta):
-        temp_meds[i,t,:] = fid[f"DD{dd:04}"]["temperature"][t]["med"]
-        temp_p16s[i,t,:] = fid[f"DD{dd:04}"]["temperature"][t]["p16"]
-        temp_p84s[i,t,:] = fid[f"DD{dd:04}"]["temperature"][t]["p84"]
-        
-temp_med = np.mean(temp_meds, axis=0)
-temp_p16 = np.mean(temp_p16s, axis=0)
-temp_p84 = np.mean(temp_p84s, axis=0)
-
-
-dens_meds = np.empty((20, n_theta, 50))
-dens_p16s = np.empty_like(dens_meds)
-dens_p84s = np.empty_like(dens_meds)
-
-for i in range(20):
-    dd = i+60
-    for t in range(n_theta):
-        dens_meds[i,t,:] = fid[f"DD{dd:04}"]["density"][t]["med"]
-        dens_p16s[i,t,:] = fid[f"DD{dd:04}"]["density"][t]["p16"]
-        dens_p84s[i,t,:] = fid[f"DD{dd:04}"]["density"][t]["p84"]
-        
-dens_med = np.mean(dens_meds, axis=0)
-dens_p16 = np.mean(dens_p16s, axis=0)
-dens_p84 = np.mean(dens_p84s, axis=0)
 
 
 mass_meds = np.empty((20, n_theta, 50))
@@ -192,11 +165,11 @@ vel_p16 = np.mean(vel_p16s, axis=0)
 vel_p84 = np.mean(vel_p84s, axis=0)
 
 
-# Paper Figure
+
 fig, ax = plt.subplots(nrows=4, sharex=True, sharey=False, figsize=(5,10))
 
 cmap = sns.color_palette("crest_r", as_cmap=True)
-colors = [cmap(i) for i in np.abs(theta-90)/90]
+colors = [cmap(i) for i in np.abs(theta_mid-90)/90]
 zorders = np.concatenate((np.arange(1,n_theta//2+1), np.arange(n_theta//2+1,0,-1)))
 
 
@@ -230,42 +203,50 @@ ax[3].set_ylabel(r"$M_{\rm cell}\ \ [\rm M_\odot]$", fontsize='large')
 ax[1].set_ylabel(r"P  [erg cm$^{-3}$]", fontsize='large')
 
 ax[0].set_ylim(1e0, 1e6)
+ax[1].set_ylim(1e-19, 1e-13)
 ax[2].set_ylim(1e-1, 1e5)
-ax[3].set_ylim(1e-2, 1e5)
-ax[1].set_ylim(1e-18, 1e-13)
+ax[3].set_ylim(1e-2, 1e4)
 ax[0].set_xlim(0,206)
 
-ax[0].yaxis.set_minor_locator(FixedLocator([1e1, 1e3, 1e5]))
-ax[0].yaxis.set_minor_formatter(NullFormatter())
-ax[1].yaxis.set_minor_locator(FixedLocator([1e-18, 1e-16, 1e-14]))
-ax[1].yaxis.set_minor_formatter(NullFormatter())
-ax[2].yaxis.set_minor_locator(FixedLocator([1e0, 1e2, 1e4]))
-ax[2].yaxis.set_minor_formatter(NullFormatter())
-ax[3].yaxis.set_minor_locator(FixedLocator([1e-1, 1e1, 1e3, 1e5]))
-ax[3].yaxis.set_minor_formatter(NullFormatter())
+ax[1].yaxis.set_major_locator(FixedLocator([1e-13,1e-14,1e-15,1e-16,1e-17,1e-18,1e-19]))
+
+# ax[0].yaxis.set_minor_locator(FixedLocator([1e1, 1e3, 1e5]))
+# ax[0].yaxis.set_minor_formatter(NullFormatter())
+# ax[1].yaxis.set_minor_locator(FixedLocator([1e-18, 1e-16, 1e-14]))
+# ax[1].yaxis.set_minor_formatter(NullFormatter())
+# ax[2].yaxis.set_minor_locator(FixedLocator([1e0, 1e2, 1e4]))
+# ax[2].yaxis.set_minor_formatter(NullFormatter())
+# ax[3].yaxis.set_minor_locator(FixedLocator([1e-1, 1e1, 1e3, 1e5]))
+# ax[3].yaxis.set_minor_formatter(NullFormatter())
 
 fig.tight_layout()
-fig.subplots_adjust(bottom = 0.12)
-fig.legend(lines, ['$0^\circ/180^\circ$',
-                  '$15^\circ/165^\circ$',
-                  '$30^\circ/150^\circ$',
-                  '$45^\circ/135^\circ$',
-                  '$60^\circ/120^\circ$',
-                  '$75^\circ/105^\circ$',
+# fig.subplots_adjust(bottom = 0.14)
+# fig.legend(lines, ['$(0^\circ,15^\circ)$ &'+'\n'+'$(165^\circ,180^\circ)$',
+#                   '$(15^\circ,45^\circ)$ &'+'\n'+'$(135^\circ,165^\circ)$',
+#                   '$(45^\circ,75^\circ)$ &'+'\n'+'$(105^\circ,135^\circ)$',
+#                   '$(75^\circ,105^\circ)$'],
+#            loc = 'lower center',
+#            ncol = 2,
+#          )
+fig.subplots_adjust(bottom = 0.09)
+fig.legend(lines, ['$0^\circ / 180^\circ$',
+                  '$30^\circ / 150^\circ$',
+                  '$60^\circ / 120^\circ$',
                   '$90^\circ$'],
            loc = 'lower center',
-           ncol = 4
+           ncol = 4,
          )
-fig.savefig("../fig_entropy-pressure-tctff-mass_fid.pdf")
+fig.savefig("../fig_wedges_entropy-pressure-tctff-mass_fid.pdf")
+
 
 
 # Variant Late Time Averages
 
 # starting with tctff variants
-with open("../extracted_data/tctff5_hedgehog.pkl","rb") as f:
+with open("../extracted_data/tctff5_wedges.pkl","rb") as f:
     tctff5 = pickle.load(f)
 
-with open("../extracted_data/tctff20_hedgehog.pkl","rb") as f:
+with open("../extracted_data/tctff20_wedges.pkl","rb") as f:
  tctff20 = pickle.load(f)
 
 
@@ -398,10 +379,10 @@ vel_p84_20 = np.mean(vel_p84s_20, axis=0)
 
 
 # continuing with rotation variants
-with open("../extracted_data/linrot_hedgehog.pkl","rb") as f:
+with open("../extracted_data/linrot_wedges.pkl","rb") as f:
     linrot = pickle.load(f)
 
-with open("../extracted_data/norot_hedgehog.pkl","rb") as f:
+with open("../extracted_data/norot_wedges.pkl","rb") as f:
     norot = pickle.load(f)
 
 ent_meds_lin = np.empty((20, n_theta, 50))
@@ -500,7 +481,7 @@ vel_p16_nor = np.mean(vel_p16s_nor, axis=0)
 vel_p84_nor = np.mean(vel_p84s_nor, axis=0)
 
 # and now the cooling flow variant
-with open("../extracted_data/cflow_hedgehog.pkl","rb") as f:
+with open("../extracted_data/cflow_wedges.pkl","rb") as f:
     cflow = pickle.load(f)
 
 ent_meds_cflow = np.empty((20, n_theta, 50))
@@ -538,8 +519,8 @@ tctff_p84_cflow = np.mean(tctff_p84s_cflow, axis=0)
 
 fig, ax = plt.subplots(nrows=3, ncols=2, sharex=True, figsize=(6,8))
 
-ind = 6
-assert theta[ind] == 90.0
+ind = 3
+assert theta_mid[ind] == 90
 
 ax[0,0].semilogy(r_centers, fid['DD0000']['entropy'][ind]['med'], color='gray', ls=':')
 ax[0,0].semilogy(r_centers, tctff5['DD0000']['entropy'][ind]['med'], color='gray', ls=':')
@@ -586,6 +567,8 @@ ax[2,0].fill_between(r_centers, vel_p16_5[ind], vel_p84_5[ind], alpha=0.2, color
 ax[2,0].plot(r_centers, vel_med_20[ind], color='C1', label=r'$t_{\rm c}/t_{\rm ff} = 20$')
 ax[2,0].fill_between(r_centers, vel_p16_20[ind], vel_p84_20[ind], alpha=0.2, color='C1')
 ax[2,0].plot(r_centers, vel_p16[ind], color='C0', ls=':')
+ax[2,0].plot(r_centers, vel_p16_5[ind], color='C2', ls=':')
+ax[2,0].plot(r_centers, vel_p16_20[ind], color='C1', ls=':')
 
 ax[2,0].legend(loc="lower right")
 
@@ -596,6 +579,7 @@ ax[2,1].fill_between(r_centers, vel_p16_lin[ind], vel_p84_lin[ind], alpha=0.2, c
 ax[2,1].plot(r_centers, vel_med_nor[ind], color='C5', label='No Rotation')
 ax[2,1].fill_between(r_centers, vel_p16_nor[ind], vel_p84_nor[ind], alpha=0.2, color='C5')
 ax[2,1].plot(r_centers, vel_p16[ind], color='C0', ls=':')
+ax[2,1].plot(r_centers, vel_p16_lin[ind], color='C4', ls=':')
 ax[2,1].plot(r_centers, vel_p16_nor[ind], color='C5', ls=':')
 
 ax[2,1].legend(loc="lower right")
@@ -618,4 +602,7 @@ ax[2,0].set_ylabel(r"$v_r$  [km s$^{-1}$]", fontsize='x-large')
 
 ax[0,0].set_xlim(0, 206)
 fig.tight_layout()
-fig.savefig("../fig_CGM90_entropy-tctff-vel.pdf")
+fig.savefig("../fig_wedges-CGM90_entropy-tctff-vel.pdf")
+
+
+
