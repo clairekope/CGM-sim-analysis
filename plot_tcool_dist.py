@@ -1,7 +1,7 @@
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
-
+from matplotlib.lines import Line2D
 
 fid = np.genfromtxt("../extracted_data/fid_tcool_mass_dist_CGM.txt")
 cflow = np.genfromtxt("../extracted_data/cflow_tcool_mass_dist_CGM.txt")
@@ -10,6 +10,12 @@ tctff20 = np.genfromtxt("../extracted_data/tctff20_tcool_mass_dist_CGM.txt")
 linrot = np.genfromtxt("../extracted_data/linrot_tcool_mass_dist_CGM.txt")
 norot = np.genfromtxt("../extracted_data/norot_tcool_mass_dist_CGM.txt")
 
+fid_disk = np.genfromtxt("../extracted_data/fid_tcool_mass_dist_CGM-disk.txt")
+cflow_disk = np.genfromtxt("../extracted_data/cflow_tcool_mass_dist_CGM-disk.txt")
+tctff5_disk = np.genfromtxt("../extracted_data/tctff5_tcool_mass_dist_CGM-disk.txt")
+tctff20_disk = np.genfromtxt("../extracted_data/tctff20_tcool_mass_dist_CGM-disk.txt")
+linrot_disk = np.genfromtxt("../extracted_data/linrot_tcool_mass_dist_CGM-disk.txt")
+norot_disk = np.genfromtxt("../extracted_data/norot_tcool_mass_dist_CGM-disk.txt")
 
 fig, ax = plt.subplots(nrows=3, ncols=5, sharex=True, sharey=True, figsize=(11,7))
 
@@ -19,11 +25,23 @@ ax[0,2].loglog(fid[:,0], np.cumsum(fid[:, 41]), c='C0')
 ax[0,3].loglog(fid[:,0], np.cumsum(fid[:, 61]), c='C0')
 ax[0,4].loglog(fid[:,0], np.cumsum(fid[:, 81]), c='C0', label='Fiducial')
 
+ax[0,0].loglog(fid_disk[:,0], np.cumsum(fid_disk[:,1]), c='C0', ls='--')
+ax[0,1].loglog(fid_disk[:,0], np.cumsum(fid_disk[:,2]), c='C0', ls='--')
+ax[0,2].loglog(fid_disk[:,0], np.cumsum(fid_disk[:,3]), c='C0', ls='--')
+ax[0,3].loglog(fid_disk[:,0], np.cumsum(fid_disk[:,4]), c='C0', ls='--')
+ax[0,4].loglog(fid_disk[:,0], np.cumsum(fid_disk[:,5]), c='C0', ls='--')
+
 ax[0,0].loglog(cflow[:,0], np.cumsum(cflow[:,  1]), c='C3', label='Cooling Flow')
 ax[0,1].loglog(cflow[:,0], np.cumsum(cflow[:, 21]), c='C3')
 ax[0,2].loglog(cflow[:,0], np.cumsum(cflow[:, 41]), c='C3')
 ax[0,3].loglog(cflow[:,0], np.cumsum(cflow[:, 61]), c='C3')
 ax[0,4].loglog(cflow[:,0], np.cumsum(cflow[:, 81]), c='C3', label='Cooling Flow')
+
+ax[0,0].loglog(cflow_disk[:,0], np.cumsum(cflow_disk[:,1]), c='C3', ls='--')
+ax[0,1].loglog(cflow_disk[:,0], np.cumsum(cflow_disk[:,2]), c='C3', ls='--')
+ax[0,2].loglog(cflow_disk[:,0], np.cumsum(cflow_disk[:,3]), c='C3', ls='--')
+ax[0,3].loglog(cflow_disk[:,0], np.cumsum(cflow_disk[:,4]), c='C3', ls='--')
+ax[0,4].loglog(cflow_disk[:,0], np.cumsum(cflow_disk[:,5]), c='C3', ls='--')
 
 ax[0,0].legend(loc='lower right', framealpha=1)
 
@@ -39,11 +57,23 @@ ax[1,2].loglog(tctff5[:,0], np.cumsum(tctff5[:, 41]), c='C2')
 ax[1,3].loglog(tctff5[:,0], np.cumsum(tctff5[:, 61]), c='C2')
 ax[1,4].loglog(tctff5[:,0], np.cumsum(tctff5[:, 81]), c='C2', label=r'$t_{\rm c}/t_{\rm ff}=5$')
 
+ax[1,0].loglog(tctff5_disk[:,0], np.cumsum(tctff5_disk[:,1]), c='C2', ls='--')
+ax[1,1].loglog(tctff5_disk[:,0], np.cumsum(tctff5_disk[:,2]), c='C2', ls='--')
+ax[1,2].loglog(tctff5_disk[:,0], np.cumsum(tctff5_disk[:,3]), c='C2', ls='--')
+ax[1,3].loglog(tctff5_disk[:,0], np.cumsum(tctff5_disk[:,4]), c='C2', ls='--')
+ax[1,4].loglog(tctff5_disk[:,0], np.cumsum(tctff5_disk[:,5]), c='C2', ls='--')
+
 ax[1,0].loglog(tctff20[:,0], np.cumsum(tctff20[:,  1]), c='C1', label=r'$t_{\rm c}/t_{\rm ff}=20$')
 ax[1,1].loglog(tctff20[:,0], np.cumsum(tctff20[:, 21]), c='C1')
 ax[1,2].loglog(tctff20[:,0], np.cumsum(tctff20[:, 41]), c='C1')
 ax[1,3].loglog(tctff20[:,0], np.cumsum(tctff20[:, 61]), c='C1')
 ax[1,4].loglog(tctff20[:,0], np.cumsum(tctff20[:, 81]), c='C1', label=r'$t_{\rm c}/t_{\rm ff}=20$')
+
+ax[1,0].loglog(tctff20_disk[:,0], np.cumsum(tctff20_disk[:,1]), c='C1', ls='--')
+ax[1,1].loglog(tctff20_disk[:,0], np.cumsum(tctff20_disk[:,2]), c='C1', ls='--')
+ax[1,2].loglog(tctff20_disk[:,0], np.cumsum(tctff20_disk[:,3]), c='C1', ls='--')
+ax[1,3].loglog(tctff20_disk[:,0], np.cumsum(tctff20_disk[:,4]), c='C1', ls='--')
+ax[1,4].loglog(tctff20_disk[:,0], np.cumsum(tctff20_disk[:,5]), c='C1', ls='--')
 
 ax[1,0].legend(loc='lower right', framealpha=1)
 
@@ -59,11 +89,23 @@ ax[2,2].loglog(linrot[:,0], np.cumsum(linrot[:, 41]), c='C4')
 ax[2,3].loglog(linrot[:,0], np.cumsum(linrot[:, 61]), c='C4')
 ax[2,4].loglog(linrot[:,0], np.cumsum(linrot[:, 81]), c='C4', label='Linear Rot')
 
+ax[2,0].loglog(linrot_disk[:,0], np.cumsum(linrot_disk[:,1]), c='C4', ls='--')
+ax[2,1].loglog(linrot_disk[:,0], np.cumsum(linrot_disk[:,2]), c='C4', ls='--')
+ax[2,2].loglog(linrot_disk[:,0], np.cumsum(linrot_disk[:,3]), c='C4', ls='--')
+ax[2,3].loglog(linrot_disk[:,0], np.cumsum(linrot_disk[:,4]), c='C4', ls='--')
+ax[2,4].loglog(linrot_disk[:,0], np.cumsum(linrot_disk[:,5]), c='C4', ls='--')
+
 ax[2,0].loglog(norot[:,0], np.cumsum(norot[:,  1]), c='C5', label='No Rot')
 ax[2,1].loglog(norot[:,0], np.cumsum(norot[:, 21]), c='C5')
 ax[2,2].loglog(norot[:,0], np.cumsum(norot[:, 41]), c='C5')
 ax[2,3].loglog(norot[:,0], np.cumsum(norot[:, 61]), c='C5')
 ax[2,4].loglog(norot[:,0], np.cumsum(norot[:, 81]), c='C5', label='No Rot')
+
+ax[2,0].loglog(norot_disk[:,0], np.cumsum(norot_disk[:,1]), c='C5', ls='--')
+ax[2,1].loglog(norot_disk[:,0], np.cumsum(norot_disk[:,2]), c='C5', ls='--')
+ax[2,2].loglog(norot_disk[:,0], np.cumsum(norot_disk[:,3]), c='C5', ls='--')
+ax[2,3].loglog(norot_disk[:,0], np.cumsum(norot_disk[:,4]), c='C5', ls='--')
+ax[2,4].loglog(norot_disk[:,0], np.cumsum(norot_disk[:,5]), c='C5', ls='--')
 
 ax[2,0].legend(loc='lower right', framealpha=1)
 
@@ -72,6 +114,11 @@ ax[0,1].set_title('1 Gyr', fontweight='bold')
 ax[0,2].set_title('2 Gyr', fontweight='bold')
 ax[0,3].set_title('3 Gyr', fontweight='bold')
 ax[0,4].set_title('4 Gyr', fontweight='bold')
+
+cgm = Line2D([0], [0], ls='-', c='dimgray')
+w_disk = Line2D([0], [0], ls='--', c='dimgray')
+
+ax[0,1].legend([cgm, w_disk], ["CGM Only","CGM + Disk"])
 
 #ax[0,0].set_xlim(1e-5, 1e1)
 ax[0,0].set_xlim(1e-1, 1e2)
@@ -106,45 +153,45 @@ lb = 26
 ub = -20
 
 # ax[0].loglog(fid[:,0], fid[:,  1]/np.sum(fid[:43,  1]), c='C0')
-ax[0,0].loglog(fid[lb:ub,0], 
-               np.cumsum(fid[lb:ub, 21])/np.cumsum(fid[lb:ub, 21])[-1],
+ax[0,0].loglog(fid[:,0], 
+               np.cumsum(fid[:, 21])/np.cumsum(fid[:, 21])[-1],
                c='C0', label='Fid')
-ax[0,1].loglog(fid[lb:ub,0], 
-               np.cumsum(fid[lb:ub, 41])/np.cumsum(fid[lb:ub, 41])[-1],
+ax[0,1].loglog(fid[:,0], 
+               np.cumsum(fid[:, 41])/np.cumsum(fid[:, 41])[-1],
                c='C0')
-ax[1,0].loglog(fid[lb:ub,0], 
-               np.cumsum(fid[lb:ub, 61])/np.cumsum(fid[lb:ub, 61])[-1],
+ax[1,0].loglog(fid[:,0], 
+               np.cumsum(fid[:, 61])/np.cumsum(fid[:, 61])[-1],
                c='C0')
-ax[1,1].loglog(fid[lb:ub,0], 
-               np.cumsum(fid[lb:ub, 81])/np.cumsum(fid[lb:ub, 81])[-1],
+ax[1,1].loglog(fid[:,0], 
+               np.cumsum(fid[:, 81])/np.cumsum(fid[:, 81])[-1],
                c='C0')
 
 # ax[0].loglog(tctff5[:,0], tctff5[:,  1]/np.sum(tctff5[:43,  1]), c='C2')
-ax[0,0].loglog(tctff5[lb:ub,0],
-               np.cumsum(tctff5[lb:ub, 21]) / np.cumsum(tctff5[lb:ub, 21])[-1],
+ax[0,0].loglog(tctff5[:,0],
+               np.cumsum(tctff5[:, 21]) / np.cumsum(tctff5[:, 21])[-1],
                c='C2', label='LowRatio')
-ax[0,1].loglog(tctff5[lb:ub,0],
-               np.cumsum(tctff5[lb:ub, 41]) / np.cumsum(tctff5[lb:ub, 41])[-1],
+ax[0,1].loglog(tctff5[:,0],
+               np.cumsum(tctff5[:, 41]) / np.cumsum(tctff5[:, 41])[-1],
                c='C2')
-ax[1,0].loglog(tctff5[lb:ub,0],
-               np.cumsum(tctff5[lb:ub, 61]) / np.cumsum(tctff5[lb:ub, 61])[-1],
+ax[1,0].loglog(tctff5[:,0],
+               np.cumsum(tctff5[:, 61]) / np.cumsum(tctff5[:, 61])[-1],
                c='C2')
-ax[1,1].loglog(tctff5[lb:ub,0],
-               np.cumsum(tctff5[lb:ub, 81]) / np.cumsum(tctff5[lb:ub, 81])[-1],
+ax[1,1].loglog(tctff5[:,0],
+               np.cumsum(tctff5[:, 81]) / np.cumsum(tctff5[:, 81])[-1],
                c='C2')
 
 # ax[0].loglog(tctff20[:,0], tctff20[:,  1]/np.sum(tctff20[:43,  1]), c='C1')
-ax[0,0].loglog(tctff20[lb:ub,0],
-               np.cumsum(tctff20[lb:ub, 21]) / np.cumsum(tctff20[lb:ub, 21])[-1],
+ax[0,0].loglog(tctff20[:,0],
+               np.cumsum(tctff20[:, 21]) / np.cumsum(tctff20[:, 21])[-1],
                c='C1', label='HighRatio')
-ax[0,1].loglog(tctff20[lb:ub,0],
-               np.cumsum(tctff20[lb:ub, 41]) / np.cumsum(tctff20[lb:ub, 41])[-1],
+ax[0,1].loglog(tctff20[:,0],
+               np.cumsum(tctff20[:, 41]) / np.cumsum(tctff20[:, 41])[-1],
                c='C1')
-ax[1,0].loglog(tctff20[lb:ub,0],
-               np.cumsum(tctff20[lb:ub, 61]) / np.cumsum(tctff20[lb:ub, 61])[-1],
+ax[1,0].loglog(tctff20[:,0],
+               np.cumsum(tctff20[:, 61]) / np.cumsum(tctff20[:, 61])[-1],
                c='C1')
-ax[1,1].loglog(tctff20[lb:ub,0],
-               np.cumsum(tctff20[lb:ub, 81]) / np.cumsum(tctff20[lb:ub, 81])[-1],
+ax[1,1].loglog(tctff20[:,0],
+               np.cumsum(tctff20[:, 81]) / np.cumsum(tctff20[:, 81])[-1],
                c='C1')
 
 ax[0,0].legend(framealpha=1)
@@ -188,45 +235,45 @@ lb = 26
 ub = -20
 
 # ax[0].loglog(fid[:,0], fid[:,  1]/np.sum(fid[:43,  1]), c='C0')
-ax[0,0].loglog(fid[lb:ub,0], 
-               np.cumsum(fid[lb:ub, 21])/np.cumsum(fid[lb:ub, 21])[-1],
+ax[0,0].loglog(fid[:,0], 
+               np.cumsum(fid[:, 21])/np.cumsum(fid[:, 21])[-1],
                c='C0', label='Fid')
-ax[0,1].loglog(fid[lb:ub,0], 
-               np.cumsum(fid[lb:ub, 41])/np.cumsum(fid[lb:ub, 41])[-1],
+ax[0,1].loglog(fid[:,0], 
+               np.cumsum(fid[:, 41])/np.cumsum(fid[:, 41])[-1],
                c='C0')
-ax[1,0].loglog(fid[lb:ub,0], 
-               np.cumsum(fid[lb:ub, 61])/np.cumsum(fid[lb:ub, 61])[-1],
+ax[1,0].loglog(fid[:,0], 
+               np.cumsum(fid[:, 61])/np.cumsum(fid[:, 61])[-1],
                c='C0')
-ax[1,1].loglog(fid[lb:ub,0], 
-               np.cumsum(fid[lb:ub, 81])/np.cumsum(fid[lb:ub, 81])[-1],
+ax[1,1].loglog(fid[:,0], 
+               np.cumsum(fid[:, 81])/np.cumsum(fid[:, 81])[-1],
                c='C0')
 
 # ax[0].loglog(linrot[:,0], linrot[:,  1]/np.sum(linrot[:43,  1]), c='C2')
-ax[0,0].loglog(linrot[lb:ub,0],
-               np.cumsum(linrot[lb:ub, 21]) / np.cumsum(linrot[lb:ub, 21])[-1],
+ax[0,0].loglog(linrot[:,0],
+               np.cumsum(linrot[:, 21]) / np.cumsum(linrot[:, 21])[-1],
                c='C4', label='LinRot')
-ax[0,1].loglog(linrot[lb:ub,0],
-               np.cumsum(linrot[lb:ub, 41]) / np.cumsum(linrot[lb:ub, 41])[-1],
+ax[0,1].loglog(linrot[:,0],
+               np.cumsum(linrot[:, 41]) / np.cumsum(linrot[:, 41])[-1],
                c='C4')
-ax[1,0].loglog(linrot[lb:ub,0],
-               np.cumsum(linrot[lb:ub, 61]) / np.cumsum(linrot[lb:ub, 61])[-1],
+ax[1,0].loglog(linrot[:,0],
+               np.cumsum(linrot[:, 61]) / np.cumsum(linrot[:, 61])[-1],
                c='C4')
-ax[1,1].loglog(linrot[lb:ub,0],
-               np.cumsum(linrot[lb:ub, 81]) / np.cumsum(linrot[lb:ub, 81])[-1],
+ax[1,1].loglog(linrot[:,0],
+               np.cumsum(linrot[:, 81]) / np.cumsum(linrot[:, 81])[-1],
                c='C4')
 
 # ax[0].loglog(norot[:,0], norot[:,  1]/np.sum(norot[:43,  1]), c='C1')
-ax[0,0].loglog(norot[lb:ub,0],
-               np.cumsum(norot[lb:ub, 21]) / np.cumsum(norot[lb:ub, 21])[-1],
+ax[0,0].loglog(norot[:,0],
+               np.cumsum(norot[:, 21]) / np.cumsum(norot[:, 21])[-1],
                c='C5', label='NoRot')
-ax[0,1].loglog(norot[lb:ub,0],
-               np.cumsum(norot[lb:ub, 41]) / np.cumsum(norot[lb:ub, 41])[-1],
+ax[0,1].loglog(norot[:,0],
+               np.cumsum(norot[:, 41]) / np.cumsum(norot[:, 41])[-1],
                c='C5')
-ax[1,0].loglog(norot[lb:ub,0],
-               np.cumsum(norot[lb:ub, 61]) / np.cumsum(norot[lb:ub, 61])[-1],
+ax[1,0].loglog(norot[:,0],
+               np.cumsum(norot[:, 61]) / np.cumsum(norot[:, 61])[-1],
                c='C5')
-ax[1,1].loglog(norot[lb:ub,0],
-               np.cumsum(norot[lb:ub, 81]) / np.cumsum(norot[lb:ub, 81])[-1],
+ax[1,1].loglog(norot[:,0],
+               np.cumsum(norot[:, 81]) / np.cumsum(norot[:, 81])[-1],
                c='C5')
 
 ax[0,0].legend(framealpha=1)
