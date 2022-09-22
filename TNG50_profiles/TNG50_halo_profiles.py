@@ -369,7 +369,7 @@ profile_list = comm.gather(my_profiles, root=0)
 
 if rank==0:
 
-    all_gal_prop = np.zeros( (len(sub_ids), 9) )
+    all_gal_prop = np.zeros( (len(sub_ids), 8) )
     all_ent_prof = np.zeros( (len(sub_ids), 2*nbins+1) )
     all_pres_prof = np.zeros( (len(sub_ids), 2*nbins+1) )
     all_temp_prof = np.zeros( (len(sub_ids), 2*nbins+1) )
@@ -385,10 +385,10 @@ if rank==0:
             all_gal_prop[i,4] = v['mass_CGM'].value
             all_gal_prop[i,5] = v['ssfr'].value
             all_gal_prop[i,6] = v['r_200'].value
-            all_gal_prop[i,8] = v['T_200'].value
-            # all_gal_prop[i,9] = v['mass_CGM_hot'].value
-            # all_gal_prop[i,10] = v['mass_CGM_cool'].value
-            # all_gal_prop[i,11] = v['T_hot_avg'].value
+            all_gal_prop[i,7] = v['T_200'].value
+            # all_gal_prop[i,8] = v['mass_CGM_hot'].value
+            # all_gal_prop[i,9] = v['mass_CGM_cool'].value
+            # all_gal_prop[i,10] = v['T_hot_avg'].value
 
             all_ent_prof[i,0] = k
             all_ent_prof[i,1::2] = v['ent_avg']
@@ -410,7 +410,7 @@ if rank==0:
 
     sort = np.argsort(all_gal_prop[:,0])
 
-    prop_header = "SubID,Sat,MassDark,MassStar,MassCGM,sSFR,r200,T200,THot"
+    prop_header = "SubID,Sat,MassDark,MassStar,MassCGM,sSFR,r200,T200"
 
     header = "SubID"
     for r in binned_r:
