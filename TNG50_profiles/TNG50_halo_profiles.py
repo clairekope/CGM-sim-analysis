@@ -98,7 +98,7 @@ nbins = 128
 r_edges = np.logspace(-1, 0.6, nbins+1)
 binned_r = r_edges[:-1] + np.diff(r_edges)
 
-folder = "z01_TNG50/"
+folder = "/mnt/home/kopenhaf/z01_TNG50/"
 local = "/mnt/research/galaxies-REU/sims/IllustrisTNG/TNG50/"
 littleh = 0.6774
 z = 0.01
@@ -202,9 +202,6 @@ for sub_id in my_subs[good_ids]:
                                         "NE  ", 0, -1, sub_id, long_ids=True,
                                         double_output=False).astype("float32")
 
-        cool_rate = readhaloHDF5.readhalo(local, "snap", snapnum,
-                                            "GCOL", 0, -1, sub_id, long_ids=True,
-                                            double_output=False).astype("float32")
         
     except AttributeError:
         gas = False
