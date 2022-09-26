@@ -12,6 +12,7 @@ import readhaloHDF5
 import snapHDF5
 import numpy as np
 import astropy.units as u
+import wquantiles as wq
 from astropy.constants import m_p, k_B, G
 from mpi4py import MPI
 
@@ -304,46 +305,34 @@ for sub_id in my_subs[good_ids]:
         r_scale = (r/r200).value
         rbinner = np.digitize(r_scale, r_edges)
 
-        binned_ent_avg = np.ones_like(binned_r)*np.nan * u.eV*u.cm**2
-        binned_ent_med = np.ones_like(binned_r)*np.nan * u.eV*u.cm**2
+        binned_ent_med = np.ones_like(binned_r)*np.nan
 
-        binned_pres_avg = np.ones_like(binned_r)*np.nan * u.dyn/u.cm**2
-        binned_pres_med = np.ones_like(binned_r)*np.nan * u.dyn/u.cm**2
+        binned_pres_med = np.ones_like(binned_r)*np.nan
 
-        binned_temp_avg = np.ones_like(binned_r)*np.nan * u.K
-        binned_temp_med = np.ones_like(binned_r)*np.nan * u.K
+        binned_temp_med = np.ones_like(binned_r)*np.nan
 
-        binned_dens_avg = np.zeros_like(binned_r)*np.nan * u.g/u.cm**3
-        binned_dens_med = np.zeros_like(binned_r)*np.nan * u.g/u.cm**3
+        binned_dens_med = np.zeros_like(binned_r)*np.nan
         
         # find central tendency for each radial bin
         for i in range(1, r_edges.size):
             this_bin = rbinner==i
             if np.sum(mass[this_bin]) != 0: # are there particles in this bin
 
-                binned_ent_avg[i-1] = np.average(ent[this_bin],
+                binned_ent_med[i-1] = wq.median(ent[this_bin].to(u.eV*u.cm**2),
+                                                weights = mass[this_bin])
+
+                binned_pres_med[i-1] = wq.median(pres[this_bin].to(u.dyn/u.cm**2),
                                                  weights = mass[this_bin])
-                binned_ent_med[i-1] = np.median(ent[this_bin])
 
-                binned_pres_avg[i-1] = np.average(pres[this_bin],
-                                                  weights = mass[this_bin])
-                binned_pres_med[i-1] = np.median(pres[this_bin])
+                binned_temp_med[i-1] = wq.median(temp[this_bin].to(u.K),
+                                                 weights = mass[this_bin])
 
-                binned_temp_avg[i-1] = np.average(temp[this_bin],
-                                                  weights = mass[this_bin])
-                binned_temp_med[i-1] = np.median(temp[this_bin])
-
-                binned_dens_avg[i-1] = np.average(dens[this_bin],
-                                                  weights = mass[this_bin])
-                binned_dens_med[i-1] = np.median(dens[this_bin])
+                binned_dens_med[i-1] = wq.median(dens[this_bin].to(u.g/u.cm**3),
+                                                 weights = mass[this_bin])
                 
-        my_profiles[sub_id]['ent_avg'] = binned_ent_avg
         my_profiles[sub_id]['ent_med'] = binned_ent_med
-        my_profiles[sub_id]['pres_avg'] = binned_pres_avg
         my_profiles[sub_id]['pres_med'] = binned_pres_med
-        my_profiles[sub_id]['temp_avg'] = binned_temp_avg
         my_profiles[sub_id]['temp_med'] = binned_temp_med
-        my_profiles[sub_id]['dens_avg'] = binned_dens_avg
         my_profiles[sub_id]['dens_med'] = binned_dens_med
 
     else: # no gas
@@ -352,13 +341,9 @@ for sub_id in my_subs[good_ids]:
         # my_profiles[sub_id]['mass_CGM_cool'] = np.nan * u.Msun
         # my_profiles[sub_id]['T_hot_avg'] = np.nan * u.K
         
-        my_profiles[sub_id]['ent_avg'] = np.nan
         my_profiles[sub_id]['ent_med'] = np.nan
-        my_profiles[sub_id]['pres_avg'] = np.nan
         my_profiles[sub_id]['pres_med'] = np.nan
-        my_profiles[sub_id]['temp_avg'] = np.nan
         my_profiles[sub_id]['temp_med'] = np.nan
-        my_profiles[sub_id]['dens_avg'] = np.nan
         my_profiles[sub_id]['dens_med'] = np.nan
         
 #
@@ -369,11 +354,11 @@ profile_list = comm.gather(my_profiles, root=0)
 
 if rank==0:
 
-    all_gal_prop = np.zeros( (len(sub_ids), 8) )
-    all_ent_prof = np.zeros( (len(sub_ids), 2*nbins+1) )
-    all_pres_prof = np.zeros( (len(sub_ids), 2*nbins+1) )
-    all_temp_prof = np.zeros( (len(sub_ids), 2*nbins+1) )
-    all_dens_prof = np.zeros( (len(sub_ids), 2*nbins+1) )
+    all_gal_prop  = np.zeros( (len(sub_ids), 8) )
+    all_ent_prof  = np.zeros( (len(sub_ids), nbins+1) )
+    all_pres_prof = np.zeros( (len(sub_ids), nbins+1) )
+    all_temp_prof = np.zeros( (len(sub_ids), nbins+1) )
+    all_dens_prof = np.zeros( (len(sub_ids), nbins+1) )
     
     i=0
     for dic in profile_list:
@@ -391,20 +376,16 @@ if rank==0:
             # all_gal_prop[i,10] = v['T_hot_avg'].value
 
             all_ent_prof[i,0] = k
-            all_ent_prof[i,1::2] = v['ent_avg']
-            all_ent_prof[i,2::2] = v['ent_med']
+            all_ent_prof[i,1:] = v['ent_med']
             
             all_pres_prof[i,0] = k
-            all_pres_prof[i,1::2] = v['pres_avg']
-            all_pres_prof[i,2::2] = v['pres_med']
+            all_pres_prof[i,1:] = v['pres_med']
             
             all_temp_prof[i,0] = k
-            all_temp_prof[i,1::2] = v['temp_avg']
-            all_temp_prof[i,2::2] = v['temp_med']
+            all_temp_prof[i,1:] = v['temp_med']
 
             all_dens_prof[i,0] = k
-            all_dens_prof[i,1::2] = v['dens_avg']
-            all_dens_prof[i,2::2] = v['dens_med']
+            all_dens_prof[i,1:] = v['dens_med']
 
             i+=1
 
@@ -414,7 +395,7 @@ if rank==0:
 
     header = "SubID"
     for r in binned_r:
-        header += "   {:.4f} avg med".format(r)
+        header += ",{:.4f}".format(r)
 
     np.savetxt(folder+'halo_properties.csv', all_gal_prop[sort],
                delimiter=',', header=prop_header)
