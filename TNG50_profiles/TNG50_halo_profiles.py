@@ -262,7 +262,7 @@ for sub_id in my_subs[good_ids]:
         dens = dens * 1e10*u.Msun/littleh * (u.kpc*a0/littleh)**-3
         ne = elec * X_H*dens/m_p # elec frac defined as n_e/n_H
         ent = k_B * temp/ne**(gamma-1)
-        ent = ent.to('eV cm^2', equivalencies=u.temperature_energy())
+        ent = ent.to('keV cm^2', equivalencies=u.temperature_energy())
 
         pres = dens/m_p * k_B * temp
 
