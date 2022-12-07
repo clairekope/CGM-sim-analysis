@@ -5,6 +5,7 @@
 
 import yt
 yt.enable_parallelism()
+from unyt.physical_constants import gravitational_constant_cgs as G
 import matplotlib.pyplot as plt
 from matplotlib import rcParams
 from matplotlib.colors import LogNorm, SymLogNorm
@@ -225,7 +226,7 @@ for ds in datasets.piter(dynamic=False, ):
         Mtot_r = NFW_mass_enclosed(rc_ph.x) + \
                  cell_and_particle_mass_enclosed(sph, rc_ph.x_bins.v)
 
-        g_r = yt.units.G * Mtot_r / np.power(rc_ph.x, 2)
+        g_r = G * Mtot_r / np.power(rc_ph.x, 2)
         g_r = g_r.to('cm/s**2') + MN_accel(rc_ph.x)
 
         t_ff = np.sqrt( 2*rc_ph.x / g_r )

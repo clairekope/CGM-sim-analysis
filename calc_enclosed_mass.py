@@ -6,7 +6,8 @@
 #####################################################
 
 import yt
-import yt.units as u
+import unyt as u
+from unyt.physical_constants import gravitational_constant_cgs as G
 import numpy as np
 
 def NFW_mass_enclosed(radius):
@@ -27,7 +28,7 @@ def MN_accel(radius):
     rs = 3.5 * u.kpc
     zs = 0.325 * u.kpc
     MStar = 5.8e10 * u.Msun
-    G = u.G
+    G = G
 
     # sample some theta's and average them
     theta = np.linspace(0, np.pi/2) # symmetric
