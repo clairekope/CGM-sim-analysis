@@ -7,30 +7,30 @@ from matplotlib.ticker import MultipleLocator, FixedLocator, NullFormatter
 
 
 # Load disk component masses
-fid_mass = np.genfromtxt("../extracted_data/fid_masses_over_time.txt", names=True)
-cflow_mass = np.genfromtxt("../extracted_data/cflow_masses_over_time.txt", names=True)
-tctff5_mass = np.genfromtxt("../extracted_data/tctff5_masses_over_time.txt", names=True)
-tctff20_mass = np.genfromtxt("../extracted_data/tctff20_masses_over_time.txt", names=True)
-linrot_mass = np.genfromtxt("../extracted_data/linrot_masses_over_time.txt", names=True)
-norot_mass = np.genfromtxt("../extracted_data/norot_masses_over_time.txt", names=True)
+fid_mass = np.genfromtxt("../original_sims/extracted_data/fid_masses_over_time.txt", names=True)
+cflow_mass = np.genfromtxt("../original_sims/extracted_data/cflow_masses_over_time.txt", names=True)
+tctff5_mass = np.genfromtxt("../original_sims/extracted_data/tctff5_masses_over_time.txt", names=True)
+tctff20_mass = np.genfromtxt("../original_sims/extracted_data/tctff20_masses_over_time.txt", names=True)
+linrot_mass = np.genfromtxt("../original_sims/extracted_data/linrot_masses_over_time.txt", names=True)
+norot_mass = np.genfromtxt("../original_sims/extracted_data/norot_masses_over_time.txt", names=True)
 
 # Load star formation history
-fid_sfh = pd.read_csv('../extracted_data/fid_sfh.txt', header=0, index_col=0,
+fid_sfh = pd.read_csv('../original_sims/extracted_data/fid_sfh.txt', header=0, index_col=0,
                       usecols=[1,0], names=['t_Myr','SFR'], delimiter=' ',
                       converters={'t_Myr': lambda x: float(x)/1000}).fillna(0)
-cflow_sfh = pd.read_csv('../extracted_data/cflow_sfh.txt', header=0, index_col=0,
+cflow_sfh = pd.read_csv('../original_sims/extracted_data/cflow_sfh.txt', header=0, index_col=0,
                         usecols=[1,0], names=['t_Myr','SFR'], delimiter=' ',
                         converters={'t_Myr': lambda x: float(x)/1000}).fillna(0)
-tctff5_sfh = pd.read_csv('../extracted_data/tctff5_sfh.txt', header=0, index_col=0,
+tctff5_sfh = pd.read_csv('../original_sims/extracted_data/tctff5_sfh.txt', header=0, index_col=0,
                          usecols=[1,0], names=['t_Myr','SFR'], delimiter=' ',
                          converters={'t_Myr': lambda x: float(x)/1000}).fillna(0)
-tctff20_sfh = pd.read_csv('../extracted_data/tctff20_sfh.txt', header=0, index_col=0,
+tctff20_sfh = pd.read_csv('../original_sims/extracted_data/tctff20_sfh.txt', header=0, index_col=0,
                           usecols=[1,0], names=['t_Myr','SFR'], delimiter=' ',
                           converters={'t_Myr': lambda x: float(x)/1000}).fillna(0)
-linrot_sfh = pd.read_csv('../extracted_data/linrot_sfh.txt', header=0, index_col=0,
+linrot_sfh = pd.read_csv('../original_sims/extracted_data/linrot_sfh.txt', header=0, index_col=0,
                          usecols=[1,0], names=['t_Myr','SFR'], delimiter=' ',
                          converters={'t_Myr': lambda x: float(x)/1000}).fillna(0)
-norot_sfh = pd.read_csv('../extracted_data/norot_sfh.txt', header=0, index_col=0,
+norot_sfh = pd.read_csv('../original_sims/extracted_data/norot_sfh.txt', header=0, index_col=0,
                         usecols=[1,0], names=['t_Myr','SFR'], delimiter=' ',
                         converters={'t_Myr': lambda x: float(x)/1000}).fillna(0)
 
@@ -121,7 +121,81 @@ for i in range(1,3):
         ax[j,i].tick_params(labelleft=False)
 
 fig.tight_layout()
-fig.savefig("../fig_mass-ev.pdf")
+fig.savefig("../original_sims/figures/fig_mass-ev.pdf")
+
+
+# Plot disk mass growth
+
+
+fig, ax = plt.subplots(nrows=1, ncols=3, sharex=True, figsize=(12,4), squeeze=False)
+
+for i in range(3):
+    ax[0,i].axvline(1, c='gray', ls=':')
+
+    ax[0,i].axvline(2, c='gray', ls=':')
+
+    ax[0,i].plot(fid_mass['Time_Myr']/1000, (fid_mass['FormedMass_Msun']+fid_mass['DiskGas_Msun'])/1e9, color='C0', ls='-')
+    ax[0,i].plot(fid_mass['Time_Myr']/1000, fid_mass['FormedMass_Msun']/1e9, color='C0', ls='--')
+    ax[0,i].plot(fid_mass['Time_Myr']/1000, fid_mass['DiskGas_Msun']/1e9, color='C0', ls=':')
+
+ax[0,0].plot(cflow_mass['Time_Myr']/1000, (cflow_mass['FormedMass_Msun']+cflow_mass['DiskGas_Msun'])/1e9, color='C3', ls='-')
+ax[0,0].plot(cflow_mass['Time_Myr']/1000, cflow_mass['FormedMass_Msun']/1e9, color='C3', ls='--')
+ax[0,0].plot(cflow_mass['Time_Myr']/1000, cflow_mass['DiskGas_Msun']/1e9, color='C3', ls=':')
+
+ax[0,1].plot(tctff5_mass['Time_Myr']/1000, (tctff5_mass['FormedMass_Msun']+tctff5_mass['DiskGas_Msun'])/1e9, color='C2', ls='-')
+ax[0,1].plot(tctff5_mass['Time_Myr']/1000, tctff5_mass['FormedMass_Msun']/1e9, color='C2', ls='--')
+ax[0,1].plot(tctff5_mass['Time_Myr']/1000, tctff5_mass['DiskGas_Msun']/1e9, color='C2', ls=':')
+
+ax[0,1].plot(tctff20_mass['Time_Myr']/1000, (tctff20_mass['FormedMass_Msun']+tctff20_mass['DiskGas_Msun'])/1e9, color='C1', ls='-')
+ax[0,1].plot(tctff20_mass['Time_Myr']/1000, tctff20_mass['FormedMass_Msun']/1e9, color='C1', ls='--')
+ax[0,1].plot(tctff20_mass['Time_Myr']/1000, tctff20_mass['DiskGas_Msun']/1e9, color='C1', ls=':')
+
+ax[0,2].plot(linrot_mass['Time_Myr']/1000, (linrot_mass['FormedMass_Msun']+linrot_mass['DiskGas_Msun'])/1e9, color='C4', ls='-')
+ax[0,2].plot(linrot_mass['Time_Myr']/1000, linrot_mass['FormedMass_Msun']/1e9, color='C4', ls='--')
+ax[0,2].plot(linrot_mass['Time_Myr']/1000, linrot_mass['DiskGas_Msun']/1e9, color='C4', ls=':')
+
+ax[0,2].plot(norot_mass['Time_Myr']/1000, (norot_mass['FormedMass_Msun']+norot_mass['DiskGas_Msun'])/1e9, color='C5', ls='-')
+ax[0,2].plot(norot_mass['Time_Myr']/1000, norot_mass['FormedMass_Msun']/1e9, color='C5', ls='--')
+ax[0,2].plot(norot_mass['Time_Myr']/1000, norot_mass['DiskGas_Msun']/1e9, color='C5', ls=':')
+
+# Set up legend
+total = Line2D([0], [0], ls='-', c='dimgray')
+stars = Line2D([0], [0], ls='--', c='dimgray')
+gas = Line2D([0], [0], ls=':', c='dimgray')
+
+fid = Line2D([0], [0], ls='-', c='C0')
+cflow = Line2D([0], [0], ls='-', c='C3')
+tctff5 = Line2D([0], [0], ls='-', c='C2')
+tctff20 = Line2D([0], [0], ls='-', c='C1')
+linrot = Line2D([0], [0], ls='-', c='C4')
+norot = Line2D([0], [0], ls='-', c='C5')
+
+ls_fig = ax[0,0].legend([total, stars, gas], ["Disk Mass", "Stellar Mass\nFormed", "Gas Mass"], ncol=1, loc="upper left")
+ax[0,0].legend([fid, cflow], ["Fiducial","Cooling Flow"], loc="lower center", ncol=2)
+ax[0,1].legend([tctff5, tctff20],
+               [r"$t_{\rm cool}/t_{\rm ff} = 5$",r"$t_{\rm cool}/t_{\rm ff} =20$"],
+               loc="lower center", ncol=2)
+ax[0,2].legend([linrot, norot], ["Linear Rotation","No Rotation"], loc="lower center", ncol=2)
+ax[0,0].add_artist(ls_fig)
+
+ax[0,0].set_ylabel(r"$M\ /\ 10^{9}\ {\rm M_\odot}$", fontsize='large')
+for i in range(3):
+    ax[0,i].set_xlabel("$t\ \ $[Gyr]", fontsize='large')
+
+ax[0,0].set_xlim(0,4)
+for i in range(3):
+    ax[0,i].set_ylim(0, 12)
+    #ax[1,i].set_ylim(0, 10)
+    #ax[1,i].yaxis.set_minor_locator(FixedLocator([1e-1, 1e1]))
+    #ax[1,i].yaxis.set_minor_formatter(NullFormatter())
+
+for i in range(3):
+        ax[0,i].tick_params(right=True, top=True)
+for i in range(1,3):
+        ax[0,i].tick_params(labelleft=False)
+
+fig.tight_layout()
+fig.savefig("../original_sims/figures/fig_mass-ev_noSFR.png")
 
 
 # Late-Time Change in disk mass
@@ -229,7 +303,7 @@ for i in range(2):
 ax[0].yaxis.set_major_locator(MultipleLocator(2))
 
 fig.tight_layout()
-fig.savefig("../fig_mass-ev_late.pdf")
+fig.savefig("../original_sims/figures/fig_mass-ev_late.pdf")
 
 
 # Calculate late-time rates
@@ -365,4 +439,4 @@ for i in range(3):
     ax[1,i].set_xlabel('$t$  [Gyr]', fontsize='large')
 
 fig.tight_layout()
-fig.savefig("../fig_net-gas-mass.pdf", dpi=300)
+fig.savefig("../original_sims/figures/fig_net-gas-mass.pdf", dpi=300)
