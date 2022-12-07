@@ -28,7 +28,6 @@ def MN_accel(radius):
     rs = 3.5 * u.kpc
     zs = 0.325 * u.kpc
     MStar = 5.8e10 * u.Msun
-    G = G
 
     # sample some theta's and average them
     theta = np.linspace(0, np.pi/2) # symmetric

@@ -46,7 +46,8 @@ cgm_mass_prof = yt.create_profile(cgm, "radius", "cell_mass", units={"radius":"k
                                     weight_field=None, accumulation=True,
                                     override_bins={"radius":profiles.x})
 
-Mtot_r = NFW_mass_enclosed(profiles.x) +          cell_and_particle_mass_enclosed(ad, profiles.x_bins.v)
+Mtot_r = NFW_mass_enclosed(profiles.x) \ 
+         + cell_and_particle_mass_enclosed(ad, profiles.x_bins.v)
 g_r = u.G * Mtot_r / np.power(profiles.x,2)
 g_r = g_r.to('cm/s**2') + MN_accel(profiles.x)
 tff = np.sqrt(2*profiles.x/g_r)
