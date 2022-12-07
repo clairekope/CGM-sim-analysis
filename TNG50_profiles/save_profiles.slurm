@@ -8,7 +8,8 @@
 #SBATCH -t 4:00:00            # Run time (hh:mm:ss)
 #SBATCH -A galaxies
 
-module unload python
+module unload Python
+conda activate
 
 cd $SLURM_SUBMIT_DIR
 

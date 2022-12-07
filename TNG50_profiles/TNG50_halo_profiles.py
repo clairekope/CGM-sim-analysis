@@ -318,7 +318,7 @@ for sub_id in my_subs[good_ids]:
             this_bin = rbinner==i
             if np.sum(mass[this_bin]) != 0: # are there particles in this bin
 
-                binned_ent_med[i-1] = wq.median(ent[this_bin].to(u.eV*u.cm**2),
+                binned_ent_med[i-1] = wq.median(ent[this_bin].to(u.keV*u.cm**2),
                                                 weights = mass[this_bin])
 
                 binned_pres_med[i-1] = wq.median(pres[this_bin].to(u.dyn/u.cm**2),
