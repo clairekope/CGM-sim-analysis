@@ -373,7 +373,7 @@ def calc_fluxes(ds, dt, tablename, save_suffix,
     if (edges): table_edge = set_table_units(table_edge)
 
     # Save to file
-    table.write(tablename + flux_filename + save_suffix + '_simple.hdf5', path='all_data', 
+    table.write(tablename + flux_filename + save_suffix + '.hdf5', path='all_data', 
                 serialize_meta=True, overwrite=True)
     if (edges): table_edge.write(tablename + '_edge' + flux_filename + save_suffix + '.hdf5', 
                                  path='all_data', serialize_meta=True, overwrite=True)
