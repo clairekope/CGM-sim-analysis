@@ -8,29 +8,37 @@ import yt
 from yt.fields.derived_field import ValidateDataField
 import numpy as np
 
+required_fields = [("nbody", "creation_time"),
+                   ("nbody", "particle_mass"),
+                   ("nbody", "dynamical_time")]
+
 # ValidateDataField is broken
-#@yt.derived_field(name=('io','particle_initial_mass'), units='g',
+#@yt.derived_field(name=('nbody','particle_initial_mass'), units='g',
 #                  sampling_type='particle',
-#                  validators=[ValidateDataField(('io','creation_time'))])
+#                  validators=[ValidateDataField(('nbody','creation_time'))])
 
 def field_initial_mass(field, data):
     # ripped from star_maker2.F, assuming StarMassEjectionFraction = 0.25
     # Also assuming all particles are stars!
     
-    time_frac = (data.ds.current_time - data[('io','creation_time')]) \
-                / data[('io','dynamical_time')]
-    return data[('io','particle_mass')] \
-        / (1 - 0.25*(1 - (1+time_frac)*np.exp(-time_frac)))
+    time_frac = (data.ds.current_time - data[('nbody','creation_time')]) \
+                / data[('nbody','dynamical_time')]
 
-required_fields = [("io", "creation_time"),
-                   ("io", "particle_mass"),
-                   ("io", "dynamical_time")]
+    return data[('nbody','particle_mass')] \
+           / (1 - 0.25*(1 - (1+time_frac)*np.exp(-time_frac)))
 
+def field_formed_mass(field, data):
+    # After back-calculating the initial particle mass, we can find the
+    # mass of stars that have formed as used in the FB algorithm
+
+    time_frac = (data.ds.current_time - data[('nbody','creation_time')]) \
+                  / data[('nbody','dynamical_time')]
+    return data[('nbody','particle_initial_mass')] * time_frac
 
 def calc_sfr(obj, year_bins):
 
-    masses = obj[('all','particle_initial_mass')].in_units('Msun')
-    formation_time = obj[('io','creation_time')].in_units('yr')
+    masses = obj[('nbody','particle_initial_mass')].in_units('Msun')
+    formation_time = obj[('nbody','creation_time')].in_units('yr')
         
     inds = np.digitize(formation_time, bins=year_bins) # what bin does each time fall in?
     time = (year_bins[:-1] + year_bins[1:])/2 # center of bin
@@ -54,10 +62,15 @@ if __name__=="__main__":
 
     if all([field in ds.field_list for field in required_fields]):
 
-        ds.add_field(name=('all','particle_initial_mass'),
-                    units='g',
-                    sampling_type='particle',
-                    function=field_initial_mass)
+        ds.add_field(name=('nbody','particle_initial_mass'),
+                     units='g',
+                     sampling_type='particle',
+                     function=field_initial_mass)
+
+        ds.add_field(name=('nbody','particle_formed_mass'),
+                     units='g',
+                     sampling_type='particle',
+                     function=field_formed_mass)
 
     dsk = ds.disk([0.5,0.5,0.5], [0,0,1], (24.5,'kpc'), (2.275, 'kpc'))
 

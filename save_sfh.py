@@ -11,7 +11,7 @@ import calc_sfr
 latest_output = sorted(glob.glob("DD????/DD????"))[-1]
 ds = yt.load(latest_output)
 
-bins = np.linspace(0, 6e9, 10000)
+bins = np.arange(0, 4e9, 5e7)
 
 if all([field in ds.field_list for field in calc_sfr.required_fields]):
 
