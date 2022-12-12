@@ -41,9 +41,7 @@ def set_table_units(table):
     the table. Returns the table.'''
 
     for key in table.keys():
-        if (key=='redshift'):
-            table[key].unit = None
-        elif ('radius' in key) or ('height' in key) or ('edge' in key):
+        if ('radius' in key) or ('height' in key) or ('edge' in key):
             table[key].unit = 'kpc'
         elif ('mass' in key) or ('metal' in key):
             table[key].unit = 'Msun/yr'
@@ -57,29 +55,46 @@ def set_table_units(table):
             table[key].unit = 'g*cm**2/s/yr'
     return table
 
-def make_table_simple(flux_types, surface_type, temp_cut=False):
-    '''Makes the giant table that will be saved to file.'''
+def make_table(flux_types, surface_type, temp_cut=False, edge=False):
+    '''Makes the giant table that will be saved to file.
+    If 'edge' is True, this table is for fluxes into/out of edges of shape.'''
 
     if (surface_type[0]=='sphere'):
+        if (edge):
             names_list = ['inner_radius', 'outer_radius']
             types_list = ['f8', 'f8']
+        else:
+            names_list = ['radius']
+            types_list = ['f8']
     if (surface_type[0]=='cylinder'):
         if (surface_type[1]=='radius'):
-            names_list = ['radius', 'bottom_edge', 'top_edge']
-            types_list = ['f8', 'f8', 'f8']
+            if (edge):
+                names_list = ['inner_radius', 'outer_radius']
+                types_list = ['f8', 'f8']
+            else:
+                names_list = ['radius']
+                types_list = ['f8']
+        if (surface_type[1]=='height'):
+            if (edge):
+                names_list = ['bottom_edge', 'top_edge']
+                types_list = ['f8', 'f8']
+            else:
+                names_list = ['height']
+                types_list = ['f8']
 
     dir_name = ['net_', '_in', '_out']
     if (temp_cut): temp_name = ['', 'cold_', 'cool_', 'warm_', 'hot_']
     else: temp_name = ['']
+
     for i in range(len(flux_types)):
         for k in range(len(temp_name)):
             for j in range(len(dir_name)):
-                if (flux_types[i]=='cooling_energy_flux'):
+                if (flux_types[i]=='cooling_energy_flux') and (not edge):
                     if (j==0):
                         name = 'net_' + temp_name[k] + 'cooling_energy_flux'
                         names_list += [name]
                         types_list += ['f8']
-                else:
+                elif (flux_types[i]!='cooling_energy_flux'):
                     if (j==0): name = dir_name[j]
                     else: name = ''
                     name += temp_name[k]
@@ -92,9 +107,9 @@ def make_table_simple(flux_types, surface_type, temp_cut=False):
 
     return table
 
-def calc_fluxes_simple(ds, dt, tablename, save_suffix, 
-                       surface_args, flux_types, Menc_profile, disk=False,
-                       temp_cut=False, units_rvir=False, Rvir=100.):
+def calc_fluxes(ds, dt, tablename, save_suffix, 
+                surface_args, flux_types, Menc_profile, disk=False,
+                temp_cut=False, units_rvir=False, Rvir=100.):
     '''This function calculates the fluxes specified by 'flux_types' into and out of the surfaces specified by 'surface_args'. 
     It uses the dataset stored in 'ds' and the time step between outputs is 'dt'. 
     Fluxes are stored in 'tablename' with 'save_suffix' appended. If 'disk' is True,
@@ -131,32 +146,51 @@ def calc_fluxes_simple(ds, dt, tablename, save_suffix,
         fluxes.append('entropy_flux')
         flux_filename += '_entropy'
 
+# Define list of ways to chunk up the shape over radius or height
+    edges = False
     if (surface_args[0][0]=='cylinder'):
-        table = make_table_simple(fluxes, ['cylinder', surface_args[0][7]], temp_cut=temp_cut)
+        table = make_table(fluxes, ['cylinder', surface_args[0][7]], temp_cut=temp_cut)
+        table_edge = make_table(fluxes, ['cylinder', surface_args[0][7]], edge=True, temp_cut=temp_cut)
+        edges = True
         bottom_edge = surface_args[0][1]
         top_edge = surface_args[0][2]
         cyl_radius = surface_args[0][6]
-        max_radius = np.sqrt(cyl_radius**2. + max(abs(bottom_edge), abs(top_edge)))
-        if (units_rvir):
-            max_radius = ds.quan(max_radius*Rvir+20., 'kpc')
-            row = [cyl_radius*Rvir, bottom_edge*Rvir, top_edge*Rvir]
+        num_steps = surface_args[0][3]
+        
+        if (surface_args[0][7]=='height'):
+            if (units_rvir):
+                dz = (top_edge-bottom_edge)/num_steps*Rvir
+                chunks = ds.arr(np.arange(bottom_edge*Rvir,top_edge*Rvir+dz,dz), 'kpc')
+            else:
+                dz = (top_edge-bottom_edge)/num_steps
+                chunks = ds.arr(np.arange(bottom_edge,top_edge+dz,dz), 'kpc')
         else:
-            max_radius = ds.quan(max_radius+20., 'kpc')
-            row = [cyl_radius, bottom_edge, top_edge]
+            if (units_rvir):
+                dr = cyl_radius/num_steps*Rvir
+                chunks = ds.arr(np.arange(0.,cyl_radius*Rvir+dr,dr), 'kpc')
+            else:
+                dr = cyl_radius/num_steps
+                chunks = ds.arr(np.arange(0.,cyl_radius+dr,dr), 'kpc')
     else:
-        table = make_table_simple(fluxes, ['sphere', 0], temp_cut=temp_cut)
         inner_radius = surface_args[0][1]
         outer_radius = surface_args[0][2]
+        num_steps = surface_args[0][3]
+        table = make_table(fluxes, ['sphere', 0], temp_cut=temp_cut)
+        
+        if (surface_args[0][0]=='frustum') or (surface_args[0][0]=='ellipse'):
+            table_edge = make_table(fluxes, ['sphere', 0], edge=True, temp_cut=temp_cut)
+            edges = True
+
         if (units_rvir):
-            max_radius = ds.quan(outer_radius*Rvir+20., 'kpc')
-            row = [inner_radius*Rvir, outer_radius*Rvir]
+            dr = (outer_radius-inner_radius)/num_steps*Rvir
+            chunks = ds.arr(np.arange(inner_radius*Rvir,outer_radius*Rvir+dr,dr), 'kpc')
         else:
-            max_radius = ds.quan(outer_radius+20., 'kpc')
-            row = [inner_radius, outer_radius]
+            dr = (outer_radius-inner_radius)/num_steps
+            chunks = ds.arr(np.arange(inner_radius,outer_radius+dr,dr), 'kpc')
 
     # Load arrays of all fields we need
     print('Loading field arrays')
-    sphere = ds.sphere('c', max_radius)
+    sphere = ds.sphere('c', chunks[-1])
     # Filter CGM?
 
     radius = sphere['index','radius'].in_units('kpc').v
@@ -216,85 +250,133 @@ def calc_fluxes_simple(ds, dt, tablename, save_suffix,
     if (disk):
         if (surface_args[0][0]=='cylinder'):
             bool_inshapes, radius = segment_region(x, y, z, theta, phi, radius, surface_args,
-              x_disk=x_disk, y_disk=y_disk, z_disk=z_disk, Rvir=Rvir, units_rvir=units_rvir)
+                                                   x_disk=x_disk, y_disk=y_disk, z_disk=z_disk,
+                                                   Rvir=Rvir, units_rvir=units_rvir)
             bool_inshapes_new, new_radius = segment_region(new_x, new_y, new_z, new_theta, new_phi, new_radius, surface_args,
-              x_disk=new_x_disk, y_disk=new_y_disk, z_disk=new_z_disk, Rvir=Rvir, units_rvir=units_rvir)
+                                                   x_disk=new_x_disk, y_disk=new_y_disk, z_disk=new_z_disk,
+                                                   Rvir=Rvir, units_rvir=units_rvir)
         else:
             bool_inshapes = segment_region(x, y, z, theta, phi, radius, surface_args,
-              x_disk=x_disk, y_disk=y_disk, z_disk=z_disk, Rvir=Rvir, units_rvir=units_rvir)
+                                           x_disk=x_disk, y_disk=y_disk, z_disk=z_disk, 
+                                           Rvir=Rvir, units_rvir=units_rvir)
             bool_inshapes_new = segment_region(new_x, new_y, new_z, new_theta, new_phi, new_radius, surface_args,
-              x_disk=new_x_disk, y_disk=new_y_disk, z_disk=new_z_disk, Rvir=Rvir, units_rvir=units_rvir)
+                                           x_disk=new_x_disk, y_disk=new_y_disk, z_disk=new_z_disk, 
+                                           Rvir=Rvir, units_rvir=units_rvir)
     else:
         if (surface_args[0][0]=='cylinder'):
             bool_inshapes, radius = segment_region(x, y, z, theta, phi, radius, surface_args,
-              Rvir=Rvir, units_rvir=units_rvir)
+                                                   Rvir=Rvir, units_rvir=units_rvir)
             bool_inshapes_new, new_radius = segment_region(new_x, new_y, new_z, new_theta, new_phi, new_radius, surface_args,
-              Rvir=Rvir, units_rvir=units_rvir)
+                                                   Rvir=Rvir, units_rvir=units_rvir)
         else:
             bool_inshapes = segment_region(x, y, z, theta, phi, radius, surface_args,
-              Rvir=Rvir, units_rvir=units_rvir)
+                                           Rvir=Rvir, units_rvir=units_rvir)
             bool_inshapes_new = segment_region(new_x, new_y, new_z, new_theta, new_phi, new_radius, surface_args,
-              Rvir=Rvir, units_rvir=units_rvir)
+                                               Rvir=Rvir, units_rvir=units_rvir)
     bool_inshapes_entire = (bool_inshapes) & (bool_inshapes_new)
     bool_toshapes = (~bool_inshapes) & (bool_inshapes_new)
     bool_fromshapes = (bool_inshapes) & (~bool_inshapes_new)
 
-    # Cut to entering/leaving shapes
-    fields_in_shapes = []
-    fields_out_shapes = []
-    radius_in_shapes = radius[bool_toshapes]
-    new_radius_in_shapes = new_radius[bool_toshapes]
-    temperature_in_shapes = temperature[bool_toshapes]
+    # Cut to within shapes and entering/leaving shapes
+    fields_shapes = []
+    if (edges):
+        fields_in_shapes = []
+        fields_out_shapes = []
+    radius_shapes = radius[bool_inshapes_entire]
+    new_radius_shapes = new_radius[bool_inshapes_entire]
     temperature_shapes = temperature[bool_inshapes_entire]
-    radius_out_shapes = radius[bool_fromshapes]
-    new_radius_out_shapes = new_radius[bool_fromshapes]
-    temperature_out_shapes = temperature[bool_fromshapes]
+    if (edges):
+        radius_in_shapes = radius[bool_toshapes]
+        new_radius_in_shapes = new_radius[bool_toshapes]
+        temperature_in_shapes = temperature[bool_toshapes]
+        radius_out_shapes = radius[bool_fromshapes]
+        new_radius_out_shapes = new_radius[bool_fromshapes]
+        temperature_out_shapes = temperature[bool_fromshapes]
     for i in range(len(fields)):
         field = fields[i]
-        fields_in_shapes.append(field[bool_toshapes])
-        fields_out_shapes.append(field[bool_fromshapes])
+        fields_shapes.append(field[bool_inshapes_entire])
+        if (edges):
+            fields_in_shapes.append(field[bool_toshapes])
+            fields_out_shapes.append(field[bool_fromshapes])
 
     if (temp_cut): temps = [0.,4.,5.,6.,12.]
     else: temps = [0.]
 
-    for i in range(len(fields)):
-        if (fluxes[i]=='cooling_energy_flux'):
-            iter = [0]
-            field = fields[i][bool_inshapes_entire]
-        else:
-            iter = [0,1,2]
-            field_in = fields_in_shapes[i]
-            field_out = fields_out_shapes[i]
+    # Loop over chunks and compute fluxes to add to tables
+    for r in range(len(chunks)-1):
 
-        for k in range(len(temps)):
-            if (k==0):
-                if (fluxes[i]=='cooling_energy_flux'):
-                    field_t = field
-                else:
-                    field_in_t = field_in
-                    field_out_t = field_out
+        inner = chunks[r]
+        outer = chunks[r+1]
+        row = [inner]
+        if (edges): row_edge = [inner, outer]
+
+        temp_up = temperature_shapes[(radius_shapes < inner) & (new_radius_shapes > inner)]
+        temp_down = temperature_shapes[(radius_shapes > inner) & (new_radius_shapes < inner)]
+        temp_r = temperature_shapes[(radius_shapes > inner) & (radius_shapes < outer)]
+        if (edges):
+            temp_in = temperature_in_shapes[(new_radius_in_shapes > inner) & (new_radius_in_shapes < outer)]
+            temp_out = temperature_out_shapes[(radius_out_shapes > inner) & (radius_out_shapes < outer)]
+
+        for i in range(len(fields)):
+            if (fluxes[i]=='cooling_energy_flux'):
+                iter = [0]
+                field_r = fields_shapes[i][(radius_shapes > inner) & (radius_shapes < outer)]
             else:
-                if (fluxes[i]=='cooling_energy_flux'):
-                    field_t = field[(temperature_shapes > temps[k-1]) & (temperature_shapes < temps[k])]
-                else:
-                    field_in_t = field_in[(temperature_in_shapes > temps[k-1]) & (temperature_in_shapes < temps[k])]
-                    field_out_t = field_out[(temperature_out_shapes > temps[k-1]) & (temperature_out_shapes < temps[k])]
-            for j in iter:
-                if (j==0):
-                    if (fluxes[i]=='cooling_energy_flux'):
-                        row.append(-np.sum(field_t))
-                    else:
-                        row.append(np.sum(field_out_t)/dt - np.sum(field_in_t)/dt)
-                if (j==1):
-                    row.append(-np.sum(field_in_t)/dt)
-                if (j==2):
-                    row.append(np.sum(field_out_t)/dt)
+                iter = [0,1,2]
+                field_up = fields_shapes[i][(radius_shapes < inner) & (new_radius_shapes > inner)]
+                field_down = fields_shapes[i][(radius_shapes > inner) & (new_radius_shapes < inner)]
+                if (edges):
+                    field_in = fields_in_shapes[i][(new_radius_in_shapes > inner) & (new_radius_in_shapes < outer)]
+                    field_out = fields_out_shapes[i][(radius_out_shapes > inner) & (radius_out_shapes < outer)]
 
-    table.add_row(row)
+            for k in range(len(temps)):
+                if (k==0):
+                    if (fluxes[i]=='cooling_energy_flux'):
+                        field_r_t = field_r
+                    else:
+                        field_up_t = field_up
+                        field_down_t = field_down
+                        if (edges):
+                            field_in_t = field_in
+                            field_out_t = field_out
+                else:
+                    if (fluxes[i]=='cooling_energy_flux'):
+                        field_r_t = field_r[(temp_r > temps[k-1]) & (temp_r < temps[k])]
+                    else:
+                        field_up_t = field_up[(temp_up > temps[k-1]) & (temp_up < temps[k])]
+                        field_down_t = field_down[(temp_down > temps[k-1]) & (temp_down < temps[k])]
+                        if (edges):
+                            field_in_t = field_in[(temp_in > temps[k-1]) & (temp_in < temps[k])]
+                            field_out_t = field_out[(temp_out > temps[k-1]) & (temp_out < temps[k])]
+                for j in iter:
+                    if (j==0):
+                        if (fluxes[i]=='cooling_energy_flux'):
+                            row.append(-np.sum(field_r_t))
+                        else:
+                            row.append(np.sum(field_up_t)/dt - np.sum(field_down_t)/dt)
+                            if (edges):
+                                row_edge.append(np.sum(field_in_t)/dt - np.sum(field_out_t)/dt)
+                    if (j==1):
+                        row.append(-np.sum(field_down_t)/dt)
+                        if (edges):
+                            row_edge.append(np.sum(field_in_t)/dt)
+                    if (j==2):
+                        row.append(np.sum(field_up_t)/dt)
+                        if (edges):
+                            row_edge.append(-np.sum(field_out_t)/dt)
+
+
+        table.add_row(row)
+        if (edges): table_edge.add_row(row_edge)
+
     table = set_table_units(table)
+    if (edges): table_edge = set_table_units(table_edge)
 
     # Save to file
-    table.write(tablename + flux_filename + save_suffix + '_simple.hdf5', path='all_data', serialize_meta=True, overwrite=True)
+    table.write(tablename + flux_filename + save_suffix + '_simple.hdf5', path='all_data', 
+                serialize_meta=True, overwrite=True)
+    if (edges): table_edge.write(tablename + '_edge' + flux_filename + save_suffix + '.hdf5', 
+                                 path='all_data', serialize_meta=True, overwrite=True)
 
     return "Fluxes have been calculated for " + ds.basename
 
@@ -320,7 +402,7 @@ def load_and_calculate(tablename, save_suffix, surface_args, flux_types,
     dt = 5e7 # 50 Myr
 
     # Do the actual calculation
-    message = calc_fluxes_simple(ds, dt, tablename, save_suffix,
+    message = calc_fluxes(ds, dt, tablename, save_suffix,
                                  surface_args, flux_types, NFW_mass_enclosed, disk=disk,
                                  temp_cut=temp_cut, units_rvir=units_rvir, Rvir=Rvir)
 
@@ -331,7 +413,7 @@ def load_and_calculate(tablename, save_suffix, surface_args, flux_types,
 if __name__ == "__main__":
     yt.enable_parallelism()
 
-    surface = "['sphere',5,200,128]"
+    surface = "['sphere',6,206,100]"
     flux_type = "energy,mass,entropy"
     save_suffix = ''
     units_rvir = False

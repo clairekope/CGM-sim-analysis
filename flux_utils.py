@@ -41,7 +41,7 @@ def identify_shape(shape_args, units_rvir=False):
 
         if (shape_args[i][0]=='sphere'):
             shapes.append([shape_args[i][0],shape_args[i][1],shape_args[i][2],shape_args[i][3]])
-            print('Sphere arguments: inner_radius - %.3f outer_radius - %.3f num_radius - %d' % \
+            print('Sphere arguments: inner_radius %.3f - outer_radius %.3f - num_radius %d' % \
               (shapes[i][1], shapes[i][2], shapes[i][3]))
 
         elif (shape_args[i][0]=='frustum') or (shape_args[i][0]=='cylinder'):
