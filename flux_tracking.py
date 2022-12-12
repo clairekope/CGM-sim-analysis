@@ -28,6 +28,11 @@ from scipy.interpolate import InterpolatedUnivariateSpline as IUS
 from flux_utils import *
 from calc_enclosed_mass import NFW_mass_enclosed
 
+global cmtopc 
+cmtopc = 3.086e18
+global stoyr
+stoyr = 3.155e7
+
 @derived_field(name="radial_kinetic_energy", sampling_type="cell", units="erg")
 def _radial_kinetic_energy(field, data):
     return 0.5 * data['cell_mass'] * data['radial_velocity']**2.
@@ -212,11 +217,13 @@ def calc_fluxes(ds, dt, tablename, save_suffix,
     vx = sphere['gas','velocity_x'].in_units('km/s').v
     vy = sphere['gas','velocity_y'].in_units('km/s').v
     vz = sphere['gas','velocity_z'].in_units('km/s').v
-    rad_vel = sphere['gas','radial_velocity'].in_units('km/s').v
-    new_x = x + vx*dt*(100*u.pc/u.yr).to('cm/s').v
-    new_y = y + vy*dt*(100*u.pc/u.yr).to('cm/s').v
-    new_z = z + vz*dt*(100*u.pc/u.yr).to('cm/s').v
-    new_radius = np.sqrt(new_x**2. + new_y**2. + new_z**2.)
+    #rad_vel = sphere['gas','radial_velocity'].in_units('km/s').v
+    new_x = x + vx*dt*(100./cmtopc*stoyr)
+    new_y = y + vy*dt*(100./cmtopc*stoyr)
+    new_z = z + vz*dt*(100./cmtopc*stoyr)
+    new_radius = np.sqrt((new_x-sphere.center[0].to('kpc').v)**2. \
+                       + (new_y-sphere.center[1].to('kpc').v)**2. \
+                       + (new_z-sphere.center[2].to('kpc').v)**2.)
     new_theta = np.arccos(new_z/new_radius)
     new_phi = np.arctan2(new_y, new_x)
     temperature = np.log10(sphere['gas','temperature'].in_units('K').v)
@@ -286,11 +293,11 @@ def calc_fluxes(ds, dt, tablename, save_suffix,
     new_radius_shapes = new_radius[bool_inshapes_entire]
     temperature_shapes = temperature[bool_inshapes_entire]
     if (edges):
-        radius_in_shapes = radius[bool_toshapes]
+        #radius_in_shapes = radius[bool_toshapes]
         new_radius_in_shapes = new_radius[bool_toshapes]
         temperature_in_shapes = temperature[bool_toshapes]
         radius_out_shapes = radius[bool_fromshapes]
-        new_radius_out_shapes = new_radius[bool_fromshapes]
+        #new_radius_out_shapes = new_radius[bool_fromshapes]
         temperature_out_shapes = temperature[bool_fromshapes]
     for i in range(len(fields)):
         field = fields[i]
