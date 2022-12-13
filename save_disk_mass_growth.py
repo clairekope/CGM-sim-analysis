@@ -31,7 +31,7 @@ for my_storage, ds in datasets.piter(dynamic=False, storage=storage):
 
     if all([field in ds.field_list for field in calc_sfr.required_fields]):
 
-        ds.add_field(name=('io','particle_initial_mass'),
+        ds.add_field(name=('nbody','particle_initial_mass'),
                      units='g',
                      sampling_type='particle',
                      function=calc_sfr.field_initial_mass)

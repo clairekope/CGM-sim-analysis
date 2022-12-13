@@ -23,7 +23,7 @@ def _formed_mass(field, data):
     # but that's hard to track with such large timesteps.
     # mass formed, however, should be negligible.
     
-    m_form = data[('all','particle_initial_mass')] *\
+    m_form = data[('nbody','particle_initial_mass')] *\
         ( (1+x1)*np.exp(-x1) - (1+x2)*np.exp(-x2) )
     
     # copying this straight from star_maker2.F
