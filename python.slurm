@@ -5,7 +5,7 @@
 #SBATCH --account=TG-AST090040
 #SBATCH --partition=shared
 #SBATCH -N 1                  # Total # of nodes
-#SBATCH --ntasks-per-node 80
+#SBATCH --ntasks-per-node 81
 #SBATCH --mem=120GB
 #SBATCH -t 24:00:00            # Run time (hh:mm:ss)
 
@@ -20,7 +20,7 @@ do
     # Extract data out of project
     echo Exracting data for $dir	
     mkdir $dir
-    parallel -j80 tar -xzf {} -C $dir/ ::: $PROJECT/$dir/*tar.gz
+    parallel -j81 tar -xzf {} -C $dir/ ::: $PROJECT/$dir/*tar.gz
     cd $dir
     # ls .
     
