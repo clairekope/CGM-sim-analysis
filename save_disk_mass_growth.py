@@ -36,8 +36,8 @@ for my_storage, ds in datasets.piter(dynamic=False, storage=storage):
                      sampling_type='particle',
                      function=calc_sfr.field_initial_mass)
 
-        formed_mass = dsk.quantities.total_quantity(('io','particle_initial_mass'))
-        star_mass = dsk.quantities.total_quantity(('io','particle_mass'))
+        formed_mass = dsk.quantities.total_quantity(('nbody','particle_initial_mass'))
+        star_mass = dsk.quantities.total_quantity(('nbody','particle_mass'))
     else:
         formed_mass = ds.quan(0, 'g')
         star_mass = ds.quan(0, 'g')

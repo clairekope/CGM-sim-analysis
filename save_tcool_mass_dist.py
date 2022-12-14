@@ -49,8 +49,8 @@ if yt.is_root():
     stddev_arr[:,0] = prof.x
     
     for i in range(len(datasets)):
-        data_arr[:,i+1] = storage[0][i]
-        stddev_arr[:,i+1] = storage[1][i]
+        data_arr[:,i+1] = storage[i][0]
+        stddev_arr[:,i+1] = storage[i][1]
         
     np.savetxt("tcool_mass_dist_CGM{}.txt".format("" if cgm_only else "-disk"),
                data_arr,
