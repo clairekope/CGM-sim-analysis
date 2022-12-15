@@ -32,7 +32,7 @@ for my_storage, ds in datasets.piter(dynamic=False, storage=storage):
                              extrema={"cooling_time":(1e-6, 1e6)})
 
     # Std Dev of tcool as function of tcool
-    tc_binner = np.digitize(dataset['gas','cooling_time'], prof.x_bins)
+    tc_binner = np.digitize(dataset['gas','cooling_time'].to('Gyr'), prof.x_bins)
     tcool_stddev = np.zeros(prof.x.size)
     for i in range(1, prof.x_bins.size):
         this_bin = tc_binner==i
