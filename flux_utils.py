@@ -72,10 +72,10 @@ def identify_shape(shape_args, units_rvir=False):
                     sys.exit("I don't understand which way you want to calculate fluxes. Specify 'height' or 'radius'.")
                 shapes.append([shape_args[i][0], shape_args[i][2], shape_args[i][3], shape_args[i][6], axis, flip, shape_args[i][4], shape_args[i][5]])
                 if (flip):
-                    print('Cylinder arguments: axis - flipped %s bottom_edge - %.3f top_edge - %.3f radius - %.3f step_direction - %s num_steps - %d' % \
+                    print('Cylinder arguments: axis flipped %s - bottom_edge %.3f - top_edge %.3f - radius %.3f - step_direction %s - num_steps %d' % \
                       (axis, shapes[i][1], shapes[i][2], shapes[i][6], shapes[i][7], shapes[i][3]))
                 else:
-                    print('Cylinder arguments: axis - %s bottom_edge - %.3f top_edge - %.3f radius - %.3f step_direction - %s num_steps - %d' % \
+                    print('Cylinder arguments: axis %s - bottom_edge %.3f - top_edge %.3f - radius %.3f - step_direction %s - num_steps %d' % \
                       (str(axis), shapes[i][1], shapes[i][2], shapes[i][6], shapes[i][7], shapes[i][3]))
 
         else:
