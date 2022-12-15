@@ -666,10 +666,15 @@ def load_and_calculate(tablename, save_suffix, surface_args, flux_types, simple=
 if __name__ == "__main__":
     yt.enable_parallelism()
 
-    #surface = "['sphere',6,206,100]"; simple=False
-    surface = "['cylinder','z',815.69997591,815.69997591,20,'radius',1]"; simple=True #bottom edge, top edge, radius/height, 1
+    #simple=False
+    #surface = "['sphere',6,206,100]"
+    #save_suffix=""
+
+    simple=True
+    surface = "['cylinder','z',815.69997591,815.69997591,20,'height',1]"
+    save_suffix = '_disk_height'
+
     flux_type = "energy,mass"
-    save_suffix = '_disk_radius'
     units_rvir = False
     temp_cut = True
 
@@ -685,7 +690,7 @@ if __name__ == "__main__":
             raise RuntimeError('The flux type   %s   has not been implemented. Ask Cassi to add it.' % (flux_types[i]))
 
     # Loop over outputs, for either single-processor or parallel processor computing
-    datasets = yt.load('DD????/DD????')
+    datasets = yt.load('DD00?0/DD????')
     for ds in datasets.piter():
         # Make the output table name for this snapshot
         tablename = 'fluxes_'+ds.basename
