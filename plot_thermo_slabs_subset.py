@@ -44,7 +44,7 @@ for ds in datasets.piter(dynamic=False, ):
 
     for width, thickness, label in zip(widths, thicknesses, labels):
 
-        fig, ax = plt.subplots(nrows=3, ncols=3, figsize=(23,15))
+        fig, ax = plt.subplots(nrows=2, ncols=3, figsize=(23,15))
 
         if 'face' in label:
             view = 'z'
@@ -124,128 +124,6 @@ for ds in datasets.piter(dynamic=False, ):
 
 
         #
-        # Phase Diagrams
-        #
-        dt_ph = yt.PhasePlot(rect, 'density', 'temperature', 'cell_mass').profile
-        pk_ph = yt.PhasePlot(rect, 'pressure', 'entropy', 'cell_mass').profile
-        rk_ph = yt.PhasePlot(rect, 'radius', 'entropy', 'cell_mass').profile
-
-        # 16th, 50th, and 84th precentile 1D profiles
-        dt_med = np.ones(dt_ph.x_bins.size-1) * np.nan
-        dt_16 = np.ones(dt_ph.x_bins.size-1) * np.nan
-        dt_84 = np.ones(dt_ph.x_bins.size-1) * np.nan
-        
-        d_binner = np.digitize(rect['density'], dt_ph.x_bins)
-        for i in range(1, dt_ph.x_bins.size):
-            this_bin = d_binner==i
-            try:
-                dt_med[i-1] = wq.median(rect['temperature'][this_bin],
-                                        rect['cell_mass'][this_bin])
-                dt_16[i-1] = wq.quantile(rect['temperature'][this_bin],
-                                         rect['cell_mass'][this_bin],
-                                         0.16)
-                dt_84[i-1] = wq.quantile(rect['temperature'][this_bin],
-                                         rect['cell_mass'][this_bin],
-                                         0.84)
-            except ValueError:
-                continue
-        
-        pk_med = np.ones(pk_ph.x_bins.size-1) * np.nan
-        pk_16 = np.ones(pk_ph.x_bins.size-1) * np.nan
-        pk_84 = np.ones(pk_ph.x_bins.size-1) * np.nan
-        
-        p_binner = np.digitize(rect['pressure'], pk_ph.x_bins)
-        for i in range(1, pk_ph.x_bins.size):
-            this_bin = p_binner==i
-            try:
-                pk_med[i-1] = wq.median(rect['entropy'][this_bin],
-                                        rect['cell_mass'][this_bin])
-                pk_16[i-1] = wq.quantile(rect['entropy'][this_bin],
-                                         rect['cell_mass'][this_bin],
-                                         0.16)
-                pk_84[i-1] = wq.quantile(rect['entropy'][this_bin],
-                                         rect['cell_mass'][this_bin],
-                                         0.84)
-            except ValueError:
-                continue
-
-        rk_med = np.ones(rk_ph.x_bins.size-1) * np.nan
-        rk_16 = np.ones(rk_ph.x_bins.size-1) * np.nan
-        rk_84 = np.ones(rk_ph.x_bins.size-1) * np.nan
-        
-        r_binner = np.digitize(rect['radius'], rk_ph.x_bins)
-        for i in range(1, rk_ph.x_bins.size):
-            this_bin = r_binner==i
-            try:
-                rk_med[i-1] = wq.median(rect['entropy'][this_bin],
-                                        rect['cell_mass'][this_bin])
-                rk_16[i-1] = wq.quantile(rect['entropy'][this_bin],
-                                         rect['cell_mass'][this_bin],
-                                         0.16)
-                rk_84[i-1] = wq.quantile(rect['entropy'][this_bin],
-                                         rect['cell_mass'][this_bin],
-                                         0.84)
-            except ValueError:
-                continue
-        
-        # Plot phase diagrams
-        dt_im = ax[2,0].pcolormesh(dt_ph.x_bins, dt_ph.y_bins,
-                                   dt_ph['cell_mass'].T.to('Msun'),
-                                   norm=LogNorm(1e-4,1e6), cmap='viridis')
-        
-        pk_im = ax[2,1].pcolormesh(pk_ph.x_bins, pk_ph.y_bins,
-                                   pk_ph['cell_mass'].T.to('Msun'),
-                                   norm=LogNorm(1e-4,1e6), cmap='cividis')
-
-        rk_im = ax[2,2].pcolormesh(rk_ph.x_bins.to('kpc'), rk_ph.y_bins,
-                                   rk_ph['cell_mass'].T.to('Msun'),
-                                   norm=LogNorm(1e-3,1e7), cmap='magma')
-
-        ax[2,0].plot(dt_ph.x, dt_med, 'k-')
-        ax[2,0].plot(dt_ph.x, dt_16, 'k--')
-        ax[2,0].plot(dt_ph.x, dt_84, 'k--')
-
-        ax[2,1].plot(pk_ph.x, pk_med, 'k-')
-        ax[2,1].plot(pk_ph.x, pk_16, 'k--')
-        ax[2,1].plot(pk_ph.x, pk_84, 'k--')
-
-        ax[2,2].plot(rk_ph.x.to('kpc'), rk_med, 'k-')
-        ax[2,2].plot(rk_ph.x.to('kpc'), rk_16, 'k--')
-        ax[2,2].plot(rk_ph.x.to('kpc'), rk_84, 'k--')
-
-        # Adjust limits
-        ax[2,0].set_xlim(1e-34, 1e-21)
-        ax[2,0].set_xlabel(r'Density [g cm$^{-3}$]')
-        ax[2,0].set_ylim(1e1, 1e9)
-        ax[2,0].set_ylabel('Temperature [K]')
-
-        ax[2,1].set_xlim(1e-22, 1e-10)
-        ax[2,1].set_xlabel(r'Pressure [dyn cm$^{-2}$]')
-        ax[2,1].set_ylim(1e-7, 1e7)
-        ax[2,1].set_ylabel(r'Entropy [keV cm$^2$]')
-
-        ax[2,2].set_xlim(1e-1, 1e3)
-        ax[2,2].set_xlabel('Radius [kpc]')
-        ax[2,2].set_ylim(1e-7, 1e7)
-        ax[2,2].set_ylabel(r'Entropy [keV cm$^2$]')
-
-        # Add colorbars and labels
-        dt_cb = fig.colorbar(dt_im, ax=ax[2,0], pad=0.01, shrink=0.9)
-        pk_cb = fig.colorbar(pk_im, ax=ax[2,1], pad=0.01, shrink=0.9)
-        rk_cb = fig.colorbar(rk_im, ax=ax[2,2], pad=0.01, shrink=0.9)
-
-        dt_cb.set_label(r'Cell Mass [M$_\odot$]')
-        pk_cb.set_label(r'Cell Mass [M$_\odot$]')
-        rk_cb.set_label(r'Cell Mass [M$_\odot$]')
-
-        # Set plot view stuff
-        for i in range(3):
-            ax[2,i].set_xscale('log')
-            ax[2,i].set_yscale('log')
-            ax[2,i].set_aspect( 1.0 / ax[2,i].get_data_ratio() )
-
-
-        #
         # Final details & save
         #
         if 'face' in label:
@@ -262,6 +140,6 @@ for ds in datasets.piter(dynamic=False, ):
         fig.suptitle("{} width, {} thickness".format(width, thickness), fontsize=28)
         fig.tight_layout(rect=[0, 0, 1, 0.97])
         fig.subplots_adjust(hspace=0.1, wspace=0.3)
-        fig.savefig('{}_thermo_slab_proj_min_{}.png'.format(ds.basename, label))
+        fig.savefig('{}_thermo_slab_proj_{}.png'.format(ds.basename, label))
 
         plt.close(fig)
