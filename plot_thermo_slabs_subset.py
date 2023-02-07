@@ -14,7 +14,7 @@ import numpy as np
 
 rcParams.update({'font.size': 14})
 
-datasets = yt.load('DD00[0-2]?/DD00??')
+datasets = yt.load('DD00??/DD00??')
 for ds in datasets.piter(dynamic=False, ):
 
     center = ds.quan(0.5,'code_length')
