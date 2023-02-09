@@ -70,6 +70,9 @@ def make_table_simple(flux_types, surface_type, temp_cut=False):
         if (surface_type[1]=='radius'):
             names_list = ['radius', 'bottom_edge', 'top_edge']
             types_list = ['f8', 'f8', 'f8']
+        if (surface_type[1]=='height'):
+            names_list = ['edge']
+            types_list = ['f8']
 
     dir_name = ['net_', '_in', '_out']
     if (temp_cut): temp_name = ['', 'cold_', 'cool_', 'warm_', 'hot_']
@@ -107,8 +110,7 @@ def calc_fluxes_simple(ds, dt, tablename, save_suffix,
     surface of interest by the next timestep. That is, the properties of a cell contribute to the
     flux if it is no further from the surface of interest than v*dt where v is the cell's velocity
     normal to the surface and dt is the time between snapshots, which is dt = 5.38e6 yrs for the DD
-    outputs.
-    This function differs from calc_fluxes below in that it returns just one flux across each surface
+    outputs.    This function differs from calc_fluxes below in that it returns just one flux across each surface
     specified, rather than fluxes at a number of steps within the total shape bounded by the surface.
     It only tracks things entering or leaving the closed surface and nothing else.'''
 
@@ -670,9 +672,13 @@ if __name__ == "__main__":
     #surface = "['sphere',6,206,100]"
     #save_suffix=""
 
-    simple=True
-    surface = "['cylinder','z',815.69997591,815.69997591,20,'height',1]"
-    save_suffix = '_disk_height'
+    simple=False
+    surface = "['cylinder','z',815.7,822.7,20,'radius',1]"
+    save_suffix = '_disk_radius'
+
+    # simple=True
+    # surface = "['cylinder','z',815.69997591,815.69997591,20,'height',1]"
+    # save_suffix = '_disk_height'
 
     flux_type = "energy,mass"
     units_rvir = False
