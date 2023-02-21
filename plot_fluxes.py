@@ -35,43 +35,43 @@ from matplotlib.ticker import MultipleLocator
 # * warm
 # * hot
 
-fid05 = read_table_hdf5("../extracted_data/fluxes/fid/fluxes_DD0010_mass_energy.hdf5")
-fid15 = read_table_hdf5("../extracted_data/fluxes/fid/fluxes_DD0030_mass_energy.hdf5")
-fid25 = read_table_hdf5("../extracted_data/fluxes/fid/fluxes_DD0050_mass_energy.hdf5")
-fid35 = read_table_hdf5("../extracted_data/fluxes/fid/fluxes_DD0070_mass_energy.hdf5")
+fid05 = read_table_hdf5("../original_sims/extracted_data/fluxes/fid/fluxes_DD0010_mass_energy.hdf5")
+fid15 = read_table_hdf5("../original_sims/extracted_data/fluxes/fid/fluxes_DD0030_mass_energy.hdf5")
+fid25 = read_table_hdf5("../original_sims/extracted_data/fluxes/fid/fluxes_DD0050_mass_energy.hdf5")
+fid35 = read_table_hdf5("../original_sims/extracted_data/fluxes/fid/fluxes_DD0070_mass_energy.hdf5")
 
-cflow05 = read_table_hdf5("../extracted_data/fluxes/cflow/fluxes_DD0010_mass_energy.hdf5")
-cflow15 = read_table_hdf5("../extracted_data/fluxes/cflow/fluxes_DD0030_mass_energy.hdf5")
-cflow25 = read_table_hdf5("../extracted_data/fluxes/cflow/fluxes_DD0050_mass_energy.hdf5")
-cflow35 = read_table_hdf5("../extracted_data/fluxes/cflow/fluxes_DD0070_mass_energy.hdf5")
+cflow05 = read_table_hdf5("../original_sims/extracted_data/fluxes/cflow/fluxes_DD0010_mass_energy.hdf5")
+cflow15 = read_table_hdf5("../original_sims/extracted_data/fluxes/cflow/fluxes_DD0030_mass_energy.hdf5")
+cflow25 = read_table_hdf5("../original_sims/extracted_data/fluxes/cflow/fluxes_DD0050_mass_energy.hdf5")
+cflow35 = read_table_hdf5("../original_sims/extracted_data/fluxes/cflow/fluxes_DD0070_mass_energy.hdf5")
 
-tctff505 = read_table_hdf5("../extracted_data/fluxes/tctff5/fluxes_DD0010_mass_energy.hdf5")
-tctff515 = read_table_hdf5("../extracted_data/fluxes/tctff5/fluxes_DD0030_mass_energy.hdf5")
-tctff525 = read_table_hdf5("../extracted_data/fluxes/tctff5/fluxes_DD0050_mass_energy.hdf5")
-tctff535 = read_table_hdf5("../extracted_data/fluxes/tctff5/fluxes_DD0070_mass_energy.hdf5")
+tctff505 = read_table_hdf5("../original_sims/extracted_data/fluxes/tctff5/fluxes_DD0010_mass_energy.hdf5")
+tctff515 = read_table_hdf5("../original_sims/extracted_data/fluxes/tctff5/fluxes_DD0030_mass_energy.hdf5")
+tctff525 = read_table_hdf5("../original_sims/extracted_data/fluxes/tctff5/fluxes_DD0050_mass_energy.hdf5")
+tctff535 = read_table_hdf5("../original_sims/extracted_data/fluxes/tctff5/fluxes_DD0070_mass_energy.hdf5")
 
-tctff2005 = read_table_hdf5("../extracted_data/fluxes/tctff20/fluxes_DD0010_mass_energy.hdf5")
-tctff2015 = read_table_hdf5("../extracted_data/fluxes/tctff20/fluxes_DD0030_mass_energy.hdf5")
-tctff2025 = read_table_hdf5("../extracted_data/fluxes/tctff20/fluxes_DD0050_mass_energy.hdf5")
-tctff2035 = read_table_hdf5("../extracted_data/fluxes/tctff20/fluxes_DD0070_mass_energy.hdf5")
+tctff2005 = read_table_hdf5("../original_sims/extracted_data/fluxes/tctff20/fluxes_DD0010_mass_energy.hdf5")
+tctff2015 = read_table_hdf5("../original_sims/extracted_data/fluxes/tctff20/fluxes_DD0030_mass_energy.hdf5")
+tctff2025 = read_table_hdf5("../original_sims/extracted_data/fluxes/tctff20/fluxes_DD0050_mass_energy.hdf5")
+tctff2035 = read_table_hdf5("../original_sims/extracted_data/fluxes/tctff20/fluxes_DD0070_mass_energy.hdf5")
 
-linrot05 = read_table_hdf5("../extracted_data/fluxes/linrot/fluxes_DD0010_mass_energy.hdf5")
-linrot15 = read_table_hdf5("../extracted_data/fluxes/linrot/fluxes_DD0030_mass_energy.hdf5")
-linrot25 = read_table_hdf5("../extracted_data/fluxes/linrot/fluxes_DD0050_mass_energy.hdf5")
-linrot35 = read_table_hdf5("../extracted_data/fluxes/linrot/fluxes_DD0070_mass_energy.hdf5")
+linrot05 = read_table_hdf5("../original_sims/extracted_data/fluxes/linrot/fluxes_DD0010_mass_energy.hdf5")
+linrot15 = read_table_hdf5("../original_sims/extracted_data/fluxes/linrot/fluxes_DD0030_mass_energy.hdf5")
+linrot25 = read_table_hdf5("../original_sims/extracted_data/fluxes/linrot/fluxes_DD0050_mass_energy.hdf5")
+linrot35 = read_table_hdf5("../original_sims/extracted_data/fluxes/linrot/fluxes_DD0070_mass_energy.hdf5")
 
-norot05 = read_table_hdf5("../extracted_data/fluxes/norot/fluxes_DD0010_mass_energy.hdf5")
-norot15 = read_table_hdf5("../extracted_data/fluxes/norot/fluxes_DD0030_mass_energy.hdf5")
-norot25 = read_table_hdf5("../extracted_data/fluxes/norot/fluxes_DD0050_mass_energy.hdf5")
-norot35 = read_table_hdf5("../extracted_data/fluxes/norot/fluxes_DD0070_mass_energy.hdf5")
+norot05 = read_table_hdf5("../original_sims/extracted_data/fluxes/norot/fluxes_DD0010_mass_energy.hdf5")
+norot15 = read_table_hdf5("../original_sims/extracted_data/fluxes/norot/fluxes_DD0030_mass_energy.hdf5")
+norot25 = read_table_hdf5("../original_sims/extracted_data/fluxes/norot/fluxes_DD0050_mass_energy.hdf5")
+norot35 = read_table_hdf5("../original_sims/extracted_data/fluxes/norot/fluxes_DD0070_mass_energy.hdf5")
 
 
-fid_sfh = np.genfromtxt('../extracted_data/fid_coarse-bin_sfh.txt')
-cflow_sfh = np.genfromtxt('../extracted_data/cflow_coarse-bin_sfh.txt')
-tctff5_sfh = np.genfromtxt('../extracted_data/tctff5_coarse-bin_sfh.txt')
-tctff20_sfh = np.genfromtxt('../extracted_data/tctff20_coarse-bin_sfh.txt')
-linrot_sfh = np.genfromtxt('../extracted_data/linrot_coarse-bin_sfh.txt')
-norot_sfh = np.genfromtxt('../extracted_data/norot_coarse-bin_sfh.txt')
+fid_sfh = np.genfromtxt('../original_sims/extracted_data/fid_coarse-bin_sfh.txt')
+cflow_sfh = np.genfromtxt('../original_sims/extracted_data/cflow_coarse-bin_sfh.txt')
+tctff5_sfh = np.genfromtxt('../original_sims/extracted_data/tctff5_coarse-bin_sfh.txt')
+tctff20_sfh = np.genfromtxt('../original_sims/extracted_data/tctff20_coarse-bin_sfh.txt')
+linrot_sfh = np.genfromtxt('../original_sims/extracted_data/linrot_coarse-bin_sfh.txt')
+norot_sfh = np.genfromtxt('../original_sims/extracted_data/norot_coarse-bin_sfh.txt')
 
 
 fig, ax = plt.subplots(nrows=5, ncols=4, sharex=True, sharey=True, figsize=(9,10))
@@ -258,6 +258,75 @@ ax[4,0].set_ylabel("Net Total Gas\n"+r"Mass Loading Factor", fontweight="bold")
 
 fig.tight_layout()
 fig.subplots_adjust(wspace=0.15, hspace=0.15)
-fig.savefig("
+fig.savefig("../original_sims/figures/fig_fluxes_all.pdf", dpi=300)
 
 
+
+
+ml20 = np.zeros((5,9))
+ml50 = np.zeros((5,9))
+ml100 = np.zeros((5,9))
+
+for i in range(9):
+    fid = read_table_hdf5(f"../extracted_data/fluxes/fid/fluxes_DD00{i}0_mass_energy.hdf5")
+
+    ml20[0,i] = fid["net_cold_mass_flux"][7]/fid_sfh[i*10,1]
+    ml20[1,i] = fid["net_cool_mass_flux"][7]/fid_sfh[i*10,1]
+    ml20[2,i] = fid["net_warm_mass_flux"][7]/fid_sfh[i*10,1]
+    ml20[3,i] = fid["net_hot_mass_flux"][7]/fid_sfh[i*10,1]
+    ml20[4,i] = fid["net_mass_flux"][7]/fid_sfh[i*10,1]
+    
+    ml50[0,i] = fid["net_cold_mass_flux"][22]/fid_sfh[i*10,1]
+    ml50[1,i] = fid["net_cool_mass_flux"][22]/fid_sfh[i*10,1]
+    ml50[2,i] = fid["net_warm_mass_flux"][22]/fid_sfh[i*10,1]
+    ml50[3,i] = fid["net_hot_mass_flux"][22]/fid_sfh[i*10,1]
+    ml50[4,i] = fid["net_mass_flux"][22]/fid_sfh[i*10,1]
+    
+    ml100[0,i] = fid["net_cold_mass_flux"][47]/fid_sfh[i*10,1]
+    ml100[1,i] = fid["net_cool_mass_flux"][47]/fid_sfh[i*10,1]
+    ml100[2,i] = fid["net_warm_mass_flux"][47]/fid_sfh[i*10,1]
+    ml100[3,i] = fid["net_hot_mass_flux"][47]/fid_sfh[i*10,1]
+    ml100[4,i] = fid["net_mass_flux"][47]/fid_sfh[i*10,1]
+
+times = np.arange(9)*0.5
+
+fig, ax = plt.subplots(ncols=3, sharex=True, sharey=True, figsize=(8,3))
+
+ax[0].set_title("20 kpc")
+ax[0].plot(times, ml20[4], color='k', label="Total")
+ax[0].plot(times, ml20[0], ls=":", color='C0', label="Cold")
+ax[0].plot(times, ml20[1], ls=(0, (3, 1, 1, 1, 1, 1)), color='C2', label="Cool")
+ax[0].plot(times, ml20[2], ls="-.", color='C1', label="Warm")
+ax[0].plot(times, ml20[3], ls="--", color='C3', label="Hot")
+
+ax[1].set_title("50 kpc")
+ax[1].plot(times, ml50[4], color='k', label="Total")
+ax[1].plot(times, ml50[0], ls=":", color='C0', label="Cold")
+ax[1].plot(times, ml50[1], ls=(0, (3, 1, 1, 1, 1, 1)), color='C2', label="Cool")
+ax[1].plot(times, ml50[2], ls="-.", color='C1', label="Warm")
+ax[1].plot(times, ml50[3], ls="--", color='C3', label="Hot")
+ax[1].legend(ncol=2)
+
+ax[2].set_title("100 kpc")
+ax[2].plot(times, ml100[4], color='k', label="Total")
+ax[2].plot(times, ml100[0], ls=":", color='C0', label="Cold")
+ax[2].plot(times, ml100[1], ls=(0, (3, 1, 1, 1, 1, 1)), color='C2', label="Cool")
+ax[2].plot(times, ml100[2], ls="-.", color='C1', label="Warm")
+ax[2].plot(times, ml100[3], ls="--", color='C3', label="Hot")
+
+ax[0].set_yscale('symlog', linthresh=1, linscale=1)
+
+ax[0].set_xlim(0,4)
+ax[0].set_ylim(-100,1e4)
+
+for i in range(3):
+    ax[i].set_xlabel("r [kpc]")
+    ax[i].axhline(0, c='gray', ls=':')
+    ax[i].xaxis.set_minor_locator(MultipleLocator(10))
+    ax[i].fill_between(np.arange(5), -np.ones(5), np.ones(5), color="lightgray")
+    ax[i].grid(axis='y')
+    
+ax[0].set_ylabel("Mass Loading Factor")
+
+fig.tight_layout()
+fig.savefig("../original_sims/figures/fig_fluxes_fid-ev.pdf", dpi=300)
