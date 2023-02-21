@@ -75,6 +75,9 @@ linrot_sfh = np.genfromtxt('../original_sims/extracted_data/linrot_coarse-bin_sf
 norot_sfh = np.genfromtxt('../original_sims/extracted_data/norot_coarse-bin_sfh.txt')
 
 
+#print(fid05["radius"])
+
+
 fig, ax = plt.subplots(nrows=5, ncols=4, sharex=True, sharey=True, figsize=(9,10))
 
 ax[0,0].set_title("0.5 Gyr")
@@ -246,16 +249,22 @@ ax[2,0].legend([linrot, norot], ["Linear Rotation","No Rotation"], loc="upper ri
 for j in range(4):
     ax[4,j].set_xlabel("r [kpc]")
     for i in range(5):
-        ax[i,j].axhline(0, c='gray', ls=':')
+        ax[i,j].axhline(0, c='gray', ls='--')
+        ax[i,j].axvline(20, c='gray', ls='--')
         ax[i,j].xaxis.set_minor_locator(MultipleLocator(10))
         ax[i,j].fill_between(np.arange(200), -np.ones(200), np.ones(200), color="lightgray")
         ax[i,j].grid(axis='y')
         
-ax[0,0].set_ylabel("Net Cold Gas\n"+r"Mass Loading Factor")
-ax[1,0].set_ylabel("Net Cool Gas\n"+r"Mass Loading Factor")
-ax[2,0].set_ylabel("Net Warm Gas\n"+r"Mass Loading Factor")
-ax[3,0].set_ylabel("Net Hot Gas\n"+r"Mass Loading Factor")
-ax[4,0].set_ylabel("Net Total Gas\n"+r"Mass Loading Factor", fontweight="bold")
+#ax[0,0].set_ylabel("Net Cold Gas\n"+r"Mass Loading Factor")
+#ax[1,0].set_ylabel("Net Cool Gas\n"+r"Mass Loading Factor")
+#ax[2,0].set_ylabel("Net Warm Gas\n"+r"Mass Loading Factor")
+#ax[3,0].set_ylabel("Net Hot Gas\n"+r"Mass Loading Factor")
+#ax[4,0].set_ylabel("Net Total Gas\n"+r"Mass Loading Factor", fontweight="bold")
+ax[0,0].set_ylabel(r"$\eta_\mathrm{cold}$", fontsize="large")
+ax[1,0].set_ylabel(r"$\eta_\mathrm{cool}$", fontsize="large")
+ax[2,0].set_ylabel(r"$\eta_\mathrm{warm}$", fontsize="large")
+ax[3,0].set_ylabel(r"$\eta_\mathrm{hot}$", fontsize="large")
+ax[4,0].set_ylabel(r"$\eta_\mathrm{total}$", fontsize="large")
 
 fig.tight_layout()
 fig.subplots_adjust(wspace=0.15, hspace=0.15)
@@ -326,8 +335,8 @@ ax[0].set_ylim(-100,1e4)
 ax[2].set_xlabel("t [Gyr]")
 
 for i in range(3):
-    ax[i].set_ylabel("Mass Loading Factor")
-    ax[i].axhline(0, c='gray', ls=':')
+    ax[i].set_ylabel("$\eta$")
+    ax[i].axhline(0, c='gray', ls='--')
     ax[i].xaxis.set_minor_locator(MultipleLocator(0.5))
     ax[i].fill_between(np.arange(5), -np.ones(5), np.ones(5), color="lightgray")
     ax[i].grid(axis='y')
