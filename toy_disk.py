@@ -60,7 +60,55 @@ class DiskModel():
         self.rho_crit = 1.8788e-29*0.49 * u.g/u.cm**3
         self.Rvir = ( 3.0/(4.0*np.pi)*self.M_vir / (200.*self.rho_crit) )**(1./3.)
         self.Rs = self.Rvir/self.C
-        self.M_NFW = self.M_vir /  (np.log(1.0+self.C) - self.C/(1.0+self.C))
+        self.Mpref = self.M_vir /  (np.log(1.0+self.C) - self.C/(1.0+self.C))
+
+    @accepts(radii=udim.length)
+    @returns(udim.mass)
+    def _mass_enclosed(self, radii):
+        """
+        Dark matter mass enclosed in an NFW dark matter profile.
+
+        Inputs:
+        -------
+        radii (unyt array)
+            Radii at which to calculate the acceleration
+
+        Outputs:
+        --------
+        M_r (unyt array)
+            Dark matter mass enclosed at each input radius
+        """
+
+        x = radii/self.Rs
+        
+        return self.Mpref*(np.log(1+x) - x/(1+x))
+
+    @accepts(radii=udim.length)
+    @returns(udim.mass)
+    def _mass_enclosed_modNFW(self, radii):
+        """
+        Mass enclosed in a profile that approximates both an NFW profile and a
+        galaxy (disk+bulge).
+
+        Inputs:
+        -------
+        radii (unyt array)
+            Radii at which to calculate the acceleration
+
+        Outputs:
+        --------
+        M_r (unyt array)
+            Dark matter mass enclosed at each input radius
+        """
+
+        M_base = self._mass_enclosed(radii)
+
+        Rmax = 2.163*self.Rs
+        Mmax = self._mass_enclosed(Rmax)
+
+        mass_enc = np.where(radii < Rmax, Mmax*radii/Rmax, M_base) * M_base.units 
+
+        return mass_enc
 
     @accepts(radii=udim.length)
     @returns(udim.length/udim.time**2)
@@ -81,9 +129,7 @@ class DiskModel():
         """
 
         # NFW potential
-        x = radii/self.Rs
-
-        g_NFW = u.G*self.M_NFW/radii**2 * (np.log(1+x) - x/(1+x))
+        g_NFW = u.G/radii**2 * self._mass_enclosed(radii)
         
         # Miyamoto & Nagai potential
         k = self.r_scale + self.z_scale
@@ -91,6 +137,30 @@ class DiskModel():
         g_MN = u.G*self.M_star*radii / np.power( np.power(radii,2) + k**2, 3/2 )
 
         return g_NFW + g_MN
+
+    @accepts(radii=udim.length)
+    @returns(udim.length/udim.time**2)
+    def g_modNFW(self, radii):
+        """
+        Gravitational acceleration for an NFW profile modified to mimic the presence
+        of a galaxy disk and bulge. This modification flattens the rotation profile
+        inside the radius where the circular velocity peaks.
+
+        Inputs:
+        -------
+        radii (unyt array)
+            Radii at which to calculate the acceleration
+
+        Outputs:
+        --------
+        g_r (unyt array)
+            Radial accelerations at each input radius
+        """
+
+        # start with regular NFW
+        g_modNFW = u.G/radii**2 * self._mass_enclosed_modNFW(radii)
+
+        return g_modNFW
 
     @accepts(radii=udim.length)
     @returns(1/udim.time**2)
@@ -115,7 +185,7 @@ class DiskModel():
 
         dg_NFW = np.power(radii, -2) * (2*self.Rs + 3*radii)/np.power(self.Rs+radii,2)
         dg_NFW -= 2*np.power(radii,-3)*np.log(1+x)
-        dg_NFW *= u.G * self.M_NFW
+        dg_NFW *= u.G * self.Mpref
 
         # Miyamoto & Nagai potential
         k = self.r_scale + self.z_scale
