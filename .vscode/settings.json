@@ -1,7 +1,0 @@
-{
-    "files.watcherExclude": {
-        "**/__pycache__/**": true,
-        "**/.ipynb_checkpoints/**": true,
-        "**/*.h5": true
-    }
-}
