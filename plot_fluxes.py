@@ -85,152 +85,152 @@ ax[0,1].set_title("1.5 Gyr")
 ax[0,2].set_title("2.5 Gyr")
 ax[0,3].set_title("3.5 Gyr")
 
-ax[0,0].plot(fid05["radius"], fid05["net_cold_mass_flux"]/fid_sfh[10,1], color='C0', label="Fiducial")
-ax[0,0].plot(cflow05["radius"], cflow05["net_cold_mass_flux"]/cflow_sfh[10,1], color='C3', ls='-', label="Cooling Flow")
-ax[0,0].plot(tctff505["radius"], tctff505["net_cold_mass_flux"]/tctff5_sfh[10,1], color='C2', label=r"$t_{\rm c}/t_{\rm ff}=5$")
-ax[0,0].plot(tctff2005["radius"], tctff2005["net_cold_mass_flux"]/tctff20_sfh[10,1], color='C1', ls='-', label=r"$t_{\rm c}/t_{\rm ff}=20$")
-ax[0,0].plot(linrot05["radius"], linrot05["net_cold_mass_flux"]/linrot_sfh[10,1], color='C4', ls='-', label="Linear Rotation")
-ax[0,0].plot(norot05["radius"], norot05["net_cold_mass_flux"]/norot_sfh[10,1], color='C5', ls='-', label="No Rotation")
+ax[0,0].plot(fid05["radius"], fid05["net_cold_mass_flux"], color='C0', label="Fiducial")
+ax[0,0].plot(cflow05["radius"], cflow05["net_cold_mass_flux"], color='C3', ls='-', label="Cooling Flow")
+ax[0,0].plot(tctff505["radius"], tctff505["net_cold_mass_flux"], color='C2', label=r"$t_{\rm c}/t_{\rm ff}=5$")
+ax[0,0].plot(tctff2005["radius"], tctff2005["net_cold_mass_flux"], color='C1', ls='-', label=r"$t_{\rm c}/t_{\rm ff}=20$")
+ax[0,0].plot(linrot05["radius"], linrot05["net_cold_mass_flux"], color='C4', ls='-', label="Linear Rotation")
+ax[0,0].plot(norot05["radius"], norot05["net_cold_mass_flux"], color='C5', ls='-', label="No Rotation")
 
-ax[0,1].plot(fid15["radius"], fid15["net_cold_mass_flux"]/fid_sfh[30,1], color='C0')
-ax[0,1].plot(cflow15["radius"], cflow15["net_cold_mass_flux"]/cflow_sfh[30,1], color='C3', ls='-')
-ax[0,1].plot(tctff515["radius"], tctff515["net_cold_mass_flux"]/tctff5_sfh[30,1], color='C2')
-ax[0,1].plot(tctff2015["radius"], tctff2015["net_cold_mass_flux"]/tctff20_sfh[30,1], color='C1', ls='-')
-ax[0,1].plot(linrot15["radius"], linrot15["net_cold_mass_flux"]/linrot_sfh[30,1], color='C4', ls='-')
-ax[0,1].plot(norot15["radius"], norot15["net_cold_mass_flux"]/norot_sfh[30,1], color='C5', ls='-')
+ax[0,1].plot(fid15["radius"], fid15["net_cold_mass_flux"], color='C0')
+ax[0,1].plot(cflow15["radius"], cflow15["net_cold_mass_flux"], color='C3', ls='-')
+ax[0,1].plot(tctff515["radius"], tctff515["net_cold_mass_flux"], color='C2', label=r"$t_{\rm c}/t_{\rm ff}=5$")
+ax[0,1].plot(tctff2015["radius"], tctff2015["net_cold_mass_flux"], color='C1', ls='-', label=r"$t_{\rm c}/t_{\rm ff}=20$")
+ax[0,1].plot(linrot15["radius"], linrot15["net_cold_mass_flux"], color='C4', ls='-')
+ax[0,1].plot(norot15["radius"], norot15["net_cold_mass_flux"], color='C5', ls='-')
 
-ax[0,2].plot(fid25["radius"], fid25["net_cold_mass_flux"]/fid_sfh[50,1], color='C0')
-ax[0,2].plot(cflow25["radius"], cflow25["net_cold_mass_flux"]/cflow_sfh[50,1], color='C3', ls='-')
-ax[0,2].plot(tctff525["radius"], tctff525["net_cold_mass_flux"]/tctff5_sfh[50,1], color='C2')
-ax[0,2].plot(tctff2025["radius"], tctff2025["net_cold_mass_flux"]/tctff20_sfh[50,1], color='C1', ls='-')
-ax[0,2].plot(linrot25["radius"], linrot25["net_cold_mass_flux"]/linrot_sfh[50,1], color='C4', ls='-')
-ax[0,2].plot(norot25["radius"], norot25["net_cold_mass_flux"]/norot_sfh[50,1], color='C5', ls='-')
+ax[0,2].plot(fid25["radius"], fid25["net_cold_mass_flux"], color='C0')
+ax[0,2].plot(cflow25["radius"], cflow25["net_cold_mass_flux"], color='C3', ls='-')
+ax[0,2].plot(tctff525["radius"], tctff525["net_cold_mass_flux"], color='C2')
+ax[0,2].plot(tctff2025["radius"], tctff2025["net_cold_mass_flux"], color='C1', ls='-')
+ax[0,2].plot(linrot25["radius"], linrot25["net_cold_mass_flux"], color='C4', ls='-', label="Linear Rotation")
+ax[0,2].plot(norot25["radius"], norot25["net_cold_mass_flux"], color='C5', ls='-', label="No Rotation")
 
-ax[0,3].plot(fid35["radius"], fid35["net_cold_mass_flux"]/fid_sfh[70,1], color='C0')
-ax[0,3].plot(cflow35["radius"], cflow35["net_cold_mass_flux"]/cflow_sfh[70,1], color='C3', ls='-')
-ax[0,3].plot(tctff535["radius"], tctff535["net_cold_mass_flux"]/tctff5_sfh[70,1], color='C2')
-ax[0,3].plot(tctff2035["radius"], tctff2035["net_cold_mass_flux"]/tctff20_sfh[70,1], color='C1', ls='-')
-ax[0,3].plot(linrot35["radius"], linrot35["net_cold_mass_flux"]/linrot_sfh[70,1], color='C4', ls='-')
-ax[0,3].plot(norot35["radius"], norot35["net_cold_mass_flux"]/norot_sfh[70,1], color='C5', ls='-')
-
-
-ax[1,0].plot(fid05["radius"], fid05["net_cool_mass_flux"]/fid_sfh[10,1], color='C0')
-ax[1,0].plot(cflow05["radius"], cflow05["net_cool_mass_flux"]/cflow_sfh[10,1], color='C3', ls='-')
-ax[1,0].plot(tctff505["radius"], tctff505["net_cool_mass_flux"]/tctff5_sfh[10,1], color='C2')
-ax[1,0].plot(tctff2005["radius"], tctff2005["net_cool_mass_flux"]/tctff20_sfh[10,1], color='C1', ls='-')
-ax[1,0].plot(linrot05["radius"], linrot05["net_cool_mass_flux"]/linrot_sfh[10,1], color='C4', ls='-')
-ax[1,0].plot(norot05["radius"], norot05["net_cool_mass_flux"]/norot_sfh[10,1], color='C5', ls='-')
-
-ax[1,1].plot(fid15["radius"], fid15["net_cool_mass_flux"]/fid_sfh[30,1], color='C0')
-ax[1,1].plot(cflow15["radius"], cflow15["net_cool_mass_flux"]/cflow_sfh[30,1], color='C3', ls='-')
-ax[1,1].plot(tctff515["radius"], tctff515["net_cool_mass_flux"]/tctff5_sfh[30,1], color='C2')
-ax[1,1].plot(tctff2015["radius"], tctff2015["net_cool_mass_flux"]/tctff20_sfh[30,1], color='C1', ls='-')
-ax[1,1].plot(linrot15["radius"], linrot15["net_cool_mass_flux"]/linrot_sfh[30,1], color='C4', ls='-')
-ax[1,1].plot(norot15["radius"], norot15["net_cool_mass_flux"]/norot_sfh[30,1], color='C5', ls='-')
-
-ax[1,2].plot(fid25["radius"], fid25["net_cool_mass_flux"]/fid_sfh[50,1], color='C0')
-ax[1,2].plot(cflow25["radius"], cflow25["net_cool_mass_flux"]/cflow_sfh[50,1], color='C3', ls='-')
-ax[1,2].plot(tctff525["radius"], tctff525["net_cool_mass_flux"]/tctff5_sfh[50,1], color='C2')
-ax[1,2].plot(tctff2025["radius"], tctff2025["net_cool_mass_flux"]/tctff20_sfh[50,1], color='C1', ls='-')
-ax[1,2].plot(linrot25["radius"], linrot25["net_cool_mass_flux"]/linrot_sfh[50,1], color='C4', ls='-')
-ax[1,2].plot(norot25["radius"], norot25["net_cool_mass_flux"]/norot_sfh[50,1], color='C5', ls='-')
-
-ax[1,3].plot(fid35["radius"], fid35["net_cool_mass_flux"]/fid_sfh[70,1], color='C0')
-ax[1,3].plot(cflow35["radius"], cflow35["net_cool_mass_flux"]/cflow_sfh[70,1], color='C3', ls='-')
-ax[1,3].plot(tctff535["radius"], tctff535["net_cool_mass_flux"]/tctff5_sfh[70,1], color='C2')
-ax[1,3].plot(tctff2035["radius"], tctff2035["net_cool_mass_flux"]/tctff20_sfh[70,1], color='C1', ls='-')
-ax[1,3].plot(linrot35["radius"], linrot35["net_cool_mass_flux"]/linrot_sfh[70,1], color='C4', ls='-')
-ax[1,3].plot(norot35["radius"], norot35["net_cool_mass_flux"]/norot_sfh[70,1], color='C5', ls='-')
+ax[0,3].plot(fid35["radius"], fid35["net_cold_mass_flux"], color='C0')
+ax[0,3].plot(cflow35["radius"], cflow35["net_cold_mass_flux"], color='C3', ls='-')
+ax[0,3].plot(tctff535["radius"], tctff535["net_cold_mass_flux"], color='C2')
+ax[0,3].plot(tctff2035["radius"], tctff2035["net_cold_mass_flux"], color='C1', ls='-')
+ax[0,3].plot(linrot35["radius"], linrot35["net_cold_mass_flux"], color='C4', ls='-')
+ax[0,3].plot(norot35["radius"], norot35["net_cold_mass_flux"], color='C5', ls='-')
 
 
-ax[2,0].plot(fid05["radius"], fid05["net_warm_mass_flux"]/fid_sfh[10,1], color='C0')
-ax[2,0].plot(cflow05["radius"], cflow05["net_warm_mass_flux"]/cflow_sfh[10,1], color='C3', ls='-')
-ax[2,0].plot(tctff505["radius"], tctff505["net_warm_mass_flux"]/tctff5_sfh[10,1], color='C2')
-ax[2,0].plot(tctff2005["radius"], tctff2005["net_warm_mass_flux"]/tctff20_sfh[10,1], color='C1', ls='-')
-ax[2,0].plot(linrot05["radius"], linrot05["net_warm_mass_flux"]/linrot_sfh[10,1], color='C4', ls='-')
-ax[2,0].plot(norot05["radius"], norot05["net_warm_mass_flux"]/norot_sfh[10,1], color='C5', ls='-')
+ax[1,0].plot(fid05["radius"], fid05["net_cool_mass_flux"], color='C0')
+ax[1,0].plot(cflow05["radius"], cflow05["net_cool_mass_flux"], color='C3', ls='-')
+ax[1,0].plot(tctff505["radius"], tctff505["net_cool_mass_flux"], color='C2')
+ax[1,0].plot(tctff2005["radius"], tctff2005["net_cool_mass_flux"], color='C1', ls='-')
+ax[1,0].plot(linrot05["radius"], linrot05["net_cool_mass_flux"], color='C4', ls='-')
+ax[1,0].plot(norot05["radius"], norot05["net_cool_mass_flux"], color='C5', ls='-')
 
-ax[2,1].plot(fid15["radius"], fid15["net_warm_mass_flux"]/fid_sfh[30,1], color='C0')
-ax[2,1].plot(cflow15["radius"], cflow15["net_warm_mass_flux"]/cflow_sfh[30,1], color='C3', ls='-')
-ax[2,1].plot(tctff515["radius"], tctff515["net_warm_mass_flux"]/tctff5_sfh[30,1], color='C2')
-ax[2,1].plot(tctff2015["radius"], tctff2015["net_warm_mass_flux"]/tctff20_sfh[30,1], color='C1', ls='-')
-ax[2,1].plot(linrot15["radius"], linrot15["net_warm_mass_flux"]/linrot_sfh[30,1], color='C4', ls='-')
-ax[2,1].plot(norot15["radius"], norot15["net_warm_mass_flux"]/norot_sfh[30,1], color='C5', ls='-')
+ax[1,1].plot(fid15["radius"], fid15["net_cool_mass_flux"], color='C0')
+ax[1,1].plot(cflow15["radius"], cflow15["net_cool_mass_flux"], color='C3', ls='-')
+ax[1,1].plot(tctff515["radius"], tctff515["net_cool_mass_flux"], color='C2')
+ax[1,1].plot(tctff2015["radius"], tctff2015["net_cool_mass_flux"], color='C1', ls='-')
+ax[1,1].plot(linrot15["radius"], linrot15["net_cool_mass_flux"], color='C4', ls='-')
+ax[1,1].plot(norot15["radius"], norot15["net_cool_mass_flux"], color='C5', ls='-')
 
-ax[2,2].plot(fid25["radius"], fid25["net_warm_mass_flux"]/fid_sfh[50,1], color='C0')
-ax[2,2].plot(cflow25["radius"], cflow25["net_warm_mass_flux"]/cflow_sfh[50,1], color='C3', ls='-')
-ax[2,2].plot(tctff525["radius"], tctff525["net_warm_mass_flux"]/tctff5_sfh[50,1], color='C2')
-ax[2,2].plot(tctff2025["radius"], tctff2025["net_warm_mass_flux"]/tctff20_sfh[50,1], color='C1', ls='-')
-ax[2,2].plot(linrot25["radius"], linrot25["net_warm_mass_flux"]/linrot_sfh[50,1], color='C4', ls='-')
-ax[2,2].plot(norot25["radius"], norot25["net_warm_mass_flux"]/norot_sfh[50,1], color='C5', ls='-')
+ax[1,2].plot(fid25["radius"], fid25["net_cool_mass_flux"], color='C0')
+ax[1,2].plot(cflow25["radius"], cflow25["net_cool_mass_flux"], color='C3', ls='-')
+ax[1,2].plot(tctff525["radius"], tctff525["net_cool_mass_flux"], color='C2')
+ax[1,2].plot(tctff2025["radius"], tctff2025["net_cool_mass_flux"], color='C1', ls='-')
+ax[1,2].plot(linrot25["radius"], linrot25["net_cool_mass_flux"], color='C4', ls='-')
+ax[1,2].plot(norot25["radius"], norot25["net_cool_mass_flux"], color='C5', ls='-')
 
-ax[2,3].plot(fid35["radius"], fid35["net_warm_mass_flux"]/fid_sfh[70,1], color='C0')
-ax[2,3].plot(cflow35["radius"], cflow35["net_warm_mass_flux"]/cflow_sfh[70,1], color='C3', ls='-')
-ax[2,3].plot(tctff535["radius"], tctff535["net_warm_mass_flux"]/tctff5_sfh[70,1], color='C2')
-ax[2,3].plot(tctff2035["radius"], tctff2035["net_warm_mass_flux"]/tctff20_sfh[70,1], color='C1', ls='-')
-ax[2,3].plot(linrot35["radius"], linrot35["net_warm_mass_flux"]/linrot_sfh[70,1], color='C4', ls='-')
-ax[2,3].plot(norot35["radius"], norot35["net_warm_mass_flux"]/norot_sfh[70,1], color='C5', ls='-')
-
-
-ax[3,0].plot(fid05["radius"], fid05["net_hot_mass_flux"]/fid_sfh[10,1], color='C0')
-ax[3,0].plot(cflow05["radius"], cflow05["net_hot_mass_flux"]/cflow_sfh[10,1], color='C3', ls='-')
-ax[3,0].plot(tctff505["radius"], tctff505["net_hot_mass_flux"]/tctff5_sfh[10,1], color='C2')
-ax[3,0].plot(tctff2005["radius"], tctff2005["net_hot_mass_flux"]/tctff20_sfh[10,1], color='C1', ls='-')
-ax[3,0].plot(linrot05["radius"], linrot05["net_hot_mass_flux"]/linrot_sfh[10,1], color='C4', ls='-')
-ax[3,0].plot(norot05["radius"], norot05["net_hot_mass_flux"]/norot_sfh[10,1], color='C5', ls='-')
-
-ax[3,1].plot(fid15["radius"], fid15["net_hot_mass_flux"]/fid_sfh[30,1], color='C0')
-ax[3,1].plot(cflow15["radius"], cflow15["net_hot_mass_flux"]/cflow_sfh[30,1], color='C3', ls='-')
-ax[3,1].plot(tctff515["radius"], tctff515["net_hot_mass_flux"]/tctff5_sfh[30,1], color='C2')
-ax[3,1].plot(tctff2015["radius"], tctff2015["net_hot_mass_flux"]/tctff20_sfh[30,1], color='C1', ls='-')
-ax[3,1].plot(linrot15["radius"], linrot15["net_hot_mass_flux"]/linrot_sfh[30,1], color='C4', ls='-')
-ax[3,1].plot(norot15["radius"], norot15["net_hot_mass_flux"]/norot_sfh[30,1], color='C5', ls='-')
-
-ax[3,2].plot(fid25["radius"], fid25["net_hot_mass_flux"]/fid_sfh[50,1], color='C0')
-ax[3,2].plot(cflow25["radius"], cflow25["net_hot_mass_flux"]/cflow_sfh[50,1], color='C3', ls='-')
-ax[3,2].plot(tctff525["radius"], tctff525["net_hot_mass_flux"]/tctff5_sfh[50,1], color='C2')
-ax[3,2].plot(tctff2025["radius"], tctff2025["net_hot_mass_flux"]/tctff20_sfh[50,1], color='C1', ls='-')
-ax[3,2].plot(linrot25["radius"], linrot25["net_hot_mass_flux"]/linrot_sfh[50,1], color='C4', ls='-')
-ax[3,2].plot(norot25["radius"], norot25["net_hot_mass_flux"]/norot_sfh[50,1], color='C5', ls='-')
-
-ax[3,3].plot(fid35["radius"], fid35["net_hot_mass_flux"]/fid_sfh[70,1], color='C0')
-ax[3,3].plot(cflow35["radius"], cflow35["net_hot_mass_flux"]/cflow_sfh[70,1], color='C3', ls='-')
-ax[3,3].plot(tctff535["radius"], tctff535["net_hot_mass_flux"]/tctff5_sfh[70,1], color='C2')
-ax[3,3].plot(tctff2035["radius"], tctff2035["net_hot_mass_flux"]/tctff20_sfh[70,1], color='C1', ls='-')
-ax[3,3].plot(linrot35["radius"], linrot35["net_hot_mass_flux"]/linrot_sfh[70,1], color='C4', ls='-')
-ax[3,3].plot(norot35["radius"], norot35["net_hot_mass_flux"]/norot_sfh[70,1], color='C5', ls='-')
+ax[1,3].plot(fid35["radius"], fid35["net_cool_mass_flux"], color='C0')
+ax[1,3].plot(cflow35["radius"], cflow35["net_cool_mass_flux"], color='C3', ls='-')
+ax[1,3].plot(tctff535["radius"], tctff535["net_cool_mass_flux"], color='C2')
+ax[1,3].plot(tctff2035["radius"], tctff2035["net_cool_mass_flux"], color='C1', ls='-')
+ax[1,3].plot(linrot35["radius"], linrot35["net_cool_mass_flux"], color='C4', ls='-')
+ax[1,3].plot(norot35["radius"], norot35["net_cool_mass_flux"], color='C5', ls='-')
 
 
-ax[4,0].plot(fid05["radius"], fid05["net_mass_flux"]/fid_sfh[10,1], color='C0')
-ax[4,0].plot(cflow05["radius"], cflow05["net_mass_flux"]/cflow_sfh[10,1], color='C3', ls='-')
-ax[4,0].plot(tctff505["radius"], tctff505["net_mass_flux"]/tctff5_sfh[10,1], color='C2')
-ax[4,0].plot(tctff2005["radius"], tctff2005["net_mass_flux"]/tctff20_sfh[10,1], color='C1', ls='-')
-ax[4,0].plot(linrot05["radius"], linrot05["net_mass_flux"]/linrot_sfh[10,1], color='C4', ls='-')
-ax[4,0].plot(norot05["radius"], norot05["net_mass_flux"]/norot_sfh[10,1], color='C5', ls='-')
+ax[2,0].plot(fid05["radius"], fid05["net_warm_mass_flux"], color='C0')
+ax[2,0].plot(cflow05["radius"], cflow05["net_warm_mass_flux"], color='C3', ls='-')
+ax[2,0].plot(tctff505["radius"], tctff505["net_warm_mass_flux"], color='C2')
+ax[2,0].plot(tctff2005["radius"], tctff2005["net_warm_mass_flux"], color='C1', ls='-')
+ax[2,0].plot(linrot05["radius"], linrot05["net_warm_mass_flux"], color='C4', ls='-')
+ax[2,0].plot(norot05["radius"], norot05["net_warm_mass_flux"], color='C5', ls='-')
 
-ax[4,1].plot(fid15["radius"], fid15["net_mass_flux"]/fid_sfh[30,1], color='C0')
-ax[4,1].plot(cflow15["radius"], cflow15["net_mass_flux"]/cflow_sfh[30,1], color='C3', ls='-')
-ax[4,1].plot(tctff515["radius"], tctff515["net_mass_flux"]/tctff5_sfh[30,1], color='C2')
-ax[4,1].plot(tctff2015["radius"], tctff2015["net_mass_flux"]/tctff20_sfh[30,1], color='C1', ls='-')
-ax[4,1].plot(linrot15["radius"], linrot15["net_mass_flux"]/linrot_sfh[30,1], color='C4', ls='-')
-ax[4,1].plot(norot15["radius"], norot15["net_mass_flux"]/norot_sfh[30,1], color='C5', ls='-')
+ax[2,1].plot(fid15["radius"], fid15["net_warm_mass_flux"], color='C0')
+ax[2,1].plot(cflow15["radius"], cflow15["net_warm_mass_flux"], color='C3', ls='-')
+ax[2,1].plot(tctff515["radius"], tctff515["net_warm_mass_flux"], color='C2')
+ax[2,1].plot(tctff2015["radius"], tctff2015["net_warm_mass_flux"], color='C1', ls='-')
+ax[2,1].plot(linrot15["radius"], linrot15["net_warm_mass_flux"], color='C4', ls='-')
+ax[2,1].plot(norot15["radius"], norot15["net_warm_mass_flux"], color='C5', ls='-')
 
-ax[4,2].plot(fid25["radius"], fid25["net_mass_flux"]/fid_sfh[50,1], color='C0')
-ax[4,2].plot(cflow25["radius"], cflow25["net_mass_flux"]/cflow_sfh[50,1], color='C3', ls='-')
-ax[4,2].plot(tctff525["radius"], tctff525["net_mass_flux"]/tctff5_sfh[50,1], color='C2')
-ax[4,2].plot(tctff2025["radius"], tctff2025["net_mass_flux"]/tctff20_sfh[50,1], color='C1', ls='-')
-ax[4,2].plot(linrot25["radius"], linrot25["net_mass_flux"]/linrot_sfh[50,1], color='C4', ls='-')
-ax[4,2].plot(norot25["radius"], norot25["net_mass_flux"]/norot_sfh[50,1], color='C5', ls='-')
+ax[2,2].plot(fid25["radius"], fid25["net_warm_mass_flux"], color='C0')
+ax[2,2].plot(cflow25["radius"], cflow25["net_warm_mass_flux"], color='C3', ls='-')
+ax[2,2].plot(tctff525["radius"], tctff525["net_warm_mass_flux"], color='C2')
+ax[2,2].plot(tctff2025["radius"], tctff2025["net_warm_mass_flux"], color='C1', ls='-')
+ax[2,2].plot(linrot25["radius"], linrot25["net_warm_mass_flux"], color='C4', ls='-')
+ax[2,2].plot(norot25["radius"], norot25["net_warm_mass_flux"], color='C5', ls='-')
 
-ax[4,3].plot(fid35["radius"], fid35["net_mass_flux"]/fid_sfh[70,1], color='C0')
-ax[4,3].plot(cflow35["radius"], cflow35["net_mass_flux"]/cflow_sfh[70,1], color='C3', ls='-')
-ax[4,3].plot(tctff535["radius"], tctff535["net_mass_flux"]/tctff5_sfh[70,1], color='C2')
-ax[4,3].plot(tctff2035["radius"], tctff2035["net_mass_flux"]/tctff20_sfh[70,1], color='C1', ls='-')
-ax[4,3].plot(linrot35["radius"], linrot35["net_mass_flux"]/linrot_sfh[70,1], color='C4', ls='-')
-ax[4,3].plot(norot35["radius"], norot35["net_mass_flux"]/norot_sfh[70,1], color='C5', ls='-')
+ax[2,3].plot(fid35["radius"], fid35["net_warm_mass_flux"], color='C0')
+ax[2,3].plot(cflow35["radius"], cflow35["net_warm_mass_flux"], color='C3', ls='-')
+ax[2,3].plot(tctff535["radius"], tctff535["net_warm_mass_flux"], color='C2')
+ax[2,3].plot(tctff2035["radius"], tctff2035["net_warm_mass_flux"], color='C1', ls='-')
+ax[2,3].plot(linrot35["radius"], linrot35["net_warm_mass_flux"], color='C4', ls='-')
+ax[2,3].plot(norot35["radius"], norot35["net_warm_mass_flux"], color='C5', ls='-')
+
+
+ax[3,0].plot(fid05["radius"], fid05["net_hot_mass_flux"], color='C0')
+ax[3,0].plot(cflow05["radius"], cflow05["net_hot_mass_flux"], color='C3', ls='-')
+ax[3,0].plot(tctff505["radius"], tctff505["net_hot_mass_flux"], color='C2')
+ax[3,0].plot(tctff2005["radius"], tctff2005["net_hot_mass_flux"], color='C1', ls='-')
+ax[3,0].plot(linrot05["radius"], linrot05["net_hot_mass_flux"], color='C4', ls='-')
+ax[3,0].plot(norot05["radius"], norot05["net_hot_mass_flux"], color='C5', ls='-')
+
+ax[3,1].plot(fid15["radius"], fid15["net_hot_mass_flux"], color='C0')
+ax[3,1].plot(cflow15["radius"], cflow15["net_hot_mass_flux"], color='C3', ls='-')
+ax[3,1].plot(tctff515["radius"], tctff515["net_hot_mass_flux"], color='C2')
+ax[3,1].plot(tctff2015["radius"], tctff2015["net_hot_mass_flux"], color='C1', ls='-')
+ax[3,1].plot(linrot15["radius"], linrot15["net_hot_mass_flux"], color='C4', ls='-')
+ax[3,1].plot(norot15["radius"], norot15["net_hot_mass_flux"], color='C5', ls='-')
+
+ax[3,2].plot(fid25["radius"], fid25["net_hot_mass_flux"], color='C0')
+ax[3,2].plot(cflow25["radius"], cflow25["net_hot_mass_flux"], color='C3', ls='-')
+ax[3,2].plot(tctff525["radius"], tctff525["net_hot_mass_flux"], color='C2')
+ax[3,2].plot(tctff2025["radius"], tctff2025["net_hot_mass_flux"], color='C1', ls='-')
+ax[3,2].plot(linrot25["radius"], linrot25["net_hot_mass_flux"], color='C4', ls='-')
+ax[3,2].plot(norot25["radius"], norot25["net_hot_mass_flux"], color='C5', ls='-')
+
+ax[3,3].plot(fid35["radius"], fid35["net_hot_mass_flux"], color='C0')
+ax[3,3].plot(cflow35["radius"], cflow35["net_hot_mass_flux"], color='C3', ls='-')
+ax[3,3].plot(tctff535["radius"], tctff535["net_hot_mass_flux"], color='C2')
+ax[3,3].plot(tctff2035["radius"], tctff2035["net_hot_mass_flux"], color='C1', ls='-')
+ax[3,3].plot(linrot35["radius"], linrot35["net_hot_mass_flux"], color='C4', ls='-')
+ax[3,3].plot(norot35["radius"], norot35["net_hot_mass_flux"], color='C5', ls='-')
+
+
+ax[4,0].plot(fid05["radius"], fid05["net_mass_flux"], color='C0')
+ax[4,0].plot(cflow05["radius"], cflow05["net_mass_flux"], color='C3', ls='-')
+ax[4,0].plot(tctff505["radius"], tctff505["net_mass_flux"], color='C2')
+ax[4,0].plot(tctff2005["radius"], tctff2005["net_mass_flux"], color='C1', ls='-')
+ax[4,0].plot(linrot05["radius"], linrot05["net_mass_flux"], color='C4', ls='-')
+ax[4,0].plot(norot05["radius"], norot05["net_mass_flux"], color='C5', ls='-')
+
+ax[4,1].plot(fid15["radius"], fid15["net_mass_flux"], color='C0')
+ax[4,1].plot(cflow15["radius"], cflow15["net_mass_flux"], color='C3', ls='-')
+ax[4,1].plot(tctff515["radius"], tctff515["net_mass_flux"], color='C2')
+ax[4,1].plot(tctff2015["radius"], tctff2015["net_mass_flux"], color='C1', ls='-')
+ax[4,1].plot(linrot15["radius"], linrot15["net_mass_flux"], color='C4', ls='-')
+ax[4,1].plot(norot15["radius"], norot15["net_mass_flux"], color='C5', ls='-')
+
+ax[4,2].plot(fid25["radius"], fid25["net_mass_flux"], color='C0')
+ax[4,2].plot(cflow25["radius"], cflow25["net_mass_flux"], color='C3', ls='-')
+ax[4,2].plot(tctff525["radius"], tctff525["net_mass_flux"], color='C2')
+ax[4,2].plot(tctff2025["radius"], tctff2025["net_mass_flux"], color='C1', ls='-')
+ax[4,2].plot(linrot25["radius"], linrot25["net_mass_flux"], color='C4', ls='-')
+ax[4,2].plot(norot25["radius"], norot25["net_mass_flux"], color='C5', ls='-')
+
+ax[4,3].plot(fid35["radius"], fid35["net_mass_flux"], color='C0')
+ax[4,3].plot(cflow35["radius"], cflow35["net_mass_flux"], color='C3', ls='-')
+ax[4,3].plot(tctff535["radius"], tctff535["net_mass_flux"], color='C2')
+ax[4,3].plot(tctff2035["radius"], tctff2035["net_mass_flux"], color='C1', ls='-')
+ax[4,3].plot(linrot35["radius"], linrot35["net_mass_flux"], color='C4', ls='-')
+ax[4,3].plot(norot35["radius"], norot35["net_mass_flux"], color='C5', ls='-')
 
 ax[0,0].set_xlim(0,200)
-ax[0,0].set_ylim(-100,1e4)
+ax[0,0].set_ylim(-1e1,1e2)
 ax[0,0].set_yscale('symlog', linthresh=0.1, linscale=1)
 
 fid = Line2D([0], [0], ls='-', c='C0')
@@ -240,11 +240,11 @@ tctff20 = Line2D([0], [0], ls='-', c='C1')
 linrot = Line2D([0], [0], ls='-', c='C4')
 norot = Line2D([0], [0], ls='-', c='C5')
 
-ax[0,0].legend([fid, cflow], ["Fiducial","Cooling Flow"], loc="upper right", ncol=1)
+ax[0,0].legend([fid, cflow], ["Fiducial","Cooling Flow"], loc="lower right", ncol=1)
 ax[1,0].legend([tctff5, tctff20],
                [r"$t_{\rm cool}/t_{\rm ff} = 5$",r"$t_{\rm cool}/t_{\rm ff} =20$"],
-               loc="upper right", ncol=1)
-ax[2,0].legend([linrot, norot], ["Linear Rotation","No Rotation"], loc="upper right", ncol=1)
+               loc="lower right", ncol=1)
+ax[2,0].legend([linrot, norot], ["Linear Rot","No Rot"], loc="lower right", ncol=1)
 
 for j in range(4):
     ax[4,j].set_xlabel("r [kpc]")
@@ -260,11 +260,11 @@ for j in range(4):
 #ax[2,0].set_ylabel("Net Warm Gas\n"+r"Mass Loading Factor")
 #ax[3,0].set_ylabel("Net Hot Gas\n"+r"Mass Loading Factor")
 #ax[4,0].set_ylabel("Net Total Gas\n"+r"Mass Loading Factor", fontweight="bold")
-ax[0,0].set_ylabel(r"$\eta_\mathrm{cold}$", fontsize="large")
-ax[1,0].set_ylabel(r"$\eta_\mathrm{cool}$", fontsize="large")
-ax[2,0].set_ylabel(r"$\eta_\mathrm{warm}$", fontsize="large")
-ax[3,0].set_ylabel(r"$\eta_\mathrm{hot}$", fontsize="large")
-ax[4,0].set_ylabel(r"$\eta_\mathrm{total}$", fontsize="large")
+ax[0,0].set_ylabel(r"$\dot{M}_\mathrm{cold}\ \ [\mathrm{M_\odot}\ yr^{-1}]$", fontsize="large")
+ax[1,0].set_ylabel(r"$\dot{M}_\mathrm{cool}\ \ [\mathrm{M_\odot}\ yr^{-1}]$", fontsize="large")
+ax[2,0].set_ylabel(r"$\dot{M}_\mathrm{warm}\ \ [\mathrm{M_\odot}\ yr^{-1}]$", fontsize="large")
+ax[3,0].set_ylabel(r"$\dot{M}_\mathrm{hot}\ \ [\mathrm{M_\odot}\ yr^{-1}]$", fontsize="large")
+ax[4,0].set_ylabel(r"$\dot{M}_\mathrm{total}\ \ [\mathrm{M_\odot}\ yr^{-1}]$", fontsize="large")
 
 fig.tight_layout()
 fig.subplots_adjust(wspace=0.15, hspace=0.15)
@@ -280,23 +280,23 @@ ml150 = np.zeros((5,81))
 for i in range(81):
     fid = read_table_hdf5(f"../original_sims/extracted_data/fluxes/fid/fluxes_DD{i:04d}_mass.hdf5")
 
-    ml20[0,i] = fid["net_cold_mass_flux"][7]/fid_sfh[i,1]
-    ml20[1,i] = fid["net_cool_mass_flux"][7]/fid_sfh[i,1]
-    ml20[2,i] = fid["net_warm_mass_flux"][7]/fid_sfh[i,1]
-    ml20[3,i] = fid["net_hot_mass_flux"][7]/fid_sfh[i,1]
-    ml20[4,i] = fid["net_mass_flux"][7]/fid_sfh[i,1]
+    ml20[0,i] = fid["net_cold_mass_flux"][7]
+    ml20[1,i] = fid["net_cool_mass_flux"][7]
+    ml20[2,i] = fid["net_warm_mass_flux"][7]
+    ml20[3,i] = fid["net_hot_mass_flux"][7]
+    ml20[4,i] = fid["net_mass_flux"][7]
     
-    ml50[0,i] = fid["net_cold_mass_flux"][22]/fid_sfh[i,1]
-    ml50[1,i] = fid["net_cool_mass_flux"][22]/fid_sfh[i,1]
-    ml50[2,i] = fid["net_warm_mass_flux"][22]/fid_sfh[i,1]
-    ml50[3,i] = fid["net_hot_mass_flux"][22]/fid_sfh[i,1]
-    ml50[4,i] = fid["net_mass_flux"][22]/fid_sfh[i,1]
+    ml50[0,i] = fid["net_cold_mass_flux"][22]
+    ml50[1,i] = fid["net_cool_mass_flux"][22]
+    ml50[2,i] = fid["net_warm_mass_flux"][22]
+    ml50[3,i] = fid["net_hot_mass_flux"][22]
+    ml50[4,i] = fid["net_mass_flux"][22]
     
-    ml150[0,i] = fid["net_cold_mass_flux"][72]/fid_sfh[i,1]
-    ml150[1,i] = fid["net_cool_mass_flux"][72]/fid_sfh[i,1]
-    ml150[2,i] = fid["net_warm_mass_flux"][72]/fid_sfh[i,1]
-    ml150[3,i] = fid["net_hot_mass_flux"][72]/fid_sfh[i,1]
-    ml150[4,i] = fid["net_mass_flux"][72]/fid_sfh[i,1]
+    ml150[0,i] = fid["net_cold_mass_flux"][72]
+    ml150[1,i] = fid["net_cool_mass_flux"][72]
+    ml150[2,i] = fid["net_warm_mass_flux"][72]
+    ml150[3,i] = fid["net_hot_mass_flux"][72]
+    ml150[4,i] = fid["net_mass_flux"][72]
 
 times = np.arange(81)*0.05
 
@@ -317,7 +317,6 @@ ax[1].plot(times, ml50[0], ls=":", color='C0', label="Cold")
 ax[1].plot(times, ml50[1], ls=(0, (3, 1, 1, 1, 1, 1)), color='C2', label="Cool")
 ax[1].plot(times, ml50[2], ls="-.", color='C1', label="Warm")
 ax[1].plot(times, ml50[3], ls="--", color='C3', label="Hot")
-ax[1].legend(ncol=2)
 
 ax[2].text(0.1, 1e3, "150 kpc", fontsize='large', fontweight='bold',
            verticalalignment='bottom')
@@ -330,12 +329,14 @@ ax[2].plot(times, ml150[3], ls="--", color='C3', label="Hot")
 ax[0].set_yscale('symlog', linthresh=0.1, linscale=1)
 
 ax[0].set_xlim(0,4)
-ax[0].set_ylim(-100,1e4)
+ax[0].set_ylim(-1e1,1e2)
 
 ax[2].set_xlabel("t [Gyr]")
 
+ax[2].legend(ncol=2)
+
 for i in range(3):
-    ax[i].set_ylabel("$\eta$")
+    ax[i].set_ylabel("$\dot{M}\ \ [\mathrm{M_\odot\ yr^{-1}}]$")
     ax[i].axhline(0, c='gray', ls='--')
     ax[i].xaxis.set_minor_locator(MultipleLocator(0.1))
     ax[i].fill_between(np.arange(5), -0.1*np.ones(5), 0.1*np.ones(5), color="lightgray")
