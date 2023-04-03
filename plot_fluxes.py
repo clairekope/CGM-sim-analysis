@@ -302,24 +302,24 @@ times = np.arange(81)*0.05
 
 fig, ax = plt.subplots(nrows=3, sharex=True, sharey=True, figsize=(4,8))
 
-ax[0].text(0.1, 1e3, "20 kpc", fontsize='large', fontweight='bold',
-           verticalalignment='bottom')
+ax[0].text(3.9, 3e1, "20 kpc", fontsize='large', fontweight='bold',
+           verticalalignment='center', horizontalalignment='right')
 ax[0].plot(times, ml20[4], color='m', lw=2, label="Total")
 ax[0].plot(times, ml20[0], ls="--", color='C0', label="Cold")
 ax[0].plot(times, ml20[1], ls="-.", color='C2', label="Cool")
 ax[0].plot(times, ml20[2], ls=(0, (3, 1, 1, 1, 1, 1)), color='C1', label="Warm")
 ax[0].plot(times, ml20[3], ls=":", color='C3', label="Hot")
 
-ax[1].text(0.1, 1e3, "50 kpc", fontsize='large', fontweight='bold',
-           verticalalignment='bottom')
+ax[1].text(3.9, 3e1, "50 kpc", fontsize='large', fontweight='bold',
+           verticalalignment='center', horizontalalignment='right')
 ax[1].plot(times, ml50[4], color='m', lw=2, label="Total")
 ax[1].plot(times, ml50[0], ls=":", color='C0', label="Cold")
 ax[1].plot(times, ml50[1], ls=(0, (3, 1, 1, 1, 1, 1)), color='C2', label="Cool")
 ax[1].plot(times, ml50[2], ls="-.", color='C1', label="Warm")
 ax[1].plot(times, ml50[3], ls="--", color='C3', label="Hot")
 
-ax[2].text(0.1, 1e3, "150 kpc", fontsize='large', fontweight='bold',
-           verticalalignment='bottom')
+ax[2].text(3.9, 3e1, "150 kpc", fontsize='large', fontweight='bold',
+           verticalalignment='center', horizontalalignment='right')
 ax[2].plot(times, ml150[4], color='m', lw=2, label="Total")
 ax[2].plot(times, ml150[0], ls=":", color='C0', label="Cold")
 ax[2].plot(times, ml150[1], ls=(0, (3, 1, 1, 1, 1, 1)), color='C2', label="Cool")
