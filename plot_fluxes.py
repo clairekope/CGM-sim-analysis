@@ -344,3 +344,7 @@ for i in range(3):
 
 fig.tight_layout()
 fig.savefig("../original_sims/figures/fig_fluxes_fid-ev.pdf", dpi=300)
+
+print("20 kpc, 3-4 Gyr, Cool Avg:", np.mean(ml20[1,i]/fid_sfh[-21:,1]))
+print("20 kpc, 3-4 Gyr, Warm Avg:", np.mean(ml20[2,i]/fid_sfh[-21:,1]))
+print("20 kpc, 3-4 Gyr, Total Avg:", np.mean(ml20[4,i]/fid_sfh[-21:,1]))
