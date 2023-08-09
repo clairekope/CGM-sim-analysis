@@ -32,6 +32,14 @@ def _jeans_mass(field, data):
     """
     return (data[("gas", "cell_mass")] > data[("gas","jeans_mass")]).astype(float)
 
+def _mass_threshold(field, data):
+    """
+    WARNING: Enzo checks that mass efficiency times cell mass
+    exceeds the threshold
+    """
+    massthresh = data.get_field_parameter("stellar_mass_threshold")
+    return (data[("gas", "cell_mass")] > massthresh).astype(float)
+
 # Add fields to yt
 
 yt.add_field(
@@ -76,6 +84,15 @@ yt.add_field(
     take_log = False
 )
 
+yt.add_field(
+    ("index", "minimum_mass_criterion"),
+    function = _mass_threshold,
+    sampling_type = "cell",
+    dimensions = dimensions.dimensionless,
+    take_log = False,
+    validators = [ValidateParameter(["stellar_mass_threshold"])]
+)
+
 # Sample usage
 
 if __name__ == "__main__":
@@ -84,10 +101,14 @@ if __name__ == "__main__":
 
     dsk = ds.disk('c', [0,0,1], (30,'kpc'), (3,'kpc'))
 
-    dsk.set_field_parameter("overdensity_threshold", 1e2*yt.units.mh_cgs/yt.units.cm**3)
-    dsk.set_field_parameter("temperature_threshold", 3e3*yt.units.K)
-    print("Overdensity threshold:", dsk.field_parameters["overdensity_threshold"])
+    dsk.set_field_parameter("overdensity_threshold", 
+                            ds.quan(1e2, "code_density"))
+    dsk.set_field_parameter("temperature_threshold", ds.quan(3e3, 'K'))
+    dsk.set_filed_parameter("stellar_mass_threshold", ds.quan(1e4, 'Msun'))
+    
+    print("Overdensity threshold:", dsk.field_parameters["overdensity_threshold"].to('g/cm**3'))
     print("Temperature threshold:", dsk.field_parameters["temperature_threshold"])
+    print("Stellar mass threshold:", ds.field_paramteres["stellar_mass_threshold"])
 
     slc = yt.SlicePlot(ds, 'z', center='c', 
              fields=[("index","overdensity_criterion"),
