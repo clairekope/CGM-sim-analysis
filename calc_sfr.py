@@ -3,19 +3,9 @@
 # When run standalone, will save as png (but not txt)
 #####################################################
 
-import matplotlib; matplotlib.use('agg')
 import yt
-from yt.fields.derived_field import ValidateDataField
+from yt.fields.api import ValidateDataField
 import numpy as np
-
-required_fields = [("nbody", "creation_time"),
-                   ("nbody", "particle_mass"),
-                   ("nbody", "dynamical_time")]
-
-# ValidateDataField is broken
-#@yt.derived_field(name=('nbody','particle_initial_mass'), units='g',
-#                  sampling_type='particle',
-#                  validators=[ValidateDataField(('nbody','creation_time'))])
 
 def field_initial_mass(field, data):
     # ripped from star_maker2.F, assuming StarMassEjectionFraction = 0.25
@@ -50,36 +40,47 @@ def calc_sfr(obj, year_bins):
 
     return time, sfr
 
+
+yt.add_field(
+    ('nbody','particle_initial_mass'),
+    function = field_initial_mass,
+    units='g',
+    sampling_type='particle',
+    validators=[ValidateDataField(('nbody','creation_time')),
+                ValidateDataField(("nbody","dynamical_time")),
+                ValidateDataField(("nbody","particle_mass"))]
+)
+
+yt.add_field(
+    ('nbody','particle_formed_mass'),
+    function = field_formed_mass,
+    units='g',
+    sampling_type='particle',
+    validators=[ValidateDataField(('nbody','creation_time')),
+                ValidateDataField(("nbody","dynamical_time")),
+                ValidateDataField(("nbody","particle_mass"))]
+)
+
+
 if __name__=="__main__":
 
     import glob
     import os
+    import matplotlib; matplotlib.use('agg')
     import matplotlib.pyplot as plt
     
     latest_output = sorted(glob.glob("DD????/DD????"))[-1]
 
     ds = yt.load(latest_output)
 
-    if all([field in ds.field_list for field in required_fields]):
-
-        ds.add_field(name=('nbody','particle_initial_mass'),
-                     units='g',
-                     sampling_type='particle',
-                     function=field_initial_mass)
-
-        ds.add_field(name=('nbody','particle_formed_mass'),
-                     units='g',
-                     sampling_type='particle',
-                     function=field_formed_mass)
-
     dsk = ds.disk([0.5,0.5,0.5], [0,0,1], (24.5,'kpc'), (2.275, 'kpc'))
 
-    bins = np.linspace(0, 2e10, 10001)
+    bins = ds.arr(np.linspace(0, 2e10, 10001), "yr")
     time, sfr = calc_sfr(dsk, bins) 
 
     cwd = os.getcwd()
 
-    plt.plot(time/1e6, sfr)
+    plt.plot(time.to("Myr"), sfr)
     plt.ylim(0, 10)
     plt.xlabel('Time  [Myr]')
     plt.ylabel('SFR  [M$_\odot$ yr$^{-1}$]')
