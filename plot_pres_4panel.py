@@ -50,10 +50,16 @@ for ds in datasets.piter(dynamic=False, ):
     grid.axes_llc.tick_params(labelleft=False, labelbottom=False)
     for ax in grid:
         ax.tick_params(which='both', axis='both', direction='in')
-        ax.xaxis.set_major_locator(MultipleLocator(10))
-        ax.xaxis.set_minor_locator(MultipleLocator(5))
-        ax.yaxis.set_major_locator(MultipleLocator(10))
-        ax.yaxis.set_minor_locator(MultipleLocator(5))   
+        
+    grid[0].xaxis.set_major_locator(MultipleLocator(40))
+    grid[0].xaxis.set_minor_locator(MultipleLocator(20))
+    grid[2].xaxis.set_major_locator(MultipleLocator(40))
+    grid[2].xaxis.set_minor_locator(MultipleLocator(20))
+
+    grid[1].yaxis.set_major_locator(MultipleLocator(50))
+    grid[1].yaxis.set_minor_locator(MultipleLocator(25))
+    grid[3].yaxis.set_major_locator(MultipleLocator(50))
+    grid[3].yaxis.set_minor_locator(MultipleLocator(25))
 
     d_norm = LogNorm(1e-32, 1e-24)
     t_norm = LogNorm(1e3, 1e8)
